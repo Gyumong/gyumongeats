@@ -5,7 +5,7 @@ import "antd/dist/antd.css";
 import Head from "next/head";
 import styled from "styled-components";
 
-const AppLayout = styled.div`
+const AppLayouts = styled.div`
   margin: 0 auto;
   max-width: 768px;
   height: 100vh;
@@ -18,9 +18,9 @@ const App = ({ Component }) => {
         <meta charSet="utf-8" />
         <title>규몽이츠</title>
       </Head>
-      <AppLayout>
+      <AppLayouts>
         <Component />
-      </AppLayout>
+      </AppLayouts>
     </>
   );
 };
