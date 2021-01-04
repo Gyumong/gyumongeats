@@ -14,7 +14,7 @@ import LoginForm from "./LoginForm";
 
 // eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
-  const [isLoggedIn, setisLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <div>
       {isLoggedIn ? (
@@ -62,7 +62,7 @@ const AppLayout = ({ children }) => {
           </Menu>
         </>
       ) : (
-        <LoginForm />
+        <LoginForm setIsLoggedIn={setIsLoggedIn} />
       )}
     </div>
   );

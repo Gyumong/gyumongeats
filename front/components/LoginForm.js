@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { Form, Input, Button } from "antd";
 import Link from "next/link";
 import styled from "styled-components";
@@ -35,15 +35,40 @@ const ABlock = styled.a`
   margin-top: 30px;
   width: 25%;
 `;
-const LoginForm = () => {
+// eslint-disable-next-line react/prop-types
+const LoginForm = ({ setIsLoggedIn }) => {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onChangeId = useCallback((e) => {
+    setId(e.target.value);
+  }, []);
+
+  const onChangePassword = useCallback((e) => {
+    setPassword(e.target.value);
+  }, []);
+  const onSubmitForm = useCallback(() => {
+    console.log(id, password);
+    setIsLoggedIn(true);
+  }, [id, password]);
   return (
-    <FormBlock>
+    <FormBlock onFinish={onSubmitForm}>
       <h1>규몽이츠</h1>
       <div>
-        <InputBlock name="user-id" placeholder="아이디" />
+        <InputBlock
+          name="user-id"
+          placeholder="아이디"
+          value={id}
+          onChange={onChangeId}
+        />
       </div>
       <div>
-        <InputBlock name="user-password" placeholder="비밀번호" />
+        <InputBlock
+          name="user-password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={onChangePassword}
+        />
       </div>
       <ButtonBlock htmlType="submit">로그인</ButtonBlock>
       <Link href="/signup" passHref>
