@@ -1,0 +1,16 @@
+{
+  "name": "react-gyumongeats-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next"
+  },
+  "author": "mingyu",
+  "license": "ISC",
+  "dependencies": {
+    "next": "10.0.4",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
+  }
+}
