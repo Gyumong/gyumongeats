@@ -4,7 +4,7 @@ import React from "react";
 import "antd/dist/antd.css";
 import Head from "next/head";
 import styled from "styled-components";
-
+import wrapper from "../store/configureStore";
 const AppLayouts = styled.div`
   margin: 0 auto;
   max-width: 768px;
@@ -25,4 +25,4 @@ const App = ({ Component }) => {
   );
 };
 
-export default App;
+export default wrapper.withRedux(App);
