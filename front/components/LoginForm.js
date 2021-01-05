@@ -1,52 +1,15 @@
 /** @format */
 
-import React, { useState, useCallback } from "react";
-import { Form, Input, Button } from "antd";
+import React, { useCallback } from "react";
 import Link from "next/link";
-import styled from "styled-components";
+import { FormBlock, InputBlock, ButtonBlock, ABlock } from "./StyleForm";
+import useInput from "../hooks/useInput";
 
-const FormBlock = styled(Form)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0 auto;
-  max-width: 768px;
-  height: 100vh;
-  padding: 60px 30px;
-`;
-
-const InputBlock = styled(Input)`
-  padding: 5px 8px;
-  margin-top: 30px;
-  border: none;
-  border-bottom: 1px solid #e2e2e2;
-`;
-
-const ButtonBlock = styled(Button)`
-  margin-top: 30px;
-  background-color: #42a5f5;
-  color: white;
-  &:hover {
-    background-color: #42a5f5;
-    color: white;
-  }
-`;
-const ABlock = styled.a`
-  margin-top: 30px;
-  width: 25%;
-`;
 // eslint-disable-next-line react/prop-types
 const LoginForm = ({ setIsLoggedIn }) => {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+  const [id, onChangeId] = useInput("");
+  const [password, onChangePassword] = useInput("");
 
-  const onChangeId = useCallback((e) => {
-    setId(e.target.value);
-  }, []);
-
-  const onChangePassword = useCallback((e) => {
-    setPassword(e.target.value);
-  }, []);
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
     setIsLoggedIn(true);
