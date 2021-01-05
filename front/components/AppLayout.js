@@ -11,6 +11,20 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import LoginForm from "./LoginForm";
+import styled from "styled-components";
+
+const MenuBlock = styled(Menu)`
+  max-width: 768px;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+`;
+
+const ItemBlock = styled(Menu.Item)`
+  text-align: center;
+`;
 
 // eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
@@ -20,46 +34,43 @@ const AppLayout = ({ children }) => {
       {isLoggedIn ? (
         <>
           {children}{" "}
-          <Menu
-            mode="inline"
-            style={{ display: "flex", justifyContent: "space-between" }}
-          >
-            <Menu.Item>
+          <MenuBlock mode="inline">
+            <ItemBlock>
               <Link href="/">
                 <a>
                   <HomeOutlined />
                 </a>
               </Link>
-            </Menu.Item>
-            <Menu.Item>
+            </ItemBlock>
+            <ItemBlock>
               <Link href="/search">
                 <a>
                   <SearchOutlined />
                 </a>
               </Link>
-            </Menu.Item>
-            <Menu.Item>
+            </ItemBlock>
+            <ItemBlock>
               <Link href="/favorite">
                 <a>
                   <HeartOutlined />
                 </a>
               </Link>
-            </Menu.Item>
-            <Menu.Item>
+            </ItemBlock>
+            <ItemBlock>
               <Link href="/cart">
                 <a>
                   <CarryOutOutlined />
                 </a>
               </Link>
-            </Menu.Item>
-            <Menu.Item>
+            </ItemBlock>
+            <ItemBlock>
               <Link href="/profile">
                 <a>
                   <UserOutlined />
                 </a>
               </Link>
-            </Menu.Item>
-          </Menu>
+            </ItemBlock>
+          </MenuBlock>
         </>
       ) : (
         <LoginForm setIsLoggedIn={setIsLoggedIn} />
