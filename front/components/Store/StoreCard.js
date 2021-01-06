@@ -1,26 +1,27 @@
 /** @format */
 
 import React from "react";
-import {
-  CardBlock,
-  CardImage,
-  CardMeta,
-  TitleBar,
-  SideBar,
-} from "./StyleStoreCard";
+import { CardBlock, CardMeta, TitleBar, SideBar } from "./StyleStoreCard";
+import { StarFilled } from "@ant-design/icons";
+import CardImage from "./CardImage";
+
 // eslint-disable-next-line react/prop-types
-const StoreCard = () => {
+const StoreCard = ({ post }) => {
+  console.log(post);
   // eslint-disable-next-line react/prop-types
   return (
     <CardBlock>
-      <CardImage />
+      {post.Images[0] && <CardImage images={post.Images} />}
       <CardMeta>
         <TitleBar>
           <h3>가게이름</h3>
           <p>소요시간</p>
         </TitleBar>
         <SideBar>
-          <p>평점(리뷰개수) · 거리 · 배달비</p>
+          <p>
+            <StarFilled style={{ color: "#ffeaa7" }} /> 평점(리뷰개수) · 거리 ·
+            배달비
+          </p>
         </SideBar>
       </CardMeta>
     </CardBlock>

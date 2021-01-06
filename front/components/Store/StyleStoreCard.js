@@ -10,9 +10,13 @@ export const CardBlock = styled.div`
   height: 40vh;
 `;
 
-export const CardImage = styled.div`
+export const CardImageBlock = styled.div`
+  display: flex;
   width: 100%;
   height: 75%;
+`;
+export const CardImageItem = styled.div`
+  width: 100%;
   background-color: #e2e2e2;
   background-repeat: no-repeat;
   background-size: cover;
