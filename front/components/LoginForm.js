@@ -9,29 +9,29 @@ import { LOG_IN_REQUEST } from "../reducers/user";
 
 // eslint-disable-next-line react/prop-types
 const LoginForm = () => {
-  const [id, onChangeId] = useInput("");
+  const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
   const { logInLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const onSubmitForm = useCallback(() => {
-    console.log(id, password);
+    console.log(email, password);
     dispatch({
       type: LOG_IN_REQUEST,
       data: {
-        id,
+        email,
         password,
       },
     });
-  }, [id, password]);
+  }, [email, password]);
   return (
     <FormBlock onFinish={onSubmitForm}>
       <h1>규몽이츠</h1>
       <div>
         <InputBlock
-          name="user-id"
+          name="user-email"
           placeholder="아이디"
-          value={id}
-          onChange={onChangeId}
+          value={email}
+          onChange={onChangeEmail}
         />
       </div>
       <div>

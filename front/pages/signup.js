@@ -9,7 +9,7 @@ const ErrorMessage = styled.div`
   color: red;
 `;
 const SignUp = () => {
-  const [id, onChangeId] = useInput("");
+  const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, onChangePassword] = useInput("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -26,16 +26,17 @@ const SignUp = () => {
     if (password !== passwordCheck) {
       return setPasswordError(true);
     }
-    console.log(id, nickname, password);
+    console.log(email, nickname, password);
   }, [password, passwordCheck]);
   return (
     <FormBlock onFinish={onSubmit}>
       <h1>회원가입 </h1>
       <InputBlock
-        name="user-id"
-        placeholder="아이디"
-        value={id}
-        onChange={onChangeId}
+        name="user-email"
+        placeholder="이메일"
+        type="email"
+        value={email}
+        onChange={onChangeEmail}
       />
       <InputBlock
         name="user-nick"
