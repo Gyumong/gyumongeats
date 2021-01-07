@@ -4,15 +4,24 @@ import React, { useCallback } from "react";
 import Link from "next/link";
 import { FormBlock, InputBlock, ButtonBlock, ABlock } from "./StyleForm";
 import useInput from "../hooks/useInput";
+import { useSelector, useDispatch } from "react-redux";
+import { LOG_IN_REQUEST } from "../reducers/user";
 
 // eslint-disable-next-line react/prop-types
-const LoginForm = ({ setIsLoggedIn }) => {
+const LoginForm = () => {
   const [id, onChangeId] = useInput("");
   const [password, onChangePassword] = useInput("");
-
+  const { logInLoading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
-    setIsLoggedIn(true);
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: {
+        id,
+        password,
+      },
+    });
   }, [id, password]);
   return (
     <FormBlock onFinish={onSubmitForm}>
@@ -33,7 +42,9 @@ const LoginForm = ({ setIsLoggedIn }) => {
           onChange={onChangePassword}
         />
       </div>
-      <ButtonBlock htmlType="submit">로그인</ButtonBlock>
+      <ButtonBlock htmlType="submit" loading={logInLoading}>
+        로그인
+      </ButtonBlock>
       <Link href="/signup" passHref>
         <ABlock>회원가입</ABlock>
       </Link>

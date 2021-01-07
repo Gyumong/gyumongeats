@@ -3,8 +3,10 @@
 import createReducer from "./createReducer";
 
 const initialState = {
-  isLoggedIn: false,
-  user: null,
+  logInLoading: false,
+  logInError: null,
+  logInDone: false,
+  me: null,
   signUpData: {},
   loginData: {},
 };

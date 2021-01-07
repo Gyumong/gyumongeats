@@ -5,6 +5,7 @@ import "antd/dist/antd.css";
 import Head from "next/head";
 import styled from "styled-components";
 import wrapper from "../store/configureStore";
+import withReduxSaga from "next-redux-saga";
 const AppLayouts = styled.div`
   margin: 0 auto;
   max-width: 768px;
@@ -25,4 +26,4 @@ const App = ({ Component }) => {
   );
 };
 
-export default wrapper.withRedux(App);
+export default wrapper.withRedux(withReduxSaga(App));

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { Menu } from "antd";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import LoginForm from "./LoginForm";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const MenuBlock = styled(Menu)`
   max-width: 768px;
@@ -28,10 +29,10 @@ const ItemBlock = styled(Menu.Item)`
 
 // eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { me } = useSelector((state) => state.user);
   return (
     <div>
-      {isLoggedIn ? (
+      {me ? (
         <>
           {children}{" "}
           <MenuBlock mode="inline">
@@ -73,7 +74,7 @@ const AppLayout = ({ children }) => {
           </MenuBlock>
         </>
       ) : (
-        <LoginForm setIsLoggedIn={setIsLoggedIn} />
+        <LoginForm />
       )}
     </div>
   );

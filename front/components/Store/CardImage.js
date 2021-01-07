@@ -12,7 +12,7 @@ const CardImage = ({ images }) => {
   } else {
     return (
       <CardImageBlock>
-        <CardImageItem style={{ width: "75%", marginRight: "5px" }} />
+        <CardImageItem style={{ width: "74%", marginRight: "1%" }} />
         <div
           style={{
             width: "25%",
@@ -21,8 +21,8 @@ const CardImage = ({ images }) => {
             justifyContent: "space-between",
           }}
         >
-          <CardImageItem style={{ height: "48%" }} />
-          <CardImageItem style={{ height: "48%" }} />
+          <CardImageItem style={{ height: "49%" }} />
+          <CardImageItem style={{ height: "49%" }} />
         </div>
       </CardImageBlock>
     );
