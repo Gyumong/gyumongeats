@@ -1,11 +1,12 @@
 /** @format */
 
-import React, { useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import AppLayout from "../components/AppLayout";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button } from "antd";
 import { LOG_OUT_REQUEST } from "../reducers/user";
+import Router from "next/router";
 
 const MyProfileBlock = styled.div`
   * {
@@ -27,6 +28,11 @@ const LogOutButton = styled(Button)`
 `;
 const Profile = () => {
   const { me, logOutLoading } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (!me) {
+      Router.push("/");
+    }
+  }, [me]);
   const dispatch = useDispatch();
 
   const onLogOut = useCallback(() => {
