@@ -12,6 +12,7 @@ const SignUp = () => {
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, onChangePassword] = useInput("");
+  const [phonenumber, onChangePhonenumber] = useInput();
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const onChangePasswordCheck = useCallback(
@@ -26,7 +27,7 @@ const SignUp = () => {
     if (password !== passwordCheck) {
       return setPasswordError(true);
     }
-    console.log(email, nickname, password);
+    console.log(email, nickname, password, phonenumber);
   }, [password, passwordCheck]);
   return (
     <FormBlock onFinish={onSubmit}>
@@ -37,12 +38,6 @@ const SignUp = () => {
         type="email"
         value={email}
         onChange={onChangeEmail}
-      />
-      <InputBlock
-        name="user-nick"
-        placeholder="닉네임"
-        value={nickname}
-        onChange={onChangeNickname}
       />
       <InputBlock
         name="user-password"
@@ -61,6 +56,20 @@ const SignUp = () => {
       {passwordError && (
         <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
       )}
+      <InputBlock
+        name="user-nick"
+        type="text"
+        placeholder="닉네임"
+        value={nickname}
+        onChange={onChangeNickname}
+      />
+      <InputBlock
+        name="user-phone"
+        type="number"
+        placeholder="핸드폰번호"
+        value={phonenumber}
+        onChange={onChangePhonenumber}
+      />
       <ButtonBlock htmlType="submit">회원가입</ButtonBlock>
     </FormBlock>
   );

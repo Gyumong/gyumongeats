@@ -12,6 +12,7 @@ const MyProfileBlock = styled.div`
     margin: 0;
   }
   position: fixed;
+  z-index: 500;
   top: 0;
   width: 100%;
   height: 15%;
