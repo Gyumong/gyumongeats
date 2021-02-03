@@ -10,7 +10,7 @@ import {
   CarryOutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import LoginForm from "./LoginForm";
+import First from "./First";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -74,7 +74,7 @@ const AppLayout = ({ children }) => {
           </MenuBlock>
         </>
       ) : (
-        <LoginForm />
+        <First />
       )}
     </div>
   );
