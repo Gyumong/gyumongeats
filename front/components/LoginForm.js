@@ -11,7 +11,7 @@ import {
 } from "./StyleForm";
 import useInput from "../hooks/useInput";
 import { useSelector, useDispatch } from "react-redux";
-import { LOG_IN_REQUEST } from "../reducers/user";
+import { loginRequestAction } from "../reducers/user";
 
 // eslint-disable-next-line react/prop-types
 const LoginForm = ({ admin, onPrev }) => {
@@ -22,13 +22,7 @@ const LoginForm = ({ admin, onPrev }) => {
   const dispatch = useDispatch();
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
-    dispatch({
-      type: LOG_IN_REQUEST,
-      data: {
-        email,
-        password,
-      },
-    });
+    dispatch(loginRequestAction({ email, password }));
   }, [email, password]);
 
   return (
@@ -65,9 +59,16 @@ const LoginForm = ({ admin, onPrev }) => {
         로그인
       </ButtonBlock>
       <LowerBlock>
-        <Link href="/signup" passHref>
-          <ABlock>회원가입</ABlock>
-        </Link>
+        {admin ? (
+          <Link href="/admin/signup" passHref>
+            <ABlock>회원가입</ABlock>
+          </Link>
+        ) : (
+          <Link href="/signup" passHref>
+            <ABlock>회원가입</ABlock>
+          </Link>
+        )}
+
         <ABlock onClick={onPrev}>뒤로 가기</ABlock>
       </LowerBlock>
     </FormBlock>

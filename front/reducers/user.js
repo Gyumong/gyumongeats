@@ -10,8 +10,6 @@ const initialState = {
   logOutError: null,
   logOutDone: false,
   me: null,
-  signUpData: {},
-  loginData: {},
 };
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
@@ -26,13 +24,12 @@ export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
 export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 
-const dummyUser = (data) => ({
-  ...data,
-  nickname: "규몽",
-  id: 1,
-  phone: "010-1234-1234",
-  address: "문정동",
-});
+export const loginRequestAction = (data) => {
+  return {
+    type: "LOG_IN_REQUEST",
+    data,
+  };
+};
 
 export default createReducer(initialState, {
   [LOG_IN_REQUEST]: (state) => {
@@ -42,7 +39,7 @@ export default createReducer(initialState, {
   },
   [LOG_IN_SUCCESS]: (state, action) => {
     state.logInLoading = false;
-    state.me = dummyUser(action.data);
+    state.me = action.data;
     state.logInDone = true;
   },
   [LOG_IN_FAILURE]: (state, action) => {
