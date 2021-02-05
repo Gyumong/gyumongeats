@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "min",
+    "password": "als5456647",
+    "database": "gyumongeats",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "min",
+    "password": null,
+    "database": "gyumongeats",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "min",
+    "password": null,
+    "database": "gyumongeats",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
