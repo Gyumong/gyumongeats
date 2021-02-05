@@ -1,12 +1,19 @@
 /** @format */
 import React from "react";
 import { useRouter } from "next/router";
-
+import TitleCard from "../../components/Store/TitleCard";
+import { Global } from "../../components/AppLayout";
 const Post = () => {
   const router = useRouter();
-  const { id } = router.query;
+  //   const { id } = router.query;
 
-  return <div>{id}번 게시글</div>;
+  return (
+    <>
+      <Global />
+      <TitleCard />
+      {/* <MenuCard /> */}
+    </>
+  );
 };
 
 export default Post;
