@@ -5,93 +5,21 @@ export const initialState = {
   mainPosts: [
     {
       id: 1,
-      User: {
-        id: 1,
-        nickname: "민구",
-      },
-      content: "첫번째 게시글",
+      name: "명륜진사갈비", // 가게이름
+      category: "한식", // 카테고리
+      phone: "0212341234", //전화번호
+      deliverycost: 2000, // 배달비
+      deliverytime: "15~20분", // 배달소요시간
+      minimumOrder: 12000, // 최소주문
+      scope: 5, // 별점
       Images: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Comments: [],
-    },
-    {
-      id: 2,
-      User: {
-        id: 2,
-        nickname: "민구",
-      },
-      content: "두번째 게시글",
-      Images: [{ src: "1" }],
-      Comments: [],
-    },
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: "민구",
-      },
-      content: "첫번째 게시글",
-      Images: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Comments: [],
-    },
-    {
-      id: 2,
-      User: {
-        id: 2,
-        nickname: "민구",
-      },
-      content: "두번째 게시글",
-      Images: [{ src: "1" }],
-      Comments: [],
-    },
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: "민구",
-      },
-      content: "첫번째 게시글",
-      Images: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Comments: [],
-    },
-    {
-      id: 2,
-      User: {
-        id: 2,
-        nickname: "민구",
-      },
-      content: "두번째 게시글",
-      Images: [{ src: "1" }],
-      Comments: [],
-    },
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: "민구",
-      },
-      content: "첫번째 게시글",
-      Images: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Comments: [],
-    },
-    {
-      id: 2,
-      User: {
-        id: 2,
-        nickname: "민구",
-      },
-      content: "두번째 게시글",
-      Images: [{ src: "1" }],
-      Comments: [],
-    },
-    {
-      id: 3,
-      User: {
-        id: 3,
-        nickname: "민구",
-      },
-      content: "세번째 게시글",
-      Images: [],
-      Comments: [],
+      Menu: [
+        {
+          name: "갈비", // 메뉴 이름
+          price: "13000", // 가격
+          image: "", // 사진
+        },
+      ],
     },
   ],
 };

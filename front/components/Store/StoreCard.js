@@ -1,3 +1,21 @@
+/**
+ * /* eslint-disable react/prop-types
+ *
+ * @format
+ */
+
+/**
+ * /* eslint-disable react/prop-types
+ *
+ * @format
+ */
+
+/**
+ * /* eslint-disable react/prop-types
+ *
+ * @format
+ */
+
 /** @format */
 
 import React from "react";
@@ -14,13 +32,13 @@ const StoreCard = ({ post }) => {
       {post.Images[0] && <CardImage images={post.Images} />}
       <CardMeta>
         <TitleBar>
-          <h3>가게이름</h3>
-          <p>소요시간</p>
+          <h3>{post.name}</h3>
+          <p>{post.deliverytime}</p>
         </TitleBar>
         <SideBar>
           <p>
-            <StarFilled style={{ color: "#ffeaa7" }} /> 평점(리뷰개수) · 거리 ·
-            배달비
+            <StarFilled style={{ color: "#ffeaa7" }} /> {post.scope}(리뷰개수) ·
+            거리 · {post.deliverycost}원
           </p>
         </SideBar>
       </CardMeta>
