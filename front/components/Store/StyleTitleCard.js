@@ -28,10 +28,9 @@ export const TitleBox = styled.div`
   -webkit-box-shadow: 0px 0px 9px -2px #3a3a3a;
   box-shadow: 0px 0px 9px -2px #3a3a3a;
   width: 90%;
+  padding: 3vh 0;
   h2 {
-    margin: 0;
     font-weight: bold;
-    margin-top: 3vh;
   }
 `;
 
