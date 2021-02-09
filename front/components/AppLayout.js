@@ -11,8 +11,6 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import styled, { createGlobalStyle } from "styled-components";
-import { useSelector } from "react-redux";
-import LoginForm from "./LoginForm";
 
 export const Global = createGlobalStyle`
     box-sizing: border-box;
@@ -38,54 +36,50 @@ const ItemBlock = styled(Menu.Item)`
 
 // eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
-  const { me } = useSelector((state) => state.user);
   return (
     <div>
       <Global />
-      {me ? (
-        <>
-          {children}{" "}
-          <MenuBlock mode="inline">
-            <ItemBlock>
-              <Link href="/">
-                <a>
-                  <HomeOutlined />
-                </a>
-              </Link>
-            </ItemBlock>
-            <ItemBlock>
-              <Link href="/search">
-                <a>
-                  <SearchOutlined />
-                </a>
-              </Link>
-            </ItemBlock>
-            <ItemBlock>
-              <Link href="/favorite">
-                <a>
-                  <HeartOutlined />
-                </a>
-              </Link>
-            </ItemBlock>
-            <ItemBlock>
-              <Link href="/cart">
-                <a>
-                  <CarryOutOutlined />
-                </a>
-              </Link>
-            </ItemBlock>
-            <ItemBlock>
-              <Link href="/profile">
-                <a>
-                  <UserOutlined />
-                </a>
-              </Link>
-            </ItemBlock>
-          </MenuBlock>
-        </>
-      ) : (
-        <LoginForm />
-      )}
+
+      <>
+        {children}{" "}
+        <MenuBlock mode="inline">
+          <ItemBlock>
+            <Link href="/">
+              <a>
+                <HomeOutlined />
+              </a>
+            </Link>
+          </ItemBlock>
+          <ItemBlock>
+            <Link href="/search">
+              <a>
+                <SearchOutlined />
+              </a>
+            </Link>
+          </ItemBlock>
+          <ItemBlock>
+            <Link href="/favorite">
+              <a>
+                <HeartOutlined />
+              </a>
+            </Link>
+          </ItemBlock>
+          <ItemBlock>
+            <Link href="/cart">
+              <a>
+                <CarryOutOutlined />
+              </a>
+            </Link>
+          </ItemBlock>
+          <ItemBlock>
+            <Link href="/profile">
+              <a>
+                <UserOutlined />
+              </a>
+            </Link>
+          </ItemBlock>
+        </MenuBlock>
+      </>
     </div>
   );
 };
