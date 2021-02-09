@@ -10,9 +10,9 @@ import {
   CarryOutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import First from "./First";
 import styled, { createGlobalStyle } from "styled-components";
 import { useSelector } from "react-redux";
+import LoginForm from "./LoginForm";
 
 export const Global = createGlobalStyle`
     box-sizing: border-box;
@@ -84,7 +84,7 @@ const AppLayout = ({ children }) => {
           </MenuBlock>
         </>
       ) : (
-        <First />
+        <LoginForm />
       )}
     </div>
   );

@@ -14,10 +14,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginRequestAction } from "../reducers/user";
 
 // eslint-disable-next-line react/prop-types
-const LoginForm = ({ admin, onPrev }) => {
+const LoginForm = () => {
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
-  const [adminNumber, onChangeAdminNumber] = useInput("");
   const { logInLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const onSubmitForm = useCallback(() => {
@@ -28,17 +27,6 @@ const LoginForm = ({ admin, onPrev }) => {
   return (
     <FormBlock onFinish={onSubmitForm}>
       <h1>규몽이츠</h1>
-      {admin ? (
-        <div>
-          <InputBlock
-            name="admin-email"
-            placeholder="사업자번호"
-            value={adminNumber}
-            onChange={onChangeAdminNumber}
-          />
-        </div>
-      ) : null}
-
       <div>
         <InputBlock
           name="user-email"
@@ -61,17 +49,9 @@ const LoginForm = ({ admin, onPrev }) => {
         로그인
       </ButtonBlock>
       <LowerBlock>
-        {admin ? (
-          <Link href="/admin/signup" passHref>
-            <ABlock>회원가입</ABlock>
-          </Link>
-        ) : (
-          <Link href="/signup" passHref>
-            <ABlock>회원가입</ABlock>
-          </Link>
-        )}
-
-        <ABlock onClick={onPrev}>뒤로 가기</ABlock>
+        <Link href="/signup">
+          <ABlock>회원가입</ABlock>
+        </Link>
       </LowerBlock>
     </FormBlock>
   );
