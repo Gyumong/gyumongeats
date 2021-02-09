@@ -55,6 +55,13 @@ Menu.belongsTo(MenuCategory);
 
 Restaurant.hasOne(RestaurantInfo);
 
+// remove 'id' attribute
+Address.removeAttribute('id');
+Bookmark.removeAttribute('id');
+Cart.removeAttribute('id');
+RestaurantInfo.removeAttribute('id');
+Menu.removeAttribute('id');
+
 db = {
   sequelize,
   Sequelize,
