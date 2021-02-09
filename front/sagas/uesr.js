@@ -8,7 +8,33 @@ import {
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
+  SIGN_UP_REQUEST,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAILURE,
 } from "../reducers/user";
+
+function signUpAPI(data) {
+  // data를 받음 ex) {id:'abc@naver.com',password:'123456'}
+  // return axios.post("/user/signUp", data); // 받은 data를 토대로 서버에 요청을 보냄
+}
+
+function* signUp(action) {
+  // 액션을 받음
+  try {
+    yield delay(1000);
+    yield put({
+      // 액션을 dispatch
+      type: SIGN_UP_SUCCESS,
+      data: action.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: SIGN_UP_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
 
 function logInAPI(data) {
   // data를 받음 ex) {id:'abc@naver.com',password:'123456'}
@@ -57,6 +83,10 @@ function* watchLogIn() {
 function* watchLogOut() {
   yield takeLatest(LOG_OUT_REQUEST, logOut);
 }
+
+function* watchSignUp() {
+  yield takeLatest(SIGN_UP_REQUEST, signUp);
+}
 export default function* userSaga() {
-  yield all([fork(watchLogIn), fork(watchLogOut)]);
+  yield all([fork(watchLogIn), fork(watchLogOut), fork(watchSignUp)]);
 }

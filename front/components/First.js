@@ -1,9 +1,10 @@
 /** @format */
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button } from "antd";
 import LoginForm from "./LoginForm";
+import { useSelector } from "react-redux";
 const FisrtBlock = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,6 +31,13 @@ const ButtonBlock = styled(Button)`
 const First = () => {
   const [custom, setcustom] = useState(false);
   const [admin, setadmin] = useState(false);
+  const { signUpDone } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (signUpDone) {
+      setcustom(true);
+    }
+  }, [signUpDone]);
   const onCustom = useCallback(() => {
     setcustom((prev) => !prev);
   }, [custom]);

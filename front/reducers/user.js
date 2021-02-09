@@ -3,12 +3,15 @@
 import createReducer from "./createReducer";
 
 const initialState = {
-  logInLoading: false,
+  logInLoading: false, // 로그인 시도중
   logInError: null,
   logInDone: false,
-  logOutLoading: false,
+  logOutLoading: false, // 로그아웃 시도중
   logOutError: null,
   logOutDone: false,
+  signUpLoading: false, // 회원가입 시도중
+  signUpDone: false,
+  signUpError: null,
   me: null,
 };
 

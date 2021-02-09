@@ -44,6 +44,7 @@ const LoginForm = ({ admin, onPrev }) => {
           name="user-email"
           placeholder="아이디"
           value={email}
+          type="email"
           onChange={onChangeEmail}
         />
       </div>
@@ -52,6 +53,7 @@ const LoginForm = ({ admin, onPrev }) => {
           name="user-password"
           placeholder="비밀번호"
           value={password}
+          type="password"
           onChange={onChangePassword}
         />
       </div>
