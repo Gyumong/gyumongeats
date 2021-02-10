@@ -13,7 +13,7 @@ const ErrorMessage = styled.div`
 `;
 const SignUp = () => {
   const [email, onChangeEmail] = useInput("");
-  const [nickname, onChangeNickname] = useInput("");
+  const [name, onChangeName] = useInput("");
   const [password, onChangePassword] = useInput("");
   const [phonenumber, onChangePhonenumber] = useInput();
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -48,9 +48,9 @@ const SignUp = () => {
     }
     dispatch({
       type: SIGN_UP_REQUEST,
-      data: { email, password, nickname, phonenumber },
+      data: { email, password, name, phonenumber },
     });
-    console.log(email, nickname, password, phonenumber);
+    console.log(email, name, password, phonenumber);
   }, [password, passwordCheck]);
   return (
     <FormBlock onFinish={onSubmit}>
@@ -80,11 +80,11 @@ const SignUp = () => {
         <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
       )}
       <InputBlock
-        name="user-nick"
+        name="user-name"
         type="text"
-        placeholder="닉네임"
-        value={nickname}
-        onChange={onChangeNickname}
+        placeholder="이름"
+        value={name}
+        onChange={onChangeName}
       />
       <InputBlock
         name="user-phone"

@@ -26,19 +26,18 @@ import CardImage from "./CardImage";
 // eslint-disable-next-line react/prop-types
 const StoreCard = ({ post }) => {
   console.log(post);
-  // eslint-disable-next-line react/prop-types
   return (
     <CardBlock>
-      {post.Images[0] && <CardImage images={post.Images} />}
+      {post.Thumbnail[0] && <CardImage images={post.Thumbnail} />}
       <CardMeta>
         <TitleBar>
-          <h3>{post.name}</h3>
-          <p>{post.deliverytime}</p>
+          <h3>{post.restaurant_name}</h3>
+          <p>{post.estimated_del_time}</p>
         </TitleBar>
         <SideBar>
           <p>
-            <StarFilled style={{ color: "#ffeaa7" }} /> {post.scope}(리뷰개수) ·
-            거리 · {post.deliverycost}원
+            <StarFilled style={{ color: "#ffeaa7" }} /> {post.gpa}(리뷰개수) ·
+            거리 · {post.min_order_price}원
           </p>
         </SideBar>
       </CardMeta>
