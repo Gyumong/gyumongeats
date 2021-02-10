@@ -1,7 +1,17 @@
 const express = require("express");
+const bodyParser = require("body-parser");
+const logger = require("morgan");
+const cors = require("cors");
 
 const app = express();
 const { sequelize } = require('./models');
+
+app.use(cors());
+app.use(logger("dev"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use('/api', require('./routes'));
 
 sequelize.sync().then(() => {
   console.log(">> DB 연결 성공");

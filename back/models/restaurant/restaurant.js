@@ -32,15 +32,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: "delivery_fee"
     },
-    minDelTime: {
-      type: DataTypes.INTEGER,
+    estimatedDelTime: {
+      type: DataTypes.STRING,
       allowNull: false,
-      field: "min_del_time"
-    },
-    maxDelTime: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      field: "max_del_time"
+      field: "estimated_del_time"
     }
   }, {
     timestamps: false,
