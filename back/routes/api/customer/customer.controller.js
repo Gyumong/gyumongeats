@@ -1,51 +1,45 @@
-const { Customer } = require('../../../models');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+/** @format */
+
+const { Customer } = require("../../../models");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.register = async (req, res) => {
-  const {
-    email,
-    password,
-    name,
-    phone
-  } = req.body;
+  const { email, password, name, phone } = req.body;
 
   try {
     const customer = await Customer.create({
       userId: email,
       password: password,
       name: name,
-      phone: phone
+      phone: phone,
     });
     res.status(201).json({
       success: true,
-      customer
+      customer,
     });
   } catch (err) {
     console.error("유저 등록에 실패하였습니다.");
     console.error(err);
     res.status(400).json({
-      success: false
+      success: false,
     });
   }
 };
 
 exports.login = (req, res) => {
-  const {
-    email,
-    password
-  } = req.body;
+  const { email, password } = req.body;
 
   const check = (uid, pwd) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const [ customer ] = await Customer.findAll({
+        const [customer] = await Customer.findAll({
           where: {
-            userId: uid
-          }
+            userId: uid,
+          },
         });
         const customerInfo = customer.dataValues;
-        if(customerInfo.password !== pwd) {
+        if (customerInfo.password !== pwd) {
           reject(new Error("잘못된 비밀번호 입니다."));
         } else {
           resolve(customerInfo);
@@ -62,16 +56,16 @@ exports.login = (req, res) => {
         {
           customerEmail: customer.userId,
           customerName: customer.name,
-          customerPhone: customer.phone
+          customerPhone: customer.phone,
         },
         process.env.JWT_KEY,
         {
           expiresIn: "1h",
           issuer: "gyumongeats",
-          subject: "customer_info"
+          subject: "customer_info",
         },
         (err, token) => {
-          if(err) reject(err);
+          if (err) reject(err);
           resolve(token);
         }
       );
@@ -81,27 +75,24 @@ exports.login = (req, res) => {
   const respond = (token) => {
     res.json({
       success: true,
-      token
+      token,
     });
   };
 
   const onError = (err) => {
     res.status(403).json({
       success: false,
-      errorMessage: err
+      errorMessage: err,
     });
   };
-  
-  check(email, password)
-  .then(issueToken)
-  .then(respond)
-  .catch(onError);
+
+  check(email, password).then(issueToken).then(respond).catch(onError);
 };
 
 exports.jwtCheck = (req, res) => {
   const decoded = req.decoded;
   res.json({
     success: true,
-    decoded
+    decoded,
   });
 };
