@@ -6,7 +6,7 @@ export const TitleBlock = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 60vh;
+  height: 52vh;
   * {
     margin: 0;
   }
