@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       field: "thumbnail"
     },
     GPA: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: true,
       defaultValue: 0,
       field: "gpa"
