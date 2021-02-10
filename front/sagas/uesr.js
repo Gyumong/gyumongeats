@@ -1,6 +1,12 @@
+/**
+ * /* eslint-disable no-unused-vars
+ *
+ * @format
+ */
+
 /** @format */
 
-import { all, delay, put, fork, takeLatest } from "redux-saga/effects";
+import { all, delay, put, fork, takeLatest, call } from "redux-saga/effects";
 import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
@@ -12,38 +18,38 @@ import {
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
 } from "../reducers/user";
-
+import axios from "axios";
 function signUpAPI(data) {
-  // data를 받음 ex) {id:'abc@naver.com',password:'123456'}
-  // return axios.post("/user/signUp", data); // 받은 data를 토대로 서버에 요청을 보냄
+  return axios.post("/signup", data);
 }
 
 function* signUp(action) {
   // 액션을 받음
   try {
-    yield delay(1000);
+    const result = yield call(signUpAPI, action.data);
+    console.log(result);
     yield put({
       // 액션을 dispatch
       type: SIGN_UP_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (e) {
     console.error(e);
     yield put({
       type: SIGN_UP_FAILURE,
-      error: e.response.data,
+      error: e.response.error,
     });
   }
 }
 
 function logInAPI(data) {
-  // data를 받음 ex) {id:'abc@naver.com',password:'123456'}
-  // return axios.post("/user/login", data); // 받은 data를 토대로 서버에 요청을 보냄
+  return axios.post("/login", data);
 }
 
 function* logIn(action) {
   // 액션을 받음
   try {
+    const result = yield call(logInAPI, action.data);
     yield delay(1000);
     // const result = yield call(logInAPI, action.data);
     // 요청이 성공이면 call로 logInAPI를 실행하고 결괏값을 변수 result에 저장
@@ -52,7 +58,7 @@ function* logIn(action) {
     yield put({
       // 액션을 dispatch
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (e) {
     console.error(e);
@@ -63,9 +69,11 @@ function* logIn(action) {
   }
 }
 
+// function logOutAPI() {
+//   return axios.post("/logout");
+// }
 function* logOut() {
   try {
-    yield delay(1000);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
