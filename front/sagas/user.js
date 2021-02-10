@@ -31,7 +31,6 @@ function* signUp(action) {
     yield put({
       // 액션을 dispatch
       type: SIGN_UP_SUCCESS,
-      data: result.data,
     });
   } catch (e) {
     console.error(e);

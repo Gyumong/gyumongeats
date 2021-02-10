@@ -8,18 +8,6 @@ const cors = require("cors");
 const app = express();
 const { sequelize } = require("./models");
 
-app.use(
-  cors({
-    origin: "*",
-    credentials: false,
-  })
-);
-app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use("/api", require("./routes"));
-
 sequelize
   .sync()
   .then(() => {
@@ -32,3 +20,16 @@ sequelize
   .catch((err) => {
     console.error(err);
   });
+
+app.use(logger("dev"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(
+  cors({
+    origin: "*",
+    credentials: false,
+  })
+);
+
+app.use("/api", require("./routes"));

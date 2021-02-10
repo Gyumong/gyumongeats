@@ -15,7 +15,7 @@ const SignUp = () => {
   const [email, onChangeEmail] = useInput("");
   const [name, onChangeName] = useInput("");
   const [password, onChangePassword] = useInput("");
-  const [phonenumber, onChangePhonenumber] = useInput();
+  const [phone, onChangePhone] = useInput();
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const dispatch = useDispatch();
@@ -48,9 +48,9 @@ const SignUp = () => {
     }
     dispatch({
       type: SIGN_UP_REQUEST,
-      data: { email, password, name, phonenumber },
+      data: { email, password, name, phone },
     });
-    console.log(email, name, password, phonenumber);
+    console.log(email, name, password, phone);
   }, [password, passwordCheck]);
   return (
     <FormBlock onFinish={onSubmit}>
@@ -81,17 +81,15 @@ const SignUp = () => {
       )}
       <InputBlock
         name="user-name"
-        type="text"
         placeholder="이름"
         value={name}
         onChange={onChangeName}
       />
       <InputBlock
         name="user-phone"
-        type="number"
         placeholder="핸드폰번호"
-        value={phonenumber}
-        onChange={onChangePhonenumber}
+        value={phone}
+        onChange={onChangePhone}
       />
       <ButtonBlock htmlType="submit" loading={signUpLoading}>
         회원가입
