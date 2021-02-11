@@ -6,8 +6,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Link from "next/link";
-import { StarFilled } from "@ant-design/icons";
+import { StarFilled, ArrowRightOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
+import { Button } from "antd";
 
 const PopularBlock = styled.div`
   font-family: "Noto Sans KR", sans-serif;
@@ -24,7 +25,7 @@ const PopularBlock = styled.div`
 
 const StyledSlider = styled(Slider)`
   display: flex;
-  flex-direction: column;
+
   .slick-slide div {
     outline: none;
     margin: 0 5px;
@@ -67,6 +68,24 @@ const Desc = styled.div`
     font-size: 0.7rem;
   }
 `;
+const ButtonMenuBlock = styled.div``;
+
+const ButtonStyled = styled(Button)`
+  box-shadow: 0px 0px 9px -2px #3a3a3a;
+`;
+const ButtonCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  max-width: 100%;
+  height: 7.5rem;
+  h4 {
+    margin-top: 0.4rem;
+    font-size: 1rem;
+  }
+`;
 const PopularCard = () => {
   const { restaurant } = useSelector((state) => state.store);
   const popular = [...restaurant].sort((a, b) => b.gpa - a.gpa).slice(0, 9);
@@ -101,6 +120,12 @@ const PopularCard = () => {
             </Link>
           );
         })}
+        <ButtonMenuBlock>
+          <ButtonCard>
+            <ButtonStyled shape="circle" icon={<ArrowRightOutlined />} />
+            <h4>더보기</h4>
+          </ButtonCard>
+        </ButtonMenuBlock>
       </StyledSlider>
     </PopularBlock>
   );
