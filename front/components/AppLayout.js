@@ -13,12 +13,15 @@ import {
 import styled, { createGlobalStyle } from "styled-components";
 
 export const Global = createGlobalStyle`
+    *{
+      margin:0;
     box-sizing: border-box;
-    margin: 0 ;
+    }
   a{
     text-decoration:none;
     color:inherit;
   }
+
 `;
 
 const MenuBlock = styled(Menu)`

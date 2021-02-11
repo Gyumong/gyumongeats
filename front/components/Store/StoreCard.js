@@ -4,18 +4,6 @@
  * @format
  */
 
-/**
- * /* eslint-disable react/prop-types
- *
- * @format
- */
-
-/**
- * /* eslint-disable react/prop-types
- *
- * @format
- */
-
 /** @format */
 
 import React from "react";
@@ -24,20 +12,20 @@ import { StarFilled } from "@ant-design/icons";
 import CardImage from "./CardImage";
 
 // eslint-disable-next-line react/prop-types
-const StoreCard = ({ post }) => {
-  console.log(post);
+const StoreCard = ({ store }) => {
+  console.log(store);
   return (
     <CardBlock>
-      {post.Thumbnail[0] && <CardImage images={post.Thumbnail} />}
+      {store.Thumbnail[0] && <CardImage images={store.Thumbnail} />}
       <CardMeta>
         <TitleBar>
-          <h3>{post.restaurant_name}</h3>
-          <p>{post.estimated_del_time}</p>
+          <h3>{store.restaurant_name}</h3>
+          <p>{store.estimated_del_time}</p>
         </TitleBar>
         <SideBar>
           <p>
-            <StarFilled style={{ color: "#ffeaa7" }} /> {post.gpa}(리뷰개수) ·
-            거리 · {post.min_order_price}원
+            <StarFilled style={{ color: "#FBD94E" }} /> {store.gpa}(리뷰개수) ·
+            거리 · {store.min_order_price}원
           </p>
         </SideBar>
       </CardMeta>
