@@ -30,10 +30,10 @@ exports.register = async (req, res) => {
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  const check = (uid, pwd) => {
+  const customerCheck = (uid, pwd) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const [customer] = await Customer.findAll({
+        const [ customer ] = await Customer.findAll({
           where: {
             userId: uid,
           },
@@ -52,7 +52,7 @@ exports.login = (req, res) => {
 
   const issueToken = (customer) => {
     return new Promise((resolve, reject) => {
-      jwt.sign(
+      const accessToken = jwt.sign(
         {
           customerEmail: customer.userId,
           customerName: customer.name,
@@ -60,22 +60,46 @@ exports.login = (req, res) => {
         },
         process.env.JWT_KEY,
         {
-          expiresIn: "1h",
+          expiresIn: "30m",
           issuer: "gyumongeats",
           subject: "customer_info",
         },
-        (err, token) => {
-          if (err) reject(err);
-          resolve(token);
+      );
+      const refreshToken = jwt.sign(
+        {},
+        process.env.JWT_KEY,
+        {
+          expiresIn: "1d",
+          issuer: "gyumongeats",
+          subject: "customer_info",
         }
       );
+      const id = customer.userId;
+      resolve({ accessToken, refreshToken, id });
+    });
+  };
+
+  const processEachToken = (info) => {
+    const { accessToken, refreshToken, id } = info;
+    return new Promise(async (resolve, reject) => {
+      await Customer.update({ refreshToken: refreshToken }, {
+        where: {
+          userId: id
+        }
+      });
+      resolve({ accessToken, refreshToken });
     });
   };
 
   const respond = (token) => {
+    const { accessToken, refreshToken } = token;
+    res.cookie('refreshToken', refreshToken, {
+      maxAge: 24*60*60*1000,
+      httpOnly: true
+    });
     res.json({
       success: true,
-      token,
+      accessToken
     });
   };
 
@@ -86,13 +110,17 @@ exports.login = (req, res) => {
     });
   };
 
-  check(email, password).then(issueToken).then(respond).catch(onError);
+  customerCheck(email, password)
+    .then(issueToken)
+    .then(processEachToken)
+    .then(respond)
+    .catch(onError);
 };
 
 exports.jwtCheck = (req, res) => {
   const decoded = req.decoded;
   res.json({
     success: true,
-    decoded,
+    decoded
   });
 };
