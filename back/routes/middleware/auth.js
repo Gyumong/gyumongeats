@@ -22,7 +22,7 @@ exports.jwtCheckMiddleware = (req, res, next) => {
   const refreshToken = req.cookies.refreshToken;
   
   if (!accessToken) {
-    return res.status(403).json({
+    return res.status(401).json({
       success: false,
       message: "로그인 되어 있지 않습니다.",
     });
@@ -58,12 +58,12 @@ exports.jwtCheckMiddleware = (req, res, next) => {
           subject: "customer_info",
         },
       );
-      return res.json({
+      return res.status(201).json({
         success: true,
         accessToken
       });
     } catch (err) {
-      return res.status(403).json({
+      return res.status(401).json({
         success: false,
         message: "refresh 토큰이 존재하지 않습니다.",
       });
@@ -71,9 +71,9 @@ exports.jwtCheckMiddleware = (req, res, next) => {
   };
 
   const onError = (err) => {
-    res.status(403).json({
+    res.status(400).json({
       success: false,
-      errorMessage: err.message
+      errorMessage: err
     });
   };
 
@@ -84,7 +84,7 @@ exports.jwtCheckMiddleware = (req, res, next) => {
     })
     .catch(() => {
       if(!refreshToken) {
-        return res.status(403).json({
+        return res.status(401).json({
           success: false,
           message: "로그인 되어 있지 않습니다.",
         });

@@ -19,10 +19,9 @@ exports.register = async (req, res) => {
       customer,
     });
   } catch (err) {
-    console.error("유저 등록에 실패하였습니다.");
-    console.error(err);
     res.status(400).json({
       success: false,
+      errorMessage: err
     });
   }
 };
@@ -104,7 +103,7 @@ exports.login = (req, res) => {
   };
 
   const onError = (err) => {
-    res.status(403).json({
+    res.status(400).json({
       success: false,
       errorMessage: err,
     });
