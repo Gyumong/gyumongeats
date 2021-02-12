@@ -1,198 +1,66 @@
 /** @format */
 import createReducer from "./createReducer";
-
+import shortId from "shortid";
+import faker from "faker";
 export const initialState = {
-  restaurant: [
-    {
-      id: 1,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 5, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-    {
-      id: 2,
-      restaurant_name: "닭치Go", // 가게이름
-      category: "치킨", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 3000, // 배달비
-      estimated_del_time: "10~15분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 5, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "치킨", // 메뉴 이름
-          price: "15000", // 가격
-          image: "", // 사진
-        },
-      ],
-    },
-    {
-      id: 3,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 4.2, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-    {
-      id: 4,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 4.3, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-    {
-      id: 5,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 4.4, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-    {
-      id: 6,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 3.7, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-    {
-      id: 7,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 2.1, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-    {
-      id: 8,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 4.4, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-    {
-      id: 9,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 1.7, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-    {
-      id: 10,
-      restaurant_name: "명륜진사갈비", // 가게이름
-      category: "한식", // 카테고리
-      phone: "0212341234", //전화번호
-      delivery_fee: 2000, // 배달비
-      estimated_del_time: "15~20분", // 배달소요시간
-      min_order_price: 12000, // 최소주문
-      gpa: 1, // 별점
-      Thumbnail: [{ src: "1" }, { src: "2" }, { src: "3" }],
-      Menu: [
-        {
-          name: "갈비", // 메뉴 이름
-          price: "13000", // 가격
-          image: "", // 사진
-          introduction: "", // 소개
-        },
-      ],
-    },
-  ],
+  restaurant: [],
+  hasMoreStore: true,
+  loadStoresLoading: false,
+  loadStoresDone: false,
+  loadStoresError: null,
 };
 
-export default createReducer(initialState, {});
+export const LOAD_STORES_REQUEST = "LOAD_STORES_REQUEST";
+export const LOAD_STORES_SUCCESS = "LOAD_STORES_SUCCESS";
+export const LOAD_STORES_FAILURE = "LOAD_STORES_FAILURE";
+
+export const DummyStore = (number) =>
+  Array(number)
+    .fill()
+    .map(() => ({
+      id: shortId.generate(),
+      restaurant_name: faker.name.title(), // 가게이름
+      category: "한식", // 카테고리
+      phone: faker.phone.phoneNumber(), //전화번호
+      delivery_fee: 2000, // 배달비
+      estimated_del_time: "15~20분", // 배달소요시간
+      min_order_price: 12000, // 최소주문
+      gpa: Math.random().toFixed(1) * 5, // 별점
+      Thumbnail: [
+        {
+          src: faker.image.image(),
+        },
+        {
+          src: faker.image.image(),
+        },
+        {
+          src: faker.image.image(),
+        },
+      ],
+      Menu: [
+        {
+          name: "갈비", // 메뉴 이름
+          price: "13000", // 가격
+          image: "", // 사진
+          introduction: "", // 소개
+        },
+      ],
+    }));
+
+export default createReducer(initialState, {
+  [LOAD_STORES_REQUEST]: (state) => {
+    state.loadStoresLoading = true;
+    state.loadStoresError = null;
+    state.loadStoresDone = false;
+  },
+  [LOAD_STORES_SUCCESS]: (state, action) => {
+    state.loadStoresLoading = false;
+    state.loadStoresDone = true;
+    state.restaurant = action.data.concat(state.restaurant);
+    state.hasMoreStore = state.restaurant.length < 50;
+  },
+  [LOAD_STORES_FAILURE]: (state, action) => {
+    state.loadStoresLoading = false;
+    state.loadStoresError = action.error;
+  },
+});
