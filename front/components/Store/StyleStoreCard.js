@@ -5,8 +5,7 @@ import styled from "styled-components";
 export const CardBlock = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
-  width: 96%;
+
   height: 40vh;
   &:hover {
     opacity: 0.7;
