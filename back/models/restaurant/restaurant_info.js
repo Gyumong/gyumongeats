@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       field: "location"
     },
     time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
       field: "time"
     },
@@ -31,24 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       field: "representative_name"
     },
     businessLicenseNum: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       field: "business_license_num"
-    },
-    nutritionalIngredients: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      field: "nutritional_ingredients"
-    },
-    allergic: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      field: "allergic"
-    },
-    notice: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      field: "notice"
     }
   }, {
     timestamps: false,
