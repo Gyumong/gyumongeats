@@ -44,8 +44,8 @@ const RestaurantInfo = require('./restaurant/restaurant_info')(sequelize, Sequel
 const Restaurant = require('./restaurant/restaurant')(sequelize, Sequelize);
 const TagCategory = require('./restaurant/tag_category')(sequelize, Sequelize);
 
-MenuCategory.hasMany(Restaurant);
-Restaurant.belongsTo(MenuCategory);
+TagCategory.hasMany(Restaurant);
+Restaurant.belongsTo(TagCategory);
 
 Restaurant.hasMany(Menu);
 Menu.belongsTo(Restaurant);

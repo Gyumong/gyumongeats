@@ -15,17 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: "introduction"
     },
-    quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      field: "quantity"
-    },
-    GPA: {
-      type: DataTypes.DOUBLE,
-      allowNull: false,
-      defaultValue: 0,
-      field: "gpa"
-    },
     orderCnt: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -1,0 +1,25 @@
+insert into tag_category value ("간식");
+insert into tag_category value ("중식");
+insert into tag_category value ("치킨");
+insert into tag_category value ("피자");
+insert into tag_category value ("구이");
+insert into tag_category value ("도시락");
+insert into tag_category value ("돈까스");
+insert into tag_category value ("디저트");
+insert into tag_category value ("멕시칸");
+insert into tag_category value ("버거");
+insert into tag_category value ("분식");
+insert into tag_category value ("샌드위치");
+insert into tag_category value ("샐러드");
+insert into tag_category value ("아시안");
+insert into tag_category value ("양식");
+insert into tag_category value ("일식");
+insert into tag_category value ("족발,보쌈");
+insert into tag_category value ("죽");
+insert into tag_category value ("찜,탕");
+insert into tag_category value ("커피,차");
+insert into tag_category value ("프랜차이즈");
+insert into tag_category value ("한식");
+insert into tag_category value ("회,해물");
+
+delete from tag_category;
