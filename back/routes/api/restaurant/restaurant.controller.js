@@ -1,6 +1,21 @@
 const sequelize = require('sequelize');
 const { Op } = sequelize;
-const { Restaurant } = require('../../../models');
+const { Restaurant, TagCategory } = require('../../../models');
+
+exports.getTagCategory = async (req, res) => {
+  try {
+    const tag_category = await TagCategory.findAll();
+    res.status(200).json({
+      success: true,
+      tag_category
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
+};
 
 exports.allRestaurants = async (req, res) => {
   const type = req.query.t;
