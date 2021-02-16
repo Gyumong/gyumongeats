@@ -7,15 +7,21 @@ import Link from "next/link";
 import { StoreListBlock } from "../components/StyleMainPage";
 import PopularCard from "../components/Store/PopularCard";
 import { LOAD_STORES_REQUEST } from "../reducers/store";
+import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 const Home = () => {
   const dispatch = useDispatch();
   const { restaurant, hasMoreStore, loadStoresLoading } = useSelector(
     (state) => state.store
   );
   useEffect(() => {
-    dispatch({
-      type: LOAD_STORES_REQUEST,
-    });
+    if (restaurant.length < 10) {
+      dispatch({
+        type: LOAD_MY_INFO_REQUEST,
+      });
+      dispatch({
+        type: LOAD_STORES_REQUEST,
+      });
+    }
   }, []);
 
   useEffect(() => {

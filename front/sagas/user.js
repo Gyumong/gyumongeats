@@ -17,6 +17,9 @@ import {
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
 } from "../reducers/user";
 import axios from "axios";
 function signUpAPI(data) {
@@ -43,12 +46,21 @@ function* signUp(action) {
 
 function logInAPI(data) {
   return axios.post("/login", data);
+  // .then((res) => {
+  //   console.log(res.data);
+  //   const { accessToken } = res.data;
+  //   axios.defaults.headers.common["Authorization"] = `Bearer${accessToken}`;
+  // });
 }
 
 function* logIn(action) {
   // 액션을 받음
   try {
     const result = yield call(logInAPI, action.data);
+    const { accessToken } = yield result.data;
+    // API 요청 콜마다 헤더에 accessToken을 담아 보내도록 설정
+    axios.defaults.headers.common["x-access-token"] = yield `${accessToken}`;
+    console.log(accessToken);
 
     // 요청이 성공이면 call로 logInAPI를 실행하고 결괏값을 변수 result에 저장
     // fork는 비동기 call은 동기 => async await 함수 비슷 결괏값 받으면 실행 ㅇㅇ
@@ -67,6 +79,12 @@ function* logIn(action) {
   }
 }
 
+// const onLoginSuccess = (res) => {
+//   const { accessToken } = res.data;
+//   console.log(accessToken);
+//   // API 요청 콜마다 헤더에 accessToken을 담아 보내도록 설정
+//   axios.defaults.headers.common["Authorization"] = `Bearer${accessToken}`;
+// };
 function logOutAPI() {
   return axios.post("/logout");
 }
@@ -82,6 +100,29 @@ function* logOut() {
     });
   }
 }
+
+function loadMyInfoAPI() {
+  return axios.get("/check");
+}
+
+function* loadMyInfo() {
+  // 액션을 받음
+  try {
+    const result = yield call(loadMyInfoAPI);
+    yield put({
+      // 액션을 dispatch
+      type: LOAD_MY_INFO_SUCCESS,
+      data: result.data.decoded,
+    });
+    console.log(result);
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -93,6 +134,14 @@ function* watchLogOut() {
 function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
+function* watchLoadMyInfo() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
+}
 export default function* userSaga() {
-  yield all([fork(watchLogIn), fork(watchLogOut), fork(watchSignUp)]);
+  yield all([
+    fork(watchLogIn),
+    fork(watchLogOut),
+    fork(watchSignUp),
+    fork(watchLoadMyInfo),
+  ]);
 }
