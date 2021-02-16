@@ -5,7 +5,7 @@ import AppLayout from "../components/AppLayout";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button } from "antd";
-import { LOG_OUT_REQUEST } from "../reducers/user";
+import { LOAD_MY_INFO_REQUEST, LOG_OUT_REQUEST } from "../reducers/user";
 import Router from "next/router";
 
 const MyProfileBlock = styled.div`
@@ -29,12 +29,18 @@ const LogOutButton = styled(Button)`
 `;
 const Profile = () => {
   const { me, logOutLoading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+  }, []);
+
   useEffect(() => {
     if (!me) {
-      Router.push("/");
+      Router.push("/login");
     }
   }, [me]);
-  const dispatch = useDispatch();
 
   const onLogOut = useCallback(() => {
     dispatch({
@@ -45,8 +51,8 @@ const Profile = () => {
     <AppLayout>
       {me ? (
         <MyProfileBlock>
-          <h2>{me.nickname}</h2>
-          <p>{me.phone}</p>
+          <h2>{me.customerName}</h2>
+          <p>{me.customerPhone}</p>
           <LogOutButton
             type="primary"
             onClick={onLogOut}

@@ -51,7 +51,7 @@ const SignUp = () => {
       data: { email, password, name, phone },
     });
     console.log(email, name, password, phone);
-  }, [password, passwordCheck]);
+  }, [email, name, phone, password, passwordCheck]);
   return (
     <FormBlock onFinish={onSubmit}>
       <h1>회원가입 </h1>

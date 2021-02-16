@@ -39,6 +39,7 @@ export const DummyStore = (number) =>
       ],
       Menu: [
         {
+          id: 1,
           name: "갈비", // 메뉴 이름
           price: "13000", // 가격
           image: "", // 사진

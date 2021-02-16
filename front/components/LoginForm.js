@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import Link from "next/link";
 import {
   FormBlock,
@@ -12,13 +12,27 @@ import {
 import useInput from "../hooks/useInput";
 import { useSelector, useDispatch } from "react-redux";
 import { loginRequestAction } from "../reducers/user";
+import Router from "next/router";
 
 // eslint-disable-next-line react/prop-types
 const LoginForm = () => {
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
-  const { logInLoading } = useSelector((state) => state.user);
+  const { logInLoading, logInDone, logInError } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (logInDone) {
+      Router.push("/");
+    }
+  }, [logInDone]);
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+    }
+  }, [logInError]);
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
     dispatch(loginRequestAction({ email, password }));
