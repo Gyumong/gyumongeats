@@ -22,6 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
       field: "review_cnt"
     },
+    orderCnt: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+      field: "order_cnt"
+    },
     minOrderPrice: {
       type: DataTypes.INTEGER,
       allowNull: false,
