@@ -10,8 +10,6 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 const StoreBlock = styled.div``;
 const Post = () => {
-  const { Menu } = useSelector((state) => state.store.restaurant?.Menu);
-  console.log(Menu);
   const router = useRouter();
   //   const { id } = router.query;
 
