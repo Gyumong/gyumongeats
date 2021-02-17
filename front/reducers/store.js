@@ -3,16 +3,24 @@ import createReducer from "./createReducer";
 import shortId from "shortid";
 import faker from "faker";
 export const initialState = {
+  oneStore: null,
   restaurant: [],
   hasMoreStore: true,
   loadStoresLoading: false,
   loadStoresDone: false,
   loadStoresError: null,
+  loadStoreLoading: false,
+  loadStoreDone: false,
+  loadStoreError: null,
 };
 
 export const LOAD_STORES_REQUEST = "LOAD_STORES_REQUEST";
 export const LOAD_STORES_SUCCESS = "LOAD_STORES_SUCCESS";
 export const LOAD_STORES_FAILURE = "LOAD_STORES_FAILURE";
+
+export const LOAD_STORE_REQUEST = "LOAD_STORES_REQUEST";
+export const LOAD_STORE_SUCCESS = "LOAD_STORES_SUCCESS";
+export const LOAD_STORE_FAILURE = "LOAD_STORES_FAILURE";
 
 export const DummyStore = (number) =>
   Array(number)
@@ -63,5 +71,19 @@ export default createReducer(initialState, {
   [LOAD_STORES_FAILURE]: (state, action) => {
     state.loadStoresLoading = false;
     state.loadStoresError = action.error;
+  },
+  [LOAD_STORE_REQUEST]: (state) => {
+    state.loadStoreLoading = true;
+    state.loadStoreError = null;
+    state.loadStoreDone = false;
+  },
+  [LOAD_STORE_SUCCESS]: (state, action) => {
+    state.loadStoreLoading = false;
+    state.loadStoreDone = true;
+    state.oneStore = action.data;
+  },
+  [LOAD_STORE_FAILURE]: (state, action) => {
+    state.loadStoreLoading = false;
+    state.loadStoreError = action.error;
   },
 });
