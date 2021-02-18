@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 const StoreBlock = styled.div``;
-const Post = () => {
+const Store = () => {
   const router = useRouter();
   //   const { id } = router.query;
 
@@ -25,4 +25,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default Store;
