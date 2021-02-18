@@ -44,14 +44,14 @@ exports.allStores = async (req, res) => {
   const min_price = req.query.m;
 
   try {
-    let rest;
+    let store;
     const cond = [];
 
     if(fee) cond.push({ deliveryFee: { [Op.lte]: fee } });
     if(min_price) cond.push({ minOrderPrice: { [Op.lte]: min_price } });
 
     if(type === undefined) {
-      rest = await Store.findAll({
+      store = await Store.findAll({
         where: {
           [Op.and]: cond
         },
@@ -60,7 +60,7 @@ exports.allStores = async (req, res) => {
     } else {
       if(type !== 'gpa' && type !== 'order_cnt') throw "정렬 옵션이 잘못되었습니다.";
 
-      rest = await Store.findAll({
+      store = await Store.findAll({
         where: {
           [Op.and]: cond
         },
@@ -68,9 +68,20 @@ exports.allStores = async (req, res) => {
       });
     }
 
+    store = store.map(({ dataValues }) => {
+      const thumb1 = dataValues["thumb1"];
+      const thumb2 = dataValues["thumb2"];
+      const thumb3 = dataValues["thumb3"];
+      delete dataValues["thumb1"];
+      delete dataValues["thumb2"];
+      delete dataValues["thumb3"];
+      dataValues["thumb"] = [ thumb1, thumb2, thumb3 ];
+      return dataValues;
+    });
+
     res.status(200).json({
       success: true,
-      Store: rest
+      Store: store
     });
   } catch (err) {
     res.status(400).json({
@@ -87,7 +98,7 @@ exports.storeByCategory = async (req, res) => {
   const min_price = req.query.m;
 
   try {
-    let rest;
+    let store;
     const cond = [];
     cond.push({ tagCategoryCategory: category });
 
@@ -95,7 +106,7 @@ exports.storeByCategory = async (req, res) => {
     if(min_price) cond.push({ minOrderPrice: { [Op.lte]: min_price } });
 
     if(type === undefined) {
-      rest = await Store.findAll({
+      store = await Store.findAll({
         where: {
           [Op.and]: cond
         }
@@ -103,17 +114,28 @@ exports.storeByCategory = async (req, res) => {
     } else {
       if(type !== 'gpa' && type !== 'order_cnt') throw "정렬 옵션이 잘못되었습니다.";
 
-      rest = await Store.findAll({
+      store = await Store.findAll({
         where: {
           [Op.and]: cond
         },
         order: [ [type, 'DESC'] ]
       });
     }
+
+    store = store.map(({ dataValues }) => {
+      const thumb1 = dataValues["thumb1"];
+      const thumb2 = dataValues["thumb2"];
+      const thumb3 = dataValues["thumb3"];
+      delete dataValues["thumb1"];
+      delete dataValues["thumb2"];
+      delete dataValues["thumb3"];
+      dataValues["thumb"] = [ thumb1, thumb2, thumb3 ];
+      return dataValues;
+    });
     
     res.status(200).json({
       success: true,
-      Store: rest
+      Store: store
     });
   } catch (err) {
     res.status(400).json({
