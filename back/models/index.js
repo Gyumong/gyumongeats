@@ -38,28 +38,28 @@ Order.belongsTo(Customer);
 Customer.hasMany(Review);
 Review.belongsTo(Customer);
 
-const MenuCategory = require('./restaurant/menu_category')(sequelize, Sequelize);
-const Menu = require('./restaurant/menu')(sequelize, Sequelize);
-const RestaurantInfo = require('./restaurant/restaurant_info')(sequelize, Sequelize);
-const Restaurant = require('./restaurant/restaurant')(sequelize, Sequelize);
-const TagCategory = require('./restaurant/tag_category')(sequelize, Sequelize);
+const MenuCategory = require('./store/menu_category')(sequelize, Sequelize);
+const Menu = require('./store/menu')(sequelize, Sequelize);
+const StoreInfo = require('./store/store_info')(sequelize, Sequelize);
+const Store = require('./store/store')(sequelize, Sequelize);
+const TagCategory = require('./store/tag_category')(sequelize, Sequelize);
 
-TagCategory.hasMany(Restaurant);
-Restaurant.belongsTo(TagCategory);
+TagCategory.hasMany(Store);
+Store.belongsTo(TagCategory);
 
-Restaurant.hasMany(Menu);
-Menu.belongsTo(Restaurant);
+Store.hasMany(Menu);
+Menu.belongsTo(Store);
 
 MenuCategory.hasMany(Menu);
 Menu.belongsTo(MenuCategory);
 
-Restaurant.hasOne(RestaurantInfo);
+Store.hasOne(StoreInfo);
 
 // remove 'id' attribute
 Address.removeAttribute('id');
 Bookmark.removeAttribute('id');
 Cart.removeAttribute('id');
-RestaurantInfo.removeAttribute('id');
+StoreInfo.removeAttribute('id');
 Menu.removeAttribute('id');
 
 db = {
@@ -74,8 +74,8 @@ db = {
   Review,
   MenuCategory,
   Menu,
-  RestaurantInfo,
-  Restaurant,
+  StoreInfo,
+  Store,
   TagCategory
 };
 

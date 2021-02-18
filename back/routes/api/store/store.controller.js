@@ -1,6 +1,12 @@
 const sequelize = require('sequelize');
 const { Op } = sequelize;
-const { Restaurant, TagCategory } = require('../../../models');
+const {
+  Store,
+  StoreInfo,
+  Menu,
+  TagCategory,
+  MenuCategory
+} = require('../../../models');
 
 exports.getTagCategory = async (req, res) => {
   try {
@@ -17,7 +23,22 @@ exports.getTagCategory = async (req, res) => {
   }
 };
 
-exports.allRestaurants = async (req, res) => {
+exports.getMenuCategory = async (req, res) => {
+  try {
+    const menu_category = await MenuCategory.findAll();
+    res.status(200).json({
+      success: true,
+      menu_category
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
+};
+
+exports.allStores = async (req, res) => {
   const type = req.query.t;
   const fee = req.query.f;
   const min_price = req.query.m;
@@ -30,7 +51,7 @@ exports.allRestaurants = async (req, res) => {
     if(min_price) cond.push({ minOrderPrice: { [Op.lte]: min_price } });
 
     if(type === undefined) {
-      rest = await Restaurant.findAll({
+      rest = await Store.findAll({
         where: {
           [Op.and]: cond
         },
@@ -39,7 +60,7 @@ exports.allRestaurants = async (req, res) => {
     } else {
       if(type !== 'gpa' && type !== 'order_cnt') throw "정렬 옵션이 잘못되었습니다.";
 
-      rest = await Restaurant.findAll({
+      rest = await Store.findAll({
         where: {
           [Op.and]: cond
         },
@@ -49,7 +70,7 @@ exports.allRestaurants = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      restaurant: rest
+      Store: rest
     });
   } catch (err) {
     res.status(400).json({
@@ -59,7 +80,7 @@ exports.allRestaurants = async (req, res) => {
   }
 };
 
-exports.restaurantByCategory = async (req, res) => {
+exports.storeByCategory = async (req, res) => {
   const category = req.params.ctg;
   const type = req.query.t;
   const fee = req.query.f;
@@ -74,7 +95,7 @@ exports.restaurantByCategory = async (req, res) => {
     if(min_price) cond.push({ minOrderPrice: { [Op.lte]: min_price } });
 
     if(type === undefined) {
-      rest = await Restaurant.findAll({
+      rest = await Store.findAll({
         where: {
           [Op.and]: cond
         }
@@ -82,7 +103,7 @@ exports.restaurantByCategory = async (req, res) => {
     } else {
       if(type !== 'gpa' && type !== 'order_cnt') throw "정렬 옵션이 잘못되었습니다.";
 
-      rest = await Restaurant.findAll({
+      rest = await Store.findAll({
         where: {
           [Op.and]: cond
         },
@@ -92,7 +113,29 @@ exports.restaurantByCategory = async (req, res) => {
     
     res.status(200).json({
       success: true,
-      restaurant: rest
+      Store: rest
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
+};
+
+exports.storeDetailAndMenu = async (req, res) => {
+  const StoreId = req.query.id;
+
+  try {
+    if(StoreId === undefined) throw "잘못된 ID입니다.";
+    const [ info1 ] = await Store.findAll({ where: { id: StoreId } });
+    const [ info2 ] = await StoreInfo.findAll({ where: { StoreId } });
+    const menu = await Menu.findAll({ where: { StoreId } });
+
+    res.status(200).json({
+      success: true,
+      store_info: { info1, info2 },
+      menu
     });
   } catch (err) {
     res.status(400).json({

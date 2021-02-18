@@ -1,14 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('restaurant', {
-    restaurantName: {
+  return sequelize.define('store', {
+    storeName: {
       type: DataTypes.STRING,
       allowNull: false,
-      field: "restaurant_name"
+      field: "store_name"
     },
-    thumbnail: {
+    thumb1: {
       type: DataTypes.STRING,
       allowNull: true,
-      field: "thumbnail"
+      field: "thumb1"
+    },
+    thumb2: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: "thumb2"
+    },
+    thumb3: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: "thumb3"
     },
     GPA: {
       type: DataTypes.DOUBLE,

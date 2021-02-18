@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('restaurant_info', {
+  return sequelize.define('store_info', {
     phone: {
       type: DataTypes.STRING,
       allowNull: false,
