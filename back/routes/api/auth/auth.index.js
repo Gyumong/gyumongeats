@@ -4,7 +4,7 @@ const {
   register,
   login,
   jwtCheck
-} = require('./customer.controller');
+} = require('./auth.controller');
 
 router.post('/signup', register);
 router.post('/login', login);
