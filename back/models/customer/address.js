@@ -1,5 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('address', {
+    userId: {
+      type: DataTypes.STRING,
+      field: "user_id"
+    },
     latitude: {
       type: DataTypes.DOUBLE,
       allowNull: false,

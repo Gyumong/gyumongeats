@@ -1,9 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('review', {
-    restaurantId: {
+    userId: {
+      type: DataTypes.STRING,
+      field: "user_id"
+    },
+    storeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      field: 'restaurant_id'
+      field: 'store_id'
     },
     content: {
       type: DataTypes.TEXT,

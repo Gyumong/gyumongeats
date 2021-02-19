@@ -1,14 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('order', {
-    restaurantId: {
+    userId: {
+      type: DataTypes.STRING,
+      field: "user_id"
+    },
+    storeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      field: "restaurant_id"
-    },
-    restaurantName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      field: "restaurant_name"
+      field: "store_id"
     },
     orderDate: {
       type: DataTypes.DATE,

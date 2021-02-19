@@ -1,9 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('bookmark', {
-    restaurantId: {
+    userId: {
+      type: DataTypes.STRING,
+      field: "user_id"
+    },
+    storeId: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      field: "restaurant_id"
+      field: "store_id"
     }
   }, {
     timestamps: false,

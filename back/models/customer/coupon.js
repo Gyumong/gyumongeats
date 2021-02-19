@@ -1,5 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('coupon', {
+    userId: {
+      type: DataTypes.STRING,
+      field: "user_id"
+    },
     couponId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -11,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: "coupon_name"
     },
-    restaurant: {
+    store: {
       type: DataTypes.STRING,
       allowNull: false,
-      field: "restaurant"
+      field: "store"
     },
     used: {
       type: DataTypes.BOOLEAN,
