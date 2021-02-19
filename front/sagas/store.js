@@ -22,7 +22,7 @@ import {
   LOAD_ONESTORE_REQUEST,
   LOAD_ONESTORE_SUCCESS,
   LOAD_ONESTORE_FAILURE,
-  DummyStore,
+  store,
 } from "../reducers/store";
 import axios from "axios";
 
@@ -38,7 +38,7 @@ function* loadStores(action) {
     yield put({
       // 액션을 dispatch
       type: LOAD_STORES_SUCCESS,
-      data: result.data.Store,
+      data: result.data.Store.slice(0, 10),
     });
   } catch (e) {
     console.error(e);

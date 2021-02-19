@@ -1,8 +1,7 @@
 /** @format */
 import createReducer from "./createReducer";
-import shortId from "shortid";
-import faker from "faker";
 export const initialState = {
+  onModalDone: false,
   oneStore: null,
   store: [],
   hasMoreStore: true,
@@ -14,6 +13,8 @@ export const initialState = {
   loadOneStoreError: null,
 };
 
+export const ON_MODAL = "ON_MODAL";
+export const OFF_MODAL = "OFF_MODAL";
 export const LOAD_STORES_REQUEST = "LOAD_STORES_REQUEST";
 export const LOAD_STORES_SUCCESS = "LOAD_STORES_SUCCESS";
 export const LOAD_STORES_FAILURE = "LOAD_STORES_FAILURE";
@@ -23,6 +24,12 @@ export const LOAD_ONESTORE_SUCCESS = "LOAD_ONESTORE_SUCCESS";
 export const LOAD_ONESTORE_FAILURE = "LOAD_ONESTORE_FAILURE";
 
 export default createReducer(initialState, {
+  [ON_MODAL]: (state) => {
+    state.onModalDone = true;
+  },
+  [OFF_MODAL]: (state) => {
+    state.onModalDone = false;
+  },
   [LOAD_STORES_REQUEST]: (state) => {
     state.loadStoresLoading = true;
     state.loadStoresError = null;
@@ -31,9 +38,7 @@ export default createReducer(initialState, {
   [LOAD_STORES_SUCCESS]: (state, action) => {
     state.loadStoresLoading = false;
     state.loadStoresDone = true;
-    state.store = state.store.concat(
-      action.data.slice(state.store.length, state.store.length + 10)
-    );
+    state.store = state.store.concat(action.data);
     state.hasMoreStore = state.store.length < 50;
   },
   [LOAD_STORES_FAILURE]: (state, action) => {

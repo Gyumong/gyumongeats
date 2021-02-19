@@ -8,6 +8,7 @@ import { StoreListBlock } from "../components/StyleMainPage";
 import PopularCard from "../components/Store/PopularCard";
 import { LOAD_STORES_REQUEST } from "../reducers/store";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import Category from "../components/Category";
 const Home = () => {
   const dispatch = useDispatch();
   const { store, hasMoreStore, loadStoresLoading } = useSelector(
@@ -48,6 +49,7 @@ const Home = () => {
       <PopularCard />
       <StoreListBlock>
         <h2>골라먹는 맛집</h2>
+        <Category />
         {store.map((store) => {
           return (
             // eslint-disable-next-line react/jsx-key

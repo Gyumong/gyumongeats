@@ -23,7 +23,7 @@ const PopularBlock = styled.div`
   }
 `;
 
-const StyledSlider = styled(Slider)`
+export const StyledSlider = styled(Slider)`
   display: flex;
 
   .slick-slide div {
