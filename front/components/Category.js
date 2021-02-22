@@ -12,9 +12,15 @@ import { ON_MODAL } from "../reducers/store";
 const CategoryBlock = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid #f0f0f0;
   width: 100%;
   margin: 0 auto;
   font-family: "Noto Sans KR", sans-serif;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  height: 7vh;
 `;
 const CategoryList = styled.div`
   font-size: 1rem;

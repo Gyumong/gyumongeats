@@ -8,7 +8,7 @@ export const StoreListBlock = styled.div`
   width: 96%;
   margin: 0 auto;
   h2 {
-    padding: 0.5rem 0 0.5rem 0.2rem;
+    padding: 0.5rem 0 0 0.2rem;
     font-weight: bold;
     font-size: 1rem;
     margin: 0;
