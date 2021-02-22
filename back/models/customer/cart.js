@@ -1,9 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('cart', {
-    restaurantId: {
+    userId: {
+      type: DataTypes.STRING,
+      field: "user_id"
+    },
+    storeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      field: "restaurant_id"
+      field: "store_id"
     },
     menu: {
       type: DataTypes.STRING,

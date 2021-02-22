@@ -20,23 +20,23 @@ const Customer = require('./customer/customer')(sequelize, Sequelize);
 const Order = require('./customer/order')(sequelize, Sequelize);
 const Review = require('./customer/review')(sequelize, Sequelize);
 
-Customer.hasMany(Address);
-Address.belongsTo(Customer);
+Customer.hasMany(Address, { foreignKey: 'userId', sourceKey: 'userId' });
+Address.belongsTo(Customer, { foreignKey: 'userId', sourceKey: 'userId' });
 
-Customer.hasMany(Bookmark);
-Bookmark.belongsTo(Customer);
+Customer.hasMany(Bookmark, { foreignKey: 'userId', sourceKey: 'userId' });
+Bookmark.belongsTo(Customer, { foreignKey: 'userId', sourceKey: 'userId' });
 
-Customer.hasMany(Cart);
-Cart.belongsTo(Customer);
+Customer.hasMany(Cart, { foreignKey: 'userId', sourceKey: 'userId' });
+Cart.belongsTo(Customer, { foreignKey: 'userId', sourceKey: 'userId' });
 
-Customer.hasMany(Coupon);
-Coupon.belongsTo(Customer);
+Customer.hasMany(Coupon, { foreignKey: 'userId', sourceKey: 'userId' });
+Coupon.belongsTo(Customer, { foreignKey: 'userId', sourceKey: 'userId' });
 
-Customer.hasMany(Order);
-Order.belongsTo(Customer);
+Customer.hasMany(Order, { foreignKey: 'userId', sourceKey: 'userId' });
+Order.belongsTo(Customer, { foreignKey: 'userId', sourceKey: 'userId' });
 
-Customer.hasMany(Review);
-Review.belongsTo(Customer);
+Customer.hasMany(Review, { foreignKey: 'userId', sourceKey: 'userId' });
+Review.belongsTo(Customer, { foreignKey: 'userId', sourceKey: 'userId' });
 
 const MenuCategory = require('./store/menu_category')(sequelize, Sequelize);
 const Menu = require('./store/menu')(sequelize, Sequelize);

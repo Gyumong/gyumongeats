@@ -1,8 +1,8 @@
-insert into store(id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (1, "BBQ-매탄점", "bbq1", "bbq2", "bbq3", 18000, 2000, "55~65분", "치킨");
-insert into store(id, store_name, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (2, "후라이드참잘하는집-인계매탄점", 14000, 1500, "45~55분", "치킨");
-insert into store(id, store_name, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (3, "처갓집양념치킨-권선점", 14000, 3000, "45~55분", "치킨");
-insert into store(id, store_name, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (4, "BHC-수원지동점", 15000, 2000, "50~60분", "치킨");
-insert into store(id, store_name, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (5, "멕시카나-우만점", 16000, 2000, "50~60분", "치킨");
+insert into store(id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (1, "BBQ-매탄점", "1_1", "1_2", "1_3", 18000, 2000, "55~65분", "치킨");
+insert into store(id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (2, "후라이드참잘하는집-인계매탄점", "2_1", "2_2", "2_3", 14000, 1500, "45~55분", "치킨");
+insert into store(id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (3, "처갓집양념치킨-권선점", "3_1", "3_2", "3_3", 14000, 3000, "45~55분", "치킨");
+insert into store(id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (4, "BHC-수원지동점", "4_1", "4_2", "4_3", 15000, 2000, "50~60분", "치킨");
+insert into store(id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (5, "멕시카나-우만점", "5_1", "5_2", "5_3", 16000, 2000, "50~60분", "치킨");
 insert into store(id, store_name, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (6, "네네치킨-인계중앙점", 15000, 3000, "50~60분", "치킨");
 insert into store(id, store_name, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (7, "또래오래-수원권선점", 15000, 2000, "35~45분", "치킨");
 insert into store(id, store_name, min_order_price, delivery_fee, estimated_del_time, tagCategoryCategory) values (8, "호식이두마리치킨-매탄1호점", 13000, 2000, "45~55분", "치킨");
