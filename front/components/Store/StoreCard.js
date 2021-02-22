@@ -16,7 +16,7 @@ const StoreCard = ({ store }) => {
   console.log(store);
   return (
     <CardBlock>
-      {/* {store.Thumbnail[0] && <CardImage images={store.Thumbnail} />} */}
+      {store.thumb[0] && <CardImage images={store.thumb} />}
       <CardMeta>
         <TitleBar>
           <h3>{store.storeName}</h3>

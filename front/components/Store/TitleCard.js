@@ -17,7 +17,7 @@ import {
   RightOutlined,
 } from "@ant-design/icons";
 import ImagesZoom from "../ImagesZoom";
-const TitleCard = () => {
+const TitleCard = ({ storeName, gpa, estimatedDelTime, deliveryFee }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
 
   const onZoom = useCallback(() => {
@@ -31,17 +31,17 @@ const TitleCard = () => {
       <TitleBlock>
         <Thumbnail onClick={onZoom} />
         <TitleBox>
-          <h2>닭치Go</h2>
+          <h2>{storeName}</h2>
           <p>
             <StarFilled style={{ color: "#ffeaa7" }} />
-            (리뷰개수) · 거리 · 원
+            {gpa} · 거리 · 원
           </p>
         </TitleBox>
         <Description>
           <DescBar>
             <h3>
               <ClockCircleOutlined />
-              <strong>배달시간</strong>
+              <strong>{estimatedDelTime}</strong>
             </h3>
             <h3>
               <storng>매장/원산지정보</storng>
@@ -50,7 +50,7 @@ const TitleCard = () => {
           </DescBar>
           <DescSide>
             <DescSideT>배달비</DescSideT>
-            <DescSideD>900원</DescSideD>
+            <DescSideD>{deliveryFee}원</DescSideD>
           </DescSide>
           <DescSide>
             <DescSideT>최소주문</DescSideT>
