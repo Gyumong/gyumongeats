@@ -19,6 +19,7 @@ import {
 import ImagesZoom from "../ImagesZoom";
 const TitleCard = () => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
+
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);

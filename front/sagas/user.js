@@ -23,7 +23,7 @@ import {
 } from "../reducers/user";
 import axios from "axios";
 function signUpAPI(data) {
-  return axios.post("/signup", data);
+  return axios.post("/customer/signup", data);
 }
 
 function* signUp(action) {
@@ -45,7 +45,7 @@ function* signUp(action) {
 }
 
 function logInAPI(data) {
-  return axios.post("/login", data);
+  return axios.post("/customer/login", data);
   // .then((res) => {
   //   console.log(res.data);
   //   const { accessToken } = res.data;
@@ -86,7 +86,7 @@ function* logIn(action) {
 //   axios.defaults.headers.common["Authorization"] = `Bearer${accessToken}`;
 // };
 function logOutAPI() {
-  return axios.post("/logout");
+  return axios.post("/customer/logout");
 }
 function* logOut() {
   try {
@@ -102,7 +102,7 @@ function* logOut() {
 }
 
 function loadMyInfoAPI() {
-  return axios.get("/check");
+  return axios.get("/customer/check");
 }
 
 function* loadMyInfo() {

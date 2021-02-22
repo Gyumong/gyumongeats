@@ -23,7 +23,7 @@ const PopularBlock = styled.div`
   }
 `;
 
-const StyledSlider = styled(Slider)`
+export const StyledSlider = styled(Slider)`
   display: flex;
 
   .slick-slide div {
@@ -87,8 +87,8 @@ const ButtonCard = styled.div`
   }
 `;
 const PopularCard = () => {
-  const { restaurant } = useSelector((state) => state.store);
-  const popular = [...restaurant].sort((a, b) => b.gpa - a.gpa).slice(0, 9);
+  const { store } = useSelector((state) => state.store);
+  const popular = [...store].sort((a, b) => b.gpa - a.gpa).slice(0, 9);
   console.log(popular);
   const settings = {
     infinite: false,
@@ -103,17 +103,17 @@ const PopularCard = () => {
       <StyledSlider {...settings}>
         {popular.map((item) => {
           return (
-            <Link href="/post/[id]" as={`/post/${item.id}`} key={item.id}>
+            <Link href="/store/[id]" as={`/store/${item.id}`} key={item.id}>
               <a>
                 <PopCardBlock>
                   <Image />
                   <Desc>
-                    <h4>{item.restaurant_name}</h4>
+                    <h4>{item.storeName}</h4>
                     <p>
                       <StarFilled style={{ color: "#FBD94E " }} />
-                      {item.gpa}(2181) · 0.4kmasfdasffdsa
+                      {item.GPA}(2181) · 0.4kmasfdasffdsa
                     </p>
-                    <span>{item.min_order_price}원</span>
+                    <span>{item.minOrderPrice}원</span>
                   </Desc>
                 </PopCardBlock>
               </a>

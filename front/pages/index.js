@@ -8,13 +8,14 @@ import { StoreListBlock } from "../components/StyleMainPage";
 import PopularCard from "../components/Store/PopularCard";
 import { LOAD_STORES_REQUEST } from "../reducers/store";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import Category from "../components/Category";
 const Home = () => {
   const dispatch = useDispatch();
-  const { restaurant, hasMoreStore, loadStoresLoading } = useSelector(
+  const { store, hasMoreStore, loadStoresLoading } = useSelector(
     (state) => state.store
   );
   useEffect(() => {
-    if (restaurant.length < 10) {
+    if (store.length < 10) {
       dispatch({
         type: LOAD_MY_INFO_REQUEST,
       });
@@ -41,17 +42,18 @@ const Home = () => {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [restaurant, hasMoreStore, loadStoresLoading]);
+  }, [store, hasMoreStore, loadStoresLoading]);
 
   return (
     <AppLayout>
       <PopularCard />
       <StoreListBlock>
         <h2>골라먹는 맛집</h2>
-        {restaurant.map((store) => {
+        <Category />
+        {store.map((store) => {
           return (
             // eslint-disable-next-line react/jsx-key
-            <Link href="/post/[id]" as={`/post/${store.id}`}>
+            <Link href="/store/[id]" as={`/store/${store.id}`}>
               <a>
                 <StoreCard key={store.id} store={store} />
               </a>

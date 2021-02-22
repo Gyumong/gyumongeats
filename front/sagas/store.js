@@ -19,26 +19,26 @@ import {
   LOAD_STORES_REQUEST,
   LOAD_STORES_SUCCESS,
   LOAD_STORES_FAILURE,
-  LOAD_STORE_REQUEST,
-  LOAD_STORE_SUCCESS,
-  LOAD_STORE_FAILURE,
-  DummyStore,
+  LOAD_ONESTORE_REQUEST,
+  LOAD_ONESTORE_SUCCESS,
+  LOAD_ONESTORE_FAILURE,
+  store,
 } from "../reducers/store";
 import axios from "axios";
 
-// function loadStoresAPI(data) {
-//     return axios.get("/loadStores", data);
-//   }
+function loadStoresAPI(data) {
+  return axios.get("/store/all", data);
+}
 
 function* loadStores(action) {
   // 액션을 받음
   try {
-    //   const result = yield call(loadStoresAPI, action.data);
-    yield delay(2000);
+    const result = yield call(loadStoresAPI, action.data);
+    console.log(result);
     yield put({
       // 액션을 dispatch
       type: LOAD_STORES_SUCCESS,
-      data: DummyStore(10),
+      data: result.data.Store.slice(0, 10),
     });
   } catch (e) {
     console.error(e);
@@ -49,24 +49,24 @@ function* loadStores(action) {
   }
 }
 
-// function loadStoresAPI(data) {
-//     return axios.get("/loadStores", data);
-//   }
+function loadOneStoreAPI(data) {
+  return axios.get("/loadStores", data);
+}
 
-function* loadStore(action) {
+function* loadOneStore(action) {
   // 액션을 받음
   try {
     //   const result = yield call(loadStoreAPI, action.data);
     yield delay(2000);
     yield put({
       // 액션을 dispatch
-      type: LOAD_STORE_SUCCESS,
+      type: LOAD_ONESTORE_SUCCESS,
       data: action.data,
     });
   } catch (e) {
     console.error(e);
     yield put({
-      type: LOAD_STORE_FAILURE,
+      type: LOAD_ONESTORE_FAILURE,
       error: e.response.error,
     });
   }
@@ -75,10 +75,10 @@ function* loadStore(action) {
 function* watchLoadStores() {
   yield throttle(1000, LOAD_STORES_REQUEST, loadStores);
 }
-function* watchLoadStore() {
-  yield takeLatest(LOAD_STORE_REQUEST, loadStore);
+function* watchLoadOneStore() {
+  yield takeLatest(LOAD_ONESTORE_REQUEST, loadOneStore);
 }
 
 export default function* storeSaga() {
-  yield all([fork(watchLoadStores), fork(watchLoadStore)]);
+  yield all([fork(watchLoadStores), fork(watchLoadOneStore)]);
 }
