@@ -1,5 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('store', {
+    storeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+      field: "store_id"
+    },
     storeName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -52,6 +59,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       field: "estimated_del_time"
+    },
+    category: {
+      type: DataTypes.STRING,
+      field: "category"
     }
   }, {
     timestamps: false,

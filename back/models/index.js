@@ -44,14 +44,14 @@ const StoreInfo = require('./store/store_info')(sequelize, Sequelize);
 const Store = require('./store/store')(sequelize, Sequelize);
 const TagCategory = require('./store/tag_category')(sequelize, Sequelize);
 
-TagCategory.hasMany(Store);
-Store.belongsTo(TagCategory);
+TagCategory.hasMany(Store, { foreignKey: 'category', sourceKey: 'category' });
+Store.belongsTo(TagCategory, { foreignKey: 'category', sourceKey: 'category' });
 
-Store.hasMany(Menu);
-Menu.belongsTo(Store);
+Store.hasMany(Menu, { foreignKey: 'storeId', sourceKey: 'storeId' });
+Menu.belongsTo(Store, { foreignKey: 'storeId', sourceKey: 'storeId' });
 
-MenuCategory.hasMany(Menu);
-Menu.belongsTo(MenuCategory);
+MenuCategory.hasMany(Menu, { foreignKey: 'category', sourceKey: 'category' });
+Menu.belongsTo(MenuCategory, { foreignKey: 'category', sourceKey: 'category' });
 
 Store.hasOne(StoreInfo);
 

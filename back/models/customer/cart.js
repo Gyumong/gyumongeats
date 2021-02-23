@@ -13,6 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       field: "menu"
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: "quantity"
+    },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      field: "category"
     }
   }, {
     timestamps: false,
