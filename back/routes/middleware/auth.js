@@ -58,6 +58,7 @@ exports.jwtCheckMiddleware = (req, res, next) => {
           subject: "customer_info",
         },
       );
+      res.cookie('accessToken', accessToken, { maxAge: 30*60*1000 });
       return res.status(201).json({
         success: true,
         accessToken
