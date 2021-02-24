@@ -1,4 +1,3 @@
-const sequelize = require('sequelize');
 const { Cart, Store, Menu } = require('../../../models');
 
 exports.addMenu = async (req, res) => {
@@ -45,7 +44,7 @@ exports.getCartInfo = async (req, res) => {
       attributes: ['storeName', 'minOrderPrice', 'deliveryFee'],
       where: { storeId: storeId }
     });
-    
+
     const menuList = [];
     for(let cartItem of cart) {
       const { menu, category, quantity } = cartItem.dataValues;
@@ -57,7 +56,7 @@ exports.getCartInfo = async (req, res) => {
           category: category
         }
       });
-      menuList.push({ ...menuInfo.dataValues, quantity });
+      menuList.push({ ...menuInfo.dataValues, quantity, category });
     }
 
     res.status(200).json({
@@ -72,3 +71,43 @@ exports.getCartInfo = async (req, res) => {
     });
   }
 };
+
+exports.updateMenuQuantity = async (req, res) => {
+  const { email, menu, category, quantity } = req.body;
+
+  try {
+    await Cart.update({ quantity: quantity }, {
+      where: {
+        userId: email,
+        menu: menu,
+        category: category
+      }
+    });
+    res.status(204).send();
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
+};
+
+exports.deleteMenu = async (req, res) => {
+  const { email, menu, category } = req.body;
+
+  try {
+    await Cart.destroy({
+      where: {
+        userId: email,
+        menu: menu,
+        category: category
+      }
+    });
+    res.status(204).send();
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
+}
