@@ -94,6 +94,7 @@ exports.login = (req, res) => {
       maxAge: 24*60*60*1000,
       httpOnly: true
     });
+    res.cookie('accessToken', accessToken, { maxAge: 30*60*1000 });
     res.json({
       success: true,
       accessToken
