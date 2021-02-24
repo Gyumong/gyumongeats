@@ -7,7 +7,9 @@ import styled from "styled-components";
 import { Button } from "antd";
 import { LOAD_MY_INFO_REQUEST, LOG_OUT_REQUEST } from "../reducers/user";
 import Router from "next/router";
-
+import wrapper from "../store/configureStore";
+import { END } from "redux-saga";
+import axios from "axios";
 const MyProfileBlock = styled.div`
   * {
     margin: 0;
@@ -30,11 +32,6 @@ const LogOutButton = styled(Button)`
 const Profile = () => {
   const { me, logOutLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-  }, []);
 
   useEffect(() => {
     if (!me) {
@@ -65,5 +62,20 @@ const Profile = () => {
     </AppLayout>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req.headers["x-access-token"];
+    console.log(cookie);
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 
 export default Profile;

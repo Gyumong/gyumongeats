@@ -1,5 +1,5 @@
 /** @format */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import TitleCard from "../../components/Store/TitleCard";
 import ReviewCard from "../../components/Store/ReviewCard";
@@ -8,20 +8,31 @@ import { Global } from "../../components/AppLayout";
 import styled from "styled-components";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { Tabs } from "antd";
-import { StickyContainer, Sticky } from "react-sticky";
+import { LOAD_ONESTORE_REQUEST } from "../../reducers/store";
 
-const { TabPane } = Tabs;
 const StoreBlock = styled.div``;
 const Store = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
-  //   const { id } = router.query;
-
+  const { id } = router.query;
+  useEffect(() => {
+    dispatch({
+      type: LOAD_ONESTORE_REQUEST,
+      data: id,
+    });
+  }, []);
+  const { info1 } = useSelector((state) => state.store.oneStore);
+  console.log(info1);
   return (
     <>
       <Global />
       <StoreBlock>
-        <TitleCard />
+        <TitleCard
+          storeName={info1.storeName}
+          gpa={info1.GPA}
+          estimatedDelTime={info1.estimatedDelTime}
+          deliveryFee={info1.deliveryFee}
+        />
         <ReviewCard />
 
         <MenuBox />

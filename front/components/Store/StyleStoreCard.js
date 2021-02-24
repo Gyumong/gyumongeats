@@ -16,12 +16,10 @@ export const CardImageBlock = styled.div`
   display: flex;
   width: 100%;
   height: 75%;
+  text-align: center;
 `;
-export const CardImageItem = styled.div`
-  width: 100%;
-  background-image: url(${(props) => props.images});
-  background-repeat: no-repeat;
-  background-size: cover;
+export const CardImageItem = styled.img`
+  display: inline-block;
 `;
 
 export const CardMeta = styled.div`

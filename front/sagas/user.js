@@ -23,7 +23,7 @@ import {
 } from "../reducers/user";
 import axios from "axios";
 function signUpAPI(data) {
-  return axios.post("/customer/signup", data);
+  return axios.post("/auth/signup", data);
 }
 
 function* signUp(action) {
@@ -45,7 +45,7 @@ function* signUp(action) {
 }
 
 function logInAPI(data) {
-  return axios.post("/customer/login", data);
+  return axios.post("/auth/login", data);
   // .then((res) => {
   //   console.log(res.data);
   //   const { accessToken } = res.data;
@@ -62,9 +62,6 @@ function* logIn(action) {
     axios.defaults.headers.common["x-access-token"] = yield `${accessToken}`;
     console.log(accessToken);
 
-    // 요청이 성공이면 call로 logInAPI를 실행하고 결괏값을 변수 result에 저장
-    // fork는 비동기 call은 동기 => async await 함수 비슷 결괏값 받으면 실행 ㅇㅇ
-    // action에서 data를 꺼내서 logInAPI 함수에 인자로 보냄
     yield put({
       // 액션을 dispatch
       type: LOG_IN_SUCCESS,
@@ -86,7 +83,7 @@ function* logIn(action) {
 //   axios.defaults.headers.common["Authorization"] = `Bearer${accessToken}`;
 // };
 function logOutAPI() {
-  return axios.post("/customer/logout");
+  return axios.post("/auth/logout");
 }
 function* logOut() {
   try {
@@ -102,7 +99,7 @@ function* logOut() {
 }
 
 function loadMyInfoAPI() {
-  return axios.get("/customer/check");
+  return axios.get("/auth/check");
 }
 
 function* loadMyInfo() {

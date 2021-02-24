@@ -50,18 +50,18 @@ function* loadStores(action) {
 }
 
 function loadOneStoreAPI(data) {
-  return axios.get("/loadStores", data);
+  return axios.get(`/store/info-and-menu/?id=${data}`);
 }
 
 function* loadOneStore(action) {
   // 액션을 받음
   try {
-    //   const result = yield call(loadStoreAPI, action.data);
-    yield delay(2000);
+    const result = yield call(loadOneStoreAPI, action.data);
+    console.log(result);
     yield put({
       // 액션을 dispatch
       type: LOAD_ONESTORE_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (e) {
     console.error(e);
