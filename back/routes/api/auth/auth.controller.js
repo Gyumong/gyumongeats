@@ -57,7 +57,7 @@ exports.login = (req, res) => {
         },
         process.env.JWT_KEY,
         {
-          expiresIn: "30m",
+          expiresIn: "15s",
           issuer: "gyumongeats",
           subject: "customer_info",
         },
@@ -90,12 +90,8 @@ exports.login = (req, res) => {
 
   const respond = (token) => {
     const { accessToken, refreshToken } = token;
-    res.cookie('refreshToken', refreshToken, {
-      maxAge: 24*60*60*1000,
-      httpOnly: true
-    });
     res.cookie('accessToken', accessToken, {
-      maxAge: 30*60*1000,
+      maxAge: 15*1000,
       httpOnly: true
     });
     res.json({

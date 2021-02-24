@@ -19,7 +19,7 @@ const { Customer } = require('../../models');
 
 exports.jwtCheckMiddleware = (req, res, next) => {
   const accessToken = req.headers['x-access-token'] || req.query.token;
-  const refreshToken = req.cookies.refreshToken;
+  const email = req.body.email;
   
   if (!accessToken) {
     return res.status(401).json({
@@ -37,14 +37,8 @@ exports.jwtCheckMiddleware = (req, res, next) => {
     });
   };
 
-  const reissueAccessToken = async (token) => {
+  const reissueAccessToken = async (customerInfo) => {
     try {
-      const [ customer ] = await Customer.findAll({
-        where: {
-          refreshToken: token
-        }
-      });
-      const customerInfo = customer.dataValues;
       const accessToken = jwt.sign(
         {
           customerEmail: customerInfo.userId,
@@ -53,13 +47,13 @@ exports.jwtCheckMiddleware = (req, res, next) => {
         },
         process.env.JWT_KEY,
         {
-          expiresIn: "30m",
+          expiresIn: "15s",
           issuer: "gyumongeats",
           subject: "customer_info",
         },
       );
       res.cookie('accessToken', accessToken, {
-        maxAge: 30*60*1000,
+        maxAge: 15*1000,
         httpOnly: true
       });
       return res.status(201).json({
@@ -86,15 +80,12 @@ exports.jwtCheckMiddleware = (req, res, next) => {
       req.decoded = decoded;
       next();
     })
-    .catch(() => {
-      if(!refreshToken) {
-        return res.status(401).json({
-          success: false,
-          message: "로그인 되어 있지 않습니다.",
-        });
-      }
-      verifyToken(refreshToken)
-        .then(() => reissueAccessToken(refreshToken))
+    .catch(async () => {
+      const [ customer ] = await Customer.findAll({ where: { userId: email } });
+      const customerInfo = customer.dataValues;
+
+      verifyToken(customerInfo.refreshToken)
+        .then(reissueAccessToken(customerInfo))
         .catch(onError);
     });
 };
