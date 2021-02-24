@@ -100,7 +100,7 @@ exports.storeByCategory = async (req, res) => {
   try {
     let store;
     const cond = [];
-    cond.push({ tagCategoryCategory: category });
+    cond.push({ category: category });
 
     if(fee) cond.push({ deliveryFee: { [Op.lte]: fee } });
     if(min_price) cond.push({ minOrderPrice: { [Op.lte]: min_price } });
@@ -150,9 +150,9 @@ exports.storeDetailAndMenu = async (req, res) => {
 
   try {
     if(StoreId === undefined) throw "잘못된 ID입니다.";
-    const [ info1 ] = await Store.findAll({ where: { id: StoreId } });
-    const [ info2 ] = await StoreInfo.findAll({ where: { StoreId } });
-    const menu = await Menu.findAll({ where: { StoreId } });
+    const [ info1 ] = await Store.findAll({ where: { storeId: StoreId } });
+    const [ info2 ] = await StoreInfo.findAll({ where: { storeStoreId: StoreId } });
+    const menu = await Menu.findAll({ where: { storeId: StoreId } });
 
     res.status(200).json({
       success: true,

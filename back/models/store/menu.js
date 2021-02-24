@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
       field: "order_cnt"
+    },
+    storeId: {
+      type: DataTypes.INTEGER,
+      field: "store_id"
+    },
+    category: {
+      type: DataTypes.STRING,
+      field: "category"
     }
   }, {
     timestamps: false,
