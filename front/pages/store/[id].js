@@ -12,16 +12,16 @@ import { LOAD_ONESTORE_REQUEST } from "../../reducers/store";
 
 const StoreBlock = styled.div``;
 const Store = () => {
-  const router = useRouter();
   const dispatch = useDispatch();
+  const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
     dispatch({
       type: LOAD_ONESTORE_REQUEST,
       data: id,
     });
-  }, [id]);
-  const { info1 } = useSelector((state) => state.store.oneStore.store_info);
+  }, []);
+  const { info1 } = useSelector((state) => state.store.oneStore);
   console.log(info1);
   return (
     <>

@@ -48,7 +48,7 @@ export default createReducer(initialState, {
   [LOAD_ONESTORE_REQUEST]: (state) => {
     state.loadOneStoreLoading = true;
     state.loadOneStoreError = null;
-    state.loadStoreDone = false;
+    state.loadOneStoreDone = false;
   },
   [LOAD_ONESTORE_SUCCESS]: (state, action) => {
     state.loadOneStoreLoading = false;
