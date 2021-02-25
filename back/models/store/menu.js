@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('menu', {
+    menuId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: 'menu_id'
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

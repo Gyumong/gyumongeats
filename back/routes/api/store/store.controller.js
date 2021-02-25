@@ -150,9 +150,17 @@ exports.storeDetailAndMenu = async (req, res) => {
 
   try {
     if(StoreId === undefined) throw "잘못된 ID입니다.";
-    const [ info1 ] = await Store.findAll({ where: { storeId: StoreId } });
-    const [ info2 ] = await StoreInfo.findAll({ where: { storeStoreId: StoreId } });
+    const info1 = await Store.findOne({ where: { storeId: StoreId } });
+    const info2 = await StoreInfo.findOne({ where: { storeStoreId: StoreId } });
     const menu = await Menu.findAll({ where: { storeId: StoreId } });
+
+    const thumb1 = info1.dataValues["thumb1"];
+    const thumb2 = info1.dataValues["thumb2"];
+    const thumb3 = info1.dataValues["thumb3"];
+    delete info1.dataValues["thumb1"];
+    delete info1.dataValues["thumb2"];
+    delete info1.dataValues["thumb3"];
+    info1.dataValues["thumb"] = [ thumb1, thumb2, thumb3 ];
 
     res.status(200).json({
       success: true,
