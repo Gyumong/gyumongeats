@@ -9,40 +9,42 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_ONESTORE_REQUEST } from "../../reducers/store";
-
+import wrapper from "../../store/configureStore";
+import { END } from "redux-saga";
+import axios from "axios";
 const StoreBlock = styled.div``;
 const Store = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
-  useEffect(() => {
-    dispatch({
-      type: LOAD_ONESTORE_REQUEST,
-      data: id,
-    });
-  }, []);
-  const { info1 } = useSelector((state) => state.store.oneStore);
-  console.log(info1);
+
+  const { oneStore } = useSelector((state) => state.store);
+  console.log(oneStore);
   return (
     <>
       <Global />
       <StoreBlock>
         <TitleCard
-          storeName={info1.storeName}
-          gpa={info1.GPA}
-          estimatedDelTime={info1.estimatedDelTime}
-          deliveryFee={info1.deliveryFee}
+          storeName={oneStore.store_info.info1.storeName}
+          gpa={oneStore.store_info.info1.GPA}
+          estimatedDelTime={oneStore.store_info.info1.estimatedDelTime}
+          deliveryFee={oneStore.store_info.info1.deliveryFee}
         />
         <ReviewCard />
-
-        <MenuBox />
-
-        <MenuBox />
-
-        <MenuBox />
+        {oneStore.menu.map((menu) => {
+          return <MenuBox key={menu} menu={menu} />;
+        })}
       </StoreBlock>
     </>
   );
 };
-
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    context.store.dispatch({
+      type: LOAD_ONESTORE_REQUEST,
+      data: context.params.id,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 export default Store;

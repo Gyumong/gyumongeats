@@ -2,7 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
-
+import { useSelector } from "react-redux";
 const MenuCardBlock = styled.div`
   width: 90%;
   margin: 0 auto;
@@ -55,7 +55,7 @@ const MenuCardMark = styled.div`
   text-align: center;
   font-weight: bold;
 `;
-const MenuCard = () => {
+const MenuCard = ({ menu }) => {
   return (
     <MenuCardBlock>
       <MenuCardDesc>
@@ -63,8 +63,8 @@ const MenuCard = () => {
           <MenuCardMark>주문많음</MenuCardMark>
           <MenuCardMark>리뷰최고</MenuCardMark>
         </MenuMarkBlock>
-        <MenuCardDescT>순살양념구이</MenuCardDescT>
-        <MenuCardDescP>20,000원</MenuCardDescP>
+        <MenuCardDescT>{menu.name}</MenuCardDescT>
+        <MenuCardDescP>{menu.price}원</MenuCardDescP>
         <MenuCardDescD>
           부드럽고 바삭한 정육 순살에 감칠 맛나는 마늘 간장 소스가 어우러진
           순살치킨

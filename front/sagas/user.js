@@ -57,10 +57,10 @@ function* logIn(action) {
   // 액션을 받음
   try {
     const result = yield call(logInAPI, action.data);
-    const { accessToken } = yield result.data;
-    // API 요청 콜마다 헤더에 accessToken을 담아 보내도록 설정
-    axios.defaults.headers.common["x-access-token"] = yield `${accessToken}`;
-    console.log(accessToken);
+    // const { accessToken } = yield result.data;
+    // // API 요청 콜마다 헤더에 accessToken을 담아 보내도록 설정
+    // axios.defaults.headers.common["x-access-token"] = yield `${accessToken}`;
+    // console.log(accessToken);
 
     yield put({
       // 액션을 dispatch

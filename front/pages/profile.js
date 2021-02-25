@@ -65,11 +65,10 @@ const Profile = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
-    const cookie = context.req.headers["x-access-token"];
-    console.log(cookie);
-    if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-    }
+    axios.defaults.headers.common["x-access-token"] = "hh";
+    // if (context.req && cookie) {
+    //   axios.defaults.headers.Cookie = cookie;
+    // }
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
