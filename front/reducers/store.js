@@ -4,10 +4,17 @@ export const initialState = {
   onModalDone: false,
   oneStore: null,
   store: [],
+  menu: [],
+  storeid: 0,
+  menuid: 0,
   hasMoreStore: true,
+  hasMoreMenu: true,
   loadStoresLoading: false,
   loadStoresDone: false,
   loadStoresError: null,
+  loadMenusLoading: false,
+  loadMenusDone: false,
+  loadMenusError: null,
   loadOneStoreLoading: false,
   loadOneStoreDone: false,
   loadOneStoreError: null,
@@ -23,6 +30,10 @@ export const LOAD_ONESTORE_REQUEST = "LOAD_ONESTORE_REQUEST";
 export const LOAD_ONESTORE_SUCCESS = "LOAD_ONESTORE_SUCCESS";
 export const LOAD_ONESTORE_FAILURE = "LOAD_ONESTORE_FAILURE";
 
+export const LOAD_MENUS_REQUEST = "LOAD_MENUS_REQUEST";
+export const LOAD_MENUS_SUCCESS = "LOAD_MENUS_SUCCESS";
+export const LOAD_MENUS_FAILURE = "LOAD_MENUS_FAILURE";
+
 export default createReducer(initialState, {
   [ON_MODAL]: (state) => {
     state.onModalDone = true;
@@ -30,6 +41,25 @@ export default createReducer(initialState, {
   [OFF_MODAL]: (state) => {
     state.onModalDone = false;
   },
+  [LOAD_MENUS_REQUEST]: (state) => {
+    state.loadMenusLoading = true;
+    state.loadMenusError = null;
+    state.loadMenusDone = false;
+  },
+  [LOAD_MENUS_SUCCESS]: (state, action) => {
+    state.loadMenusLoading = false;
+    state.loadMenusDone = true;
+    state.menu = state.menu.concat(
+      action.data.slice(state.menuid, state.menuid + 10)
+    );
+    state.menuid = state.menuid + 10;
+    state.hasMoreMenu = state.menu.length < 150;
+  },
+  [LOAD_MENUS_FAILURE]: (state, action) => {
+    state.loadMENUSLoading = false;
+    state.loadMENUSError = action.error;
+  },
+
   [LOAD_STORES_REQUEST]: (state) => {
     state.loadStoresLoading = true;
     state.loadStoresError = null;
@@ -38,8 +68,10 @@ export default createReducer(initialState, {
   [LOAD_STORES_SUCCESS]: (state, action) => {
     state.loadStoresLoading = false;
     state.loadStoresDone = true;
-    state.store = state.store.concat(action.data);
-    state.hasMoreStore = state.store.length < 50;
+    state.store = state.store.concat(
+      action.data.slice(state.stored, state.storeid + 10)
+    );
+    state.hasMoreStore = state.store.length < 100;
   },
   [LOAD_STORES_FAILURE]: (state, action) => {
     state.loadStoresLoading = false;
