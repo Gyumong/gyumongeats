@@ -17,7 +17,13 @@ import {
   RightOutlined,
 } from "@ant-design/icons";
 import ImagesZoom from "../ImagesZoom";
-const TitleCard = ({ storeName, gpa, estimatedDelTime, deliveryFee }) => {
+const TitleCard = ({
+  storeName,
+  gpa,
+  estimatedDelTime,
+  deliveryFee,
+  thumb1,
+}) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
 
   const onZoom = useCallback(() => {
@@ -29,7 +35,10 @@ const TitleCard = ({ storeName, gpa, estimatedDelTime, deliveryFee }) => {
   return (
     <>
       <TitleBlock>
-        <Thumbnail onClick={onZoom} />
+        <Thumbnail
+          src={`http://localhost:3085/img/thumbnail/${thumb1}.png`}
+          onClick={onZoom}
+        />
         <TitleBox>
           <h2>{storeName}</h2>
           <p>
@@ -58,7 +67,7 @@ const TitleCard = ({ storeName, gpa, estimatedDelTime, deliveryFee }) => {
           </DescSide>
         </Description>
       </TitleBlock>
-      {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
+      {showImagesZoom && <ImagesZoom images={thumb1} onClose={onClose} />}
     </>
   );
 };
