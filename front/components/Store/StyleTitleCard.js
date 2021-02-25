@@ -12,9 +12,9 @@ export const TitleBlock = styled.div`
   }
 `;
 
-export const Thumbnail = styled.div`
+export const Thumbnail = styled.img`
   height: 27vh;
-  background: orange;
+  display: inline-block;
 `;
 
 export const TitleBox = styled.div`

@@ -15,11 +15,11 @@ const Category = styled.div`
   font-size: 1rem;
 `;
 
-const MenuBox = () => {
+const MenuBox = ({ menu }) => {
   return (
     <MenuBlock>
       <Category>추천메뉴</Category>
-      <MenuCard />
+      <MenuCard menu={menu} />
     </MenuBlock>
   );
 };
