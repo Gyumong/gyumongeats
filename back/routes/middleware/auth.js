@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const { Customer } = require('../../models');
-
 /**
  * 먼저 엑세스 토큰을 체크헤준다.
  * 만약 토큰이 존재하지 않을 시, 403코드를 보내고 종료.
@@ -19,57 +17,27 @@ const { Customer } = require('../../models');
 
 exports.jwtCheckMiddleware = (req, res, next) => {
   const accessToken = req.headers['x-access-token'] || req.query.token;
-  const email = req.body.email;
+
+  console.log(accessToken);
   
   if (!accessToken) {
     return res.status(401).json({
       success: false,
-      message: "로그인 되어 있지 않습니다.",
+      errorMessage: "access token이 없습니다."
     });
   }
 
   const verifyToken = (token) => {
     return new Promise((resolve, reject) => {
       jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-        if (err) reject(err); // 토큰 만료 -> 재발급
-        resolve(decoded); // 토큰 유효 -> auth 인증 완료
+        if (err) reject(err);
+        resolve(decoded);
       });
     });
   };
 
-  const reissueAccessToken = async (customerInfo) => {
-    try {
-      const accessToken = jwt.sign(
-        {
-          customerEmail: customerInfo.userId,
-          customerName: customerInfo.name,
-          customerPhone: customerInfo.phone,
-        },
-        process.env.JWT_KEY,
-        {
-          expiresIn: "15s",
-          issuer: "gyumongeats",
-          subject: "customer_info",
-        },
-      );
-      res.cookie('accessToken', accessToken, {
-        maxAge: 15*1000,
-        httpOnly: true
-      });
-      return res.status(201).json({
-        success: true,
-        accessToken
-      });
-    } catch (err) {
-      return res.status(401).json({
-        success: false,
-        message: "refresh 토큰이 존재하지 않습니다.",
-      });
-    }
-  };
-
   const onError = (err) => {
-    res.status(400).json({
+    res.status(401).json({
       success: false,
       errorMessage: err
     });
@@ -80,12 +48,5 @@ exports.jwtCheckMiddleware = (req, res, next) => {
       req.decoded = decoded;
       next();
     })
-    .catch(async () => {
-      const [ customer ] = await Customer.findAll({ where: { userId: email } });
-      const customerInfo = customer.dataValues;
-
-      verifyToken(customerInfo.refreshToken)
-        .then(reissueAccessToken(customerInfo))
-        .catch(onError);
-    });
+    .catch(onError);
 };
