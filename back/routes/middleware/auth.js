@@ -1,7 +1,9 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+/** @format */
 
-const { Customer } = require('../../models');
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
+const { Customer } = require("../../models");
 
 /**
  * 먼저 엑세스 토큰을 체크헤준다.
@@ -9,7 +11,7 @@ const { Customer } = require('../../models');
  * 토큰이 존재하면 유효성 체크
  * O -> decode값 전송
  * X -> 재발급 받아야 하므로 리프레시 토크을 이용한다.
- * 
+ *
  * 리프레시 토큰을 사용해야하므로 먼저 토큰의 존재 유무를 정한다.
  * X -> 그냥 로그아웃된것이므로 403코드를 보내고 종료.
  * O -> 토큰이 존재하므로 유효성 체크
@@ -18,9 +20,10 @@ const { Customer } = require('../../models');
  */
 
 exports.jwtCheckMiddleware = (req, res, next) => {
-  const accessToken = req.headers['x-access-token'] || req.query.token;
+  // const accessToken = req.headers['x-access-token'] || req.query.token;
   const email = req.body.email;
-  
+  const accessToken = req.cookies.accessToken;
+  console.log(accessToken);
   if (!accessToken) {
     return res.status(401).json({
       success: false,
@@ -50,15 +53,15 @@ exports.jwtCheckMiddleware = (req, res, next) => {
           expiresIn: "15s",
           issuer: "gyumongeats",
           subject: "customer_info",
-        },
+        }
       );
-      res.cookie('accessToken', accessToken, {
-        maxAge: 15*1000,
-        httpOnly: true
+      res.cookie("accessToken", accessToken, {
+        maxAge: 15 * 1000,
+        httpOnly: true,
       });
       return res.status(201).json({
         success: true,
-        accessToken
+        accessToken,
       });
     } catch (err) {
       return res.status(401).json({
@@ -71,17 +74,17 @@ exports.jwtCheckMiddleware = (req, res, next) => {
   const onError = (err) => {
     res.status(400).json({
       success: false,
-      errorMessage: err
+      errorMessage: err,
     });
   };
 
   verifyToken(accessToken)
-    .then(decoded => {
+    .then((decoded) => {
       req.decoded = decoded;
       next();
     })
     .catch(async () => {
-      const [ customer ] = await Customer.findAll({ where: { userId: email } });
+      const [customer] = await Customer.findAll({ where: { userId: email } });
       const customerInfo = customer.dataValues;
 
       verifyToken(customerInfo.refreshToken)

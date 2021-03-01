@@ -1,3 +1,5 @@
+/** @format */
+
 const { Customer } = require("../../../models");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -19,7 +21,7 @@ exports.register = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       success: false,
-      errorMessage: err
+      errorMessage: err,
     });
   }
 };
@@ -30,7 +32,7 @@ exports.login = (req, res) => {
   const customerCheck = (uid, pwd) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const [ customer ] = await Customer.findAll({
+        const [customer] = await Customer.findAll({
           where: {
             userId: uid,
           },
@@ -60,17 +62,13 @@ exports.login = (req, res) => {
           expiresIn: "15s",
           issuer: "gyumongeats",
           subject: "customer_info",
-        },
-      );
-      const refreshToken = jwt.sign(
-        {},
-        process.env.JWT_KEY,
-        {
-          expiresIn: "1d",
-          issuer: "gyumongeats",
-          subject: "customer_info",
         }
       );
+      const refreshToken = jwt.sign({}, process.env.JWT_KEY, {
+        expiresIn: "1d",
+        issuer: "gyumongeats",
+        subject: "customer_info",
+      });
       const id = customer.userId;
       resolve({ accessToken, refreshToken, id });
     });
@@ -79,24 +77,31 @@ exports.login = (req, res) => {
   const processEachToken = (info) => {
     const { accessToken, refreshToken, id } = info;
     return new Promise(async (resolve, reject) => {
-      await Customer.update({ refreshToken: refreshToken }, {
-        where: {
-          userId: id
+      await Customer.update(
+        { refreshToken: refreshToken },
+        {
+          where: {
+            userId: id,
+          },
         }
-      });
+      );
       resolve({ accessToken, refreshToken });
     });
   };
 
   const respond = (token) => {
     const { accessToken, refreshToken } = token;
-    res.cookie('accessToken', accessToken, {
-      maxAge: 15*1000,
-      httpOnly: true
+    res.cookie("accessToken", accessToken, {
+      maxAge: 15 * 1000,
+      httpOnly: true,
+    });
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
     });
     res.json({
       success: true,
-      accessToken
+      accessToken,
     });
   };
 
@@ -118,6 +123,6 @@ exports.jwtCheck = (req, res) => {
   const decoded = req.decoded;
   res.json({
     success: true,
-    decoded
+    decoded,
   });
 };

@@ -34,11 +34,20 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+  }, []);
+  useEffect(() => {
+    // 로그인 안한채로 프로필 페이지가면 문제생기는걸 방지해줌
     if (!me) {
       Router.push("/login");
     }
   }, [me]);
 
+  if (!me) {
+    return null;
+  }
   const onLogOut = useCallback(() => {
     dispatch({
       type: LOG_OUT_REQUEST,
@@ -63,18 +72,21 @@ const Profile = () => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    axios.defaults.headers.common["x-access-token"] = "hh";
-    // if (context.req && cookie) {
-    //   axios.defaults.headers.Cookie = cookie;
-    // }
-    context.store.dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   async (context) => {
+//     const cookie = context.req ? context.req.headers.cookie : "";
+//     axios.defaults.headers.Cookie = "";
+//     if (context.req && cookie) {
+//       axios.defaults.headers.Cookie = cookie;
+//     }
+//     context.store.dispatch({
+//       type: LOAD_MY_INFO_REQUEST,
+//     });
+
+//     context.store.dispatch(END);
+
+//     await context.store.sagaTask?.toPromise();
+//   }
+// );
 
 export default Profile;
