@@ -28,7 +28,7 @@ export const Indicator = styled.div`
     font-size: 10px;
     top: 33%;
     right: 5%;
-    z-index: 100000;
+    z-index: 10000;
   }
 `;
 export const TitleBlock = styled.div`

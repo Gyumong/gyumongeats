@@ -90,7 +90,7 @@ const TitleCard = ({
           </DescSide>
         </Description>
       </TitleBlock>
-      {showImagesZoom && <ImagesZoom images={thumb1} onClose={onClose} />}
+      {showImagesZoom && <ImagesZoom images={thumb} onClose={onClose} />}
     </>
   );
 };
