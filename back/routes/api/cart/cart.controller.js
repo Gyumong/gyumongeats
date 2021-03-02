@@ -1,7 +1,7 @@
 const { Cart, Store, Menu } = require('../../../models');
 
 exports.addMenu = async (req, res) => {
-  const { email, menu, category } = req.body;
+  const { email, menu, category, quantity } = req.body;
   const storeId = parseInt(req.query.id);
 
   try {
@@ -18,7 +18,7 @@ exports.addMenu = async (req, res) => {
       userId: email,
       storeId: storeId,
       menu: menu,
-      quantity: 1,
+      quantity: quantity,
       category: category
     });
     res.status(201).json({
@@ -110,4 +110,38 @@ exports.deleteMenu = async (req, res) => {
       errorMessage: err
     });
   }
-}
+};
+
+exports.getMenuAndPrice = async (req, res) => {
+  const email = req.query.e;
+
+  try {
+    const cart = await Cart.findAll({ where: { userId: email } });
+    let price = 0;
+
+    for(const info of cart) {
+      const { storeId, menu, category, quantity } = info.dataValues;
+      const menuInfo = await Menu.findOne({
+        attributes: ['price'],
+        where: {
+          storeId: storeId,
+          name: menu,
+          category: category
+        }
+      });
+      const p = menuInfo.dataValues.price;
+      price += (p * quantity);
+    }
+
+    res.status(200).json({
+      success: true,
+      menuCnt: cart.length,
+      price
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
+};
