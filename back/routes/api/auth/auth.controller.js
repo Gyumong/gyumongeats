@@ -91,13 +91,9 @@ exports.login = (req, res) => {
 
   const respond = (token) => {
     const { accessToken, refreshToken } = token;
-    res.cookie("accessToken", accessToken, {
-      maxAge: 15 * 1000,
-      httpOnly: true,
-    });
-    res.cookie("refreshToken", refreshToken, {
-      maxAge: 24 * 60 * 60 * 1000,
-      httpOnly: true,
+    res.cookie('refreshToken', refreshToken, {
+      maxAge: 24*60*60*1000,
+      httpOnly: true
     });
     res.json({
       success: true,
@@ -125,4 +121,35 @@ exports.jwtCheck = (req, res) => {
     success: true,
     decoded,
   });
+};
+
+exports.reissueAccessToken = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  try {
+    if(!refreshToken) throw "현재 로그인되어 있지 않습니다.";
+    const { dataValues } = await Customer.findOne({ where: { refreshToken: refreshToken } });
+    const accessToken = jwt.sign(
+      {
+        customerEmail: dataValues.userId,
+        customerName: dataValues.name,
+        customerPhone: dataValues.phone,
+      },
+      process.env.JWT_KEY,
+      {
+        expiresIn: "15s",
+        issuer: "gyumongeats",
+        subject: "customer_info",
+      },
+    );
+    res.status(200).json({
+      success: true,
+      accessToken
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
 };
