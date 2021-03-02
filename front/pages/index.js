@@ -17,7 +17,11 @@ const Home = () => {
   const { store, hasMoreStore, loadStoresLoading } = useSelector(
     (state) => state.store
   );
-
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+  }, []);
   useEffect(() => {
     function onScroll() {
       if (
@@ -46,7 +50,7 @@ const Home = () => {
         {store.map((store) => {
           return (
             // eslint-disable-next-line react/jsx-key
-            <Link href="/store/[id]" as={`/store/${store.storeId}`}>
+            <Link href="/store/[storeId]" as={`/store/${store.storeId}`}>
               <a>
                 <StoreCard key={store.storeId} store={store} />
               </a>
@@ -59,17 +63,14 @@ const Home = () => {
 };
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
-    const cookie = context.req.headers.cookie;
-    axios.defaults.headers.common["x-access-token"] = cookie;
-    // axios.defaults.headers.Cookie = "";
-
-    // if (context.req && cookie) {
-    //   axios.defaults.headers.Cookie = cookie;
-    // }
-    context.store.dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    // context.store.dispatch({
+    //   type: LOAD_MY_INFO_REQUEST,
+    // });
     context.store.dispatch({
       type: LOAD_STORES_REQUEST,
     });

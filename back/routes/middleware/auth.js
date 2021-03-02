@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 /**
  * 먼저 엑세스 토큰을 체크헤준다.
@@ -7,7 +7,7 @@ require('dotenv').config();
  * 토큰이 존재하면 유효성 체크
  * O -> decode값 전송
  * X -> 재발급 받아야 하므로 리프레시 토크을 이용한다.
- * 
+ *
  * 리프레시 토큰을 사용해야하므로 먼저 토큰의 존재 유무를 정한다.
  * X -> 그냥 로그아웃된것이므로 403코드를 보내고 종료.
  * O -> 토큰이 존재하므로 유효성 체크
@@ -39,12 +39,12 @@ exports.jwtCheckMiddleware = (req, res, next) => {
   const onError = (err) => {
     res.status(401).json({
       success: false,
-      errorMessage: err
+      errorMessage: err,
     });
   };
 
   verifyToken(accessToken)
-    .then(decoded => {
+    .then((decoded) => {
       req.decoded = decoded;
       next();
     })
