@@ -25,6 +25,15 @@ const Menu = () => {
     fetcher
   );
   const [menuCount, setMenuCount] = useState(1);
+
+  const onIncrease = useCallback(() => {
+    setMenuCount((prev) => prev + 1);
+  }, [menuCount]);
+  const onDecrease = useCallback(() => {
+    if (menuCount > 1) {
+      setMenuCount((prev) => prev - 1);
+    }
+  }, [menuCount]);
   if (menuError) {
     console.error(menuError);
     return "메뉴 데이터를 가져오는데 실패 하였습니다.";
@@ -43,7 +52,7 @@ const Menu = () => {
       <MenuDesc>
         <Price>
           <p>가격</p>
-          <p>{menuData.price}원</p>
+          <p>{`${menuData.price}` * `${menuCount}`}원</p>
         </Price>
         <Count>
           <p>수량</p>
@@ -53,6 +62,7 @@ const Menu = () => {
               icon={
                 <MinusOutlined style={{ fontSize: "11px", color: "#C6C8C8" }} />
               }
+              onClick={onDecrease}
             />
             {menuCount}
             <CountButton
@@ -60,6 +70,7 @@ const Menu = () => {
               icon={
                 <PlusOutlined style={{ fontSize: "11px", color: "#919191" }} />
               }
+              onClick={onIncrease}
             />
           </p>
         </Count>
