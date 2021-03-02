@@ -27,11 +27,6 @@ const TitleCard = ({
   thumb,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const settings = {
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   const [showImagesZoom, setShowImagesZoom] = useState(false);
 
   const onZoom = useCallback(() => {
@@ -49,6 +44,8 @@ const TitleCard = ({
           slidesToScroll={1}
           beforeChange={(slide) => setCurrentSlide(slide)}
           arrows={false}
+          autoplay={true}
+          autoplaySpeed={3000}
         >
           {thumb.map((v) => {
             return (
