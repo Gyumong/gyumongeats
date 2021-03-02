@@ -174,3 +174,26 @@ exports.storeDetailAndMenu = async (req, res) => {
     });
   }
 };
+
+exports.getOneMenu = async (req, res) => {
+  const storeId = req.query.s;
+  const menuId = req.query.m;
+
+  try {
+    const menu = await Menu.findOne({
+      where: {
+        storeId: storeId,
+        menuId: menuId
+      }
+    });
+    res.status(200).json({
+      success: true,
+      menu
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
+};
