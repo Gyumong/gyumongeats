@@ -180,6 +180,7 @@ exports.getOneMenu = async (req, res) => {
   const menuId = req.query.m;
 
   try {
+    if(!storeId || !menuId) throw "The storeID or menuID is undefined.";
     const menu = await Menu.findOne({
       where: {
         storeId: storeId,
