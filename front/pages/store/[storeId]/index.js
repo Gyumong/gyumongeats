@@ -55,7 +55,7 @@ const Store = () => {
         <TitleCard
           storeName={oneStore.store_info.info1.storeName}
           gpa={oneStore.store_info.info1.GPA}
-          thumb1={oneStore.store_info.info1.thumb1}
+          thumb={oneStore.store_info.info1.thumb}
           estimatedDelTime={oneStore.store_info.info1.estimatedDelTime}
           deliveryFee={oneStore.store_info.info1.deliveryFee}
         />

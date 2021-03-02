@@ -10,6 +10,8 @@ import {
   DescSide,
   DescSideT,
   DescSideD,
+  ThumbSlider,
+  Indicator,
 } from "./StyleTitleCard";
 import {
   StarFilled,
@@ -22,8 +24,14 @@ const TitleCard = ({
   gpa,
   estimatedDelTime,
   deliveryFee,
-  thumb1,
+  thumb,
 }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const settings = {
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   const [showImagesZoom, setShowImagesZoom] = useState(false);
 
   const onZoom = useCallback(() => {
@@ -35,10 +43,28 @@ const TitleCard = ({
   return (
     <>
       <TitleBlock>
-        <Thumbnail
-          src={`http://localhost:3085/img/thumbnail/${thumb1}.png`}
-          onClick={onZoom}
-        />
+        <ThumbSlider
+          speed={500}
+          slidesToShow={1}
+          slidesToScroll={1}
+          beforeChange={(slide) => setCurrentSlide(slide)}
+          arrows={false}
+        >
+          {thumb.map((v) => {
+            return (
+              <Thumbnail
+                key={v}
+                src={`http://localhost:3085/img/thumbnail/${v}.png`}
+                onClick={onZoom}
+              />
+            );
+          })}
+        </ThumbSlider>
+        <Indicator>
+          <div>
+            {currentSlide + 1}/{thumb.length}
+          </div>
+        </Indicator>
         <TitleBox>
           <h2>{storeName}</h2>
           <p>
