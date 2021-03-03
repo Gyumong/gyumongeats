@@ -12,16 +12,17 @@ import Category from "../components/Category";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
 import axios from "axios";
+import useSWR from "swr";
 const Home = () => {
   const dispatch = useDispatch();
   const { store, hasMoreStore, loadStoresLoading } = useSelector(
     (state) => state.store
   );
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_MY_INFO_REQUEST,
+  //   });
+  // }, []);
   useEffect(() => {
     function onScroll() {
       if (
@@ -67,10 +68,22 @@ export const getServerSideProps = wrapper.getServerSideProps(
     axios.defaults.headers.Cookie = "";
     if (context.req && cookie) {
       axios.defaults.headers.Cookie = cookie;
+      const { accessToken } = await axios
+        .get("/auth/reissue", {
+          withCredentials: true,
+        })
+        .then((res) => res.data);
+      console.log("acctoken", accessToken);
+      if (accessToken) {
+        axios.defaults.headers.common[
+          "x-access-token"
+        ] = await `${accessToken}`;
+        context.store.dispatch({
+          type: LOAD_MY_INFO_REQUEST,
+        });
+      }
     }
-    // context.store.dispatch({
-    //   type: LOAD_MY_INFO_REQUEST,
-    // });
+
     context.store.dispatch({
       type: LOAD_STORES_REQUEST,
     });
@@ -79,4 +92,5 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await context.store.sagaTask.toPromise();
   }
 );
+
 export default Home;

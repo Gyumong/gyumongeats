@@ -99,7 +99,7 @@ function* logOut() {
 }
 
 function loadMyInfoAPI() {
-  return axios.get("/auth/check");
+  return axios.get("/auth/check", { withCredentials: true });
 }
 
 function* loadMyInfo() {
