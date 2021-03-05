@@ -6,6 +6,7 @@ import router from "next/router";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
+import useSWR from "swr";
 import axios from "axios";
 import { Header, ExitButton } from "../components/Cart/Header";
 import {
@@ -16,7 +17,6 @@ import {
   MenuDesc,
   MenuPrice,
   QuantitySelect,
-  QuantityModal,
   PlusMenuButton,
 } from "../components/Cart/MenuCard";
 import Modal from "../components/Cart/CartModal";
@@ -33,8 +33,15 @@ const CartBlock = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const cartfetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
+
 const Cart = () => {
   const { me } = useSelector((state) => state.user);
+  const { data: cartData, error: cartError } = useSWR(
+    `http://localhost:3085/api/cart/info?e=${me.customerEmail}`,
+    cartfetcher
+  );
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = useCallback(() => {
@@ -50,9 +57,16 @@ const Cart = () => {
   if (!me) {
     return router.push("/login");
   }
+  if (!cartData) {
+    return "메뉴 데이터가 없습니다.";
+  }
+  if (cartError) {
+    return "카트 정보를 가져오는데 실패했습니다.";
+  }
 
   // <ShoppingCartOutlined style={{ fontSize: "100px" }} />
   // <h3>장바구니가 비어있습니다.</h3>
+  console.log(cartData);
   return (
     <>
       <Header>
@@ -62,23 +76,27 @@ const Cart = () => {
       <CartBlock>
         <CartMenuCardBlock>
           <CartMenuCardTitle>
-            <h2>바스버거 문정역점</h2>
+            <h2>{cartData.store.storeName}</h2>
           </CartMenuCardTitle>
-          <CartMenuCard>
-            <MenuTitle>
-              칠면조버거 세트 <CloseOutlined />
-            </MenuTitle>
-            <MenuDesc>
-              치즈베이컨프라이로 변경 (+500원),스프라이트(355ml로)변경
-            </MenuDesc>
-            <MenuPrice>
-              23,400원
-              <QuantitySelect onClick={showModal}>
-                <p>1</p>
-                <CaretDownOutlined />
-              </QuantitySelect>
-            </MenuPrice>
-          </CartMenuCard>
+          {cartData.menuList.map((m, i) => {
+            return (
+              <CartMenuCard key={m.name + i}>
+                <MenuTitle>
+                  {m.name} <CloseOutlined />
+                </MenuTitle>
+                {/* <MenuDesc>
+                  치즈베이컨프라이로 변경 (+500원),스프라이트(355ml로)변경
+                </MenuDesc> */}
+                <MenuPrice>
+                  {m.price}원
+                  <QuantitySelect onClick={showModal}>
+                    <p>{m.quantity}</p>
+                    <CaretDownOutlined />
+                  </QuantitySelect>
+                </MenuPrice>
+              </CartMenuCard>
+            );
+          })}
           <PlusMenuButton>메뉴추가</PlusMenuButton>
         </CartMenuCardBlock>
         {isModalVisible ? <Modal close={closeModal} /> : null}
