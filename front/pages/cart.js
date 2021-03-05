@@ -26,23 +26,42 @@ import {
   CaretDownOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
-
+import { DELETE_CART_MENU_REQUEST } from "../reducers/cart";
+import { useRouter } from "next/router";
 const CartBlock = styled.div`
   padding-top: 5vh;
   height: 100vh;
   display: flex;
   flex-direction: column;
 `;
+const NoDataCart = styled.div`
+  padding-top: 5vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 const cartfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 
 const Cart = () => {
   const { me } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const { data: cartData, error: cartError } = useSWR(
     `http://localhost:3085/api/cart/info?e=${me.customerEmail}`,
     cartfetcher
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const router = useRouter();
+  const DeleteMenu = useCallback((menu) => {
+    dispatch({
+      type: DELETE_CART_MENU_REQUEST,
+      data: {
+        email: me.customerEmail,
+      },
+    });
+  }, []);
 
   const showModal = useCallback(() => {
     setIsModalVisible(true);
@@ -58,14 +77,23 @@ const Cart = () => {
     return router.push("/login");
   }
   if (!cartData) {
-    return "메뉴 데이터가 없습니다.";
+    return (
+      <>
+        <Header>
+          <ExitButton onClick={ExitCart} icon={<CloseOutlined />} />
+          <h1>카트</h1>
+        </Header>
+        <NoDataCart>
+          <ShoppingCartOutlined style={{ fontSize: "100px" }} />
+          <h3>장바구니가 비어있습니다.</h3>
+        </NoDataCart>
+      </>
+    );
   }
   if (cartError) {
     return "카트 정보를 가져오는데 실패했습니다.";
   }
 
-  // <ShoppingCartOutlined style={{ fontSize: "100px" }} />
-  // <h3>장바구니가 비어있습니다.</h3>
   console.log(cartData);
   return (
     <>
@@ -97,7 +125,9 @@ const Cart = () => {
               </CartMenuCard>
             );
           })}
-          <PlusMenuButton>메뉴추가</PlusMenuButton>
+          <PlusMenuButton onClick={() => router.back()}>
+            메뉴추가
+          </PlusMenuButton>
         </CartMenuCardBlock>
         {isModalVisible ? <Modal close={closeModal} /> : null}
       </CartBlock>

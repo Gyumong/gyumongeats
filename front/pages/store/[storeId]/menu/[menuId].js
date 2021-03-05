@@ -15,25 +15,30 @@ import {
   CountButton,
 } from "./style";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  ADD_MY_CART_REQUEST,
-  LOAD_MY_INFO_REQUEST,
-} from "../../../../reducers/user";
+import { LOAD_MY_INFO_REQUEST } from "../../../../reducers/user";
+import { ADD_MY_CART_REQUEST } from "../../../../reducers/cart";
 import wrapper from "../../../../store/configureStore";
 import { END } from "redux-saga";
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data.menu);
+const cartfetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Menu = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { storeId, menuId } = router.query;
+  const { me } = useSelector((state) => state.user);
   const { data: menuData, error: menuError } = useSWR(
     `http://localhost:3085/api/store/menu?s=${storeId}&m=${menuId}`,
     fetcher
   );
+  const { data: cartData, error: cartError } = useSWR(
+    `http://localhost:3085/api/cart/info?e=${me.customerEmail}`,
+    cartfetcher
+  );
 
   const [menuCount, setMenuCount] = useState(1);
-  const { me } = useSelector((state) => state.user);
+  const { addMyCartDone, addMyCartError } = useSelector((state) => state.cart);
   const onIncrease = useCallback(() => {
     setMenuCount((prev) => prev + 1);
   }, [menuCount]);
@@ -43,25 +48,42 @@ const Menu = () => {
     }
   }, [menuCount]);
   const AddCart = useCallback(() => {
-    console.log("addCart");
-    console.log(me.customerEmail);
-    console.log(menuData.name);
-    // if (!me) {
-    //   Router.push("/login");
-    // }
-    dispatch({
-      type: ADD_MY_CART_REQUEST,
-      data: {
-        storeId,
+    if (!cartData) {
+      dispatch({
+        type: ADD_MY_CART_REQUEST,
         data: {
-          email: me.customerEmail,
-          menu: menuData.name,
-          category: menuData.category,
-          quantity: menuCount,
+          storeId,
+          data: {
+            email: me.customerEmail,
+            menu: menuData.name,
+            category: menuData.category,
+            quantity: menuCount,
+          },
         },
-      },
-    });
-  }, [me, menuData]);
+      });
+    } else {
+      if (
+        true == cartData.menuList.findIndex((v) => v.name !== menuData.name)
+      ) {
+        dispatch({
+          type: ADD_MY_CART_REQUEST,
+          data: {
+            storeId,
+            data: {
+              email: me.customerEmail,
+              menu: menuData.name,
+              category: menuData.category,
+              quantity: menuCount,
+            },
+          },
+        });
+      }
+      // patch api 호출 
+      dispatch({
+        type:
+      })
+    }
+  }, [me, menuData, cartData]);
   if (!me) {
     return "로그인 정보가 없습니다.";
   }
@@ -72,7 +94,14 @@ const Menu = () => {
   if (!menuData) {
     return "메뉴 데이터가 없습니다.";
   }
+  if (addMyCartError) {
+    alert(addMyCartError);
+  }
+  if (addMyCartDone) {
+    Router.push("/cart");
+  }
   console.log(menuData);
+  console.log(cartData);
   return (
     <MenuBlock>
       <Thumbnail src={`http://localhost:3085/img/thumbnail/3_1.png`} />
