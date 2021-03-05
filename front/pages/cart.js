@@ -17,7 +17,9 @@ import {
   MenuPrice,
   QuantitySelect,
   QuantityModal,
+  PlusMenuButton,
 } from "../components/Cart/MenuCard";
+import Modal from "../components/Cart/CartModal";
 import {
   CloseOutlined,
   ShoppingCartOutlined,
@@ -39,7 +41,7 @@ const Cart = () => {
     setIsModalVisible(true);
   }, [isModalVisible]);
 
-  const handleOk = useCallback(() => {
+  const closeModal = useCallback(() => {
     setIsModalVisible(false);
   }, [isModalVisible]);
   const ExitCart = useCallback(() => {
@@ -74,24 +76,12 @@ const Cart = () => {
               <QuantitySelect onClick={showModal}>
                 <p>1</p>
                 <CaretDownOutlined />
-                <QuantityModal
-                  visible={isModalVisible}
-                  cancelButtonProps={true}
-                  footer={false}
-                  closable={false}
-                  width={"80%"}
-                  bodyStyle={{ padding: 0 }}
-                >
-                  <p>1</p>
-                  <p>2</p>
-                  <p>3</p>
-                  <p>4</p>
-                  <p>5</p>
-                </QuantityModal>
               </QuantitySelect>
             </MenuPrice>
           </CartMenuCard>
+          <PlusMenuButton>메뉴추가</PlusMenuButton>
         </CartMenuCardBlock>
+        {isModalVisible ? <Modal close={closeModal} /> : null}
       </CartBlock>
     </>
   );

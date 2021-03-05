@@ -8,6 +8,8 @@ export const Header = styled.div`
   top: 0;
   display: flex;
   padding-left: 1rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
   z-index: 1000;
   align-items: center;
   background-color: #fff;

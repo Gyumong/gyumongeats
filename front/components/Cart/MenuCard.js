@@ -5,6 +5,7 @@ import { Modal } from "antd";
 export const CartMenuCardBlock = styled.div`
   display: flex;
   flex-direction: column;
+  border-bottom: 6px solid #f0f0f0;
 `;
 export const CartMenuCardTitle = styled.div`
   h2 {
@@ -64,4 +65,19 @@ export const QuantityModal = styled(Modal)`
   p {
     margin: 0;
   }
+`;
+
+export const PlusMenuButton = styled.button`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  border: none;
+  background-color: #fff;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: rgb(1, 175, 255);
+  border-top: 1px solid #c5c5c3;
+  padding: 0.5rem 0;
 `;
