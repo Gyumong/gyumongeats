@@ -18,6 +18,7 @@ const Cart = require('./customer/cart')(sequelize, Sequelize);
 const Coupon = require('./customer/coupon')(sequelize, Sequelize);
 const Customer = require('./customer/customer')(sequelize, Sequelize);
 const Order = require('./customer/order')(sequelize, Sequelize);
+const OrderingMenu = require('./customer/ordering_menu')(sequelize, Sequelize);
 const Review = require('./customer/review')(sequelize, Sequelize);
 
 Customer.hasMany(Address, { foreignKey: 'userId', sourceKey: 'userId' });
@@ -37,6 +38,11 @@ Order.belongsTo(Customer, { foreignKey: 'userId', sourceKey: 'userId' });
 
 Customer.hasMany(Review, { foreignKey: 'userId', sourceKey: 'userId' });
 Review.belongsTo(Customer, { foreignKey: 'userId', sourceKey: 'userId' });
+
+Order.hasMany(OrderingMenu, { foreignKey: 'orderId', sourceKey: 'id' });
+OrderingMenu.belongsTo(Order, { foreignKey: 'orderId', sourceKey: 'id' });
+
+Order.hasOne(Review, { foreignKey: 'orderId' });
 
 const MenuCategory = require('./store/menu_category')(sequelize, Sequelize);
 const Menu = require('./store/menu')(sequelize, Sequelize);
@@ -59,6 +65,7 @@ Store.hasOne(StoreInfo);
 Address.removeAttribute('id');
 Bookmark.removeAttribute('id');
 Cart.removeAttribute('id');
+OrderingMenu.removeAttribute('id');
 StoreInfo.removeAttribute('id');
 Menu.removeAttribute('id');
 
@@ -71,6 +78,7 @@ db = {
   Coupon,
   Customer,
   Order,
+  OrderingMenu,
   Review,
   MenuCategory,
   Menu,

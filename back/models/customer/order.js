@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('order', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     userId: {
       type: DataTypes.STRING,
       field: "user_id"
@@ -30,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       field: "address"
     }
   }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
   });
 }
