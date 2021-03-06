@@ -10,7 +10,8 @@ exports.takeOrder = async (req, res) => {
     email,
     storeId,
     price,
-    request,
+    requestForOwner,
+    requestForRider,
     address,
     menuList
   } = req.body;
@@ -22,7 +23,8 @@ exports.takeOrder = async (req, res) => {
       storeId,
       orderDate: new Date(),
       price,
-      request,
+      requestForOwner,
+      requestForRider,
       address
     }, { transaction: t });
     for(const menu of menuList) {

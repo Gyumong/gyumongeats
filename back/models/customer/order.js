@@ -24,10 +24,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: "price"
     },
-    request: {
+    requestForOwner: {
       type: DataTypes.TEXT,
       allowNull: false,
-      field: "request"
+      field: "request_for_owner"
+    },
+    requestForRider: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      field: "request_for_rider"
     },
     address: {
       type: DataTypes.STRING,
