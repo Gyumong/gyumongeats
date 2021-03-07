@@ -49,21 +49,6 @@ export const loginRequestAction = (data) => {
 };
 
 export default createReducer(initialState, {
-  [ADD_MY_CART_REQUEST]: (state) => {
-    state.addMyCartLoading = true;
-    state.addMyCartError = null;
-    state.addMyCartDone = false;
-  },
-  [ADD_MY_CART_SUCCESS]: (state, action) => {
-    console.log(action);
-    state.addMyCartLoading = false;
-    state.cart = action.data;
-    state.addMyCartDone = true;
-  },
-  [ADD_MY_CART_FAILURE]: (state, action) => {
-    state.addMyCartLoading = false;
-    state.addMyCartError = action.error;
-  },
   [LOAD_MY_INFO_REQUEST]: (state) => {
     state.loadMyInfoLoading = true;
     state.loadMyInfoError = null;

@@ -14,6 +14,9 @@ import {
   DELETE_CART_MENU_REQUEST,
   DELETE_CART_MENU_SUCCESS,
   DELETE_CART_MENU_FAILURE,
+  UPDATE_QUANTITY_REQUEST,
+  UPDATE_QUANTITY_SUCCESS,
+  UPDATE_QUANTITY_FAILURE,
 } from "../reducers/cart";
 import axios from "axios";
 
@@ -67,12 +70,42 @@ function* DeleteCartMenu(action) {
   }
 }
 
+function UpdateQuantityAPI(data) {
+  return axios.patch("/cart/update-quantity", data);
+}
+
+function* UpdateQuantity(action) {
+  // 액션을 받음
+  try {
+    const result = yield call(UpdateQuantityAPI, action.data);
+    console.log(result);
+    yield put({
+      // 액션을 dispatch
+      type: UPDATE_QUANTITY_SUCCESS,
+    });
+  } catch (e) {
+    console.log(action.data);
+    console.error(e);
+    yield put({
+      type: UPDATE_QUANTITY_FAILURE,
+      error: e.response.data.errorMessage,
+    });
+  }
+}
+
 function* watchAddMyCart() {
   yield takeLatest(ADD_MY_CART_REQUEST, AddMyCart);
 }
 function* watchDeleteCartMenu() {
   yield takeLatest(DELETE_CART_MENU_REQUEST, DeleteCartMenu);
 }
+function* watchUpdateQuantity() {
+  yield takeLatest(UPDATE_QUANTITY_REQUEST, UpdateQuantity);
+}
 export default function* cartSaga() {
-  yield all([fork(watchAddMyCart), fork(watchDeleteCartMenu)]);
+  yield all([
+    fork(watchAddMyCart),
+    fork(watchDeleteCartMenu),
+    fork(watchUpdateQuantity),
+  ]);
 }

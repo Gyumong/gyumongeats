@@ -10,6 +10,9 @@ const initialState = {
   deleteCartMenuLoading: false,
   deleteCartMenuDone: false,
   deleteCartMenuError: null,
+  updateQuantityLoading: false,
+  updateQuantityDone: false,
+  updateQuantityError: null,
 };
 
 export const ADD_MY_CART_REQUEST = "ADD_MY_CART_REQUEST";
@@ -19,6 +22,10 @@ export const ADD_MY_CART_FAILURE = "ADD_MY_CART_FAILURE";
 export const DELETE_CART_MENU_REQUEST = "DELETE_CART_MENU_REQUEST";
 export const DELETE_CART_MENU_SUCCESS = "DELETE_CART_MENU_SUCCESS";
 export const DELETE_CART_MENU_FAILURE = "DELETE_CART_MENU_FAILURE";
+
+export const UPDATE_QUANTITY_REQUEST = "UPDATE_QUANTITY_REQUEST";
+export const UPDATE_QUANTITY_SUCCESS = "UPDATE_QUANTITY_SUCCESS";
+export const UPDATE_QUANTITY_FAILURE = "UPDATE_QUANTITY_FAILURE";
 export default createReducer(initialState, {
   [ADD_MY_CART_REQUEST]: (state) => {
     state.addMyCartLoading = true;
@@ -47,5 +54,18 @@ export default createReducer(initialState, {
   [DELETE_CART_MENU_FAILURE]: (state, action) => {
     state.deleteCartMenuLoading = false;
     state.deleteCartMenuError = action.error;
+  },
+  [UPDATE_QUANTITY_REQUEST]: (state) => {
+    state.updateQuantityLoading = true;
+    state.updateQuantityError = null;
+    state.updateQuantityDone = false;
+  },
+  [UPDATE_QUANTITY_SUCCESS]: (state) => {
+    state.updateQuantityLoading = false;
+    state.updateQuantityDone = true;
+  },
+  [UPDATE_QUANTITY_FAILURE]: (state, action) => {
+    state.updateQuantityLoading = false;
+    state.updateQuantityError = action.error;
   },
 });

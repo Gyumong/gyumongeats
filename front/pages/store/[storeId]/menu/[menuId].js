@@ -16,7 +16,10 @@ import {
 } from "./style";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { LOAD_MY_INFO_REQUEST } from "../../../../reducers/user";
-import { ADD_MY_CART_REQUEST } from "../../../../reducers/cart";
+import {
+  ADD_MY_CART_REQUEST,
+  UPDATE_QUANTITY_REQUEST,
+} from "../../../../reducers/cart";
 import wrapper from "../../../../store/configureStore";
 import { END } from "redux-saga";
 const fetcher = (url) =>
@@ -38,7 +41,9 @@ const Menu = () => {
   );
 
   const [menuCount, setMenuCount] = useState(1);
-  const { addMyCartDone, addMyCartError } = useSelector((state) => state.cart);
+  const { addMyCartDone, addMyCartError, updateQuantityDone } = useSelector(
+    (state) => state.cart
+  );
   const onIncrease = useCallback(() => {
     setMenuCount((prev) => prev + 1);
   }, [menuCount]);
@@ -78,10 +83,18 @@ const Menu = () => {
           },
         });
       }
-      // patch api 호출 
+      // patch api 호출
       dispatch({
-        type:
-      })
+        type: UPDATE_QUANTITY_REQUEST,
+        data: {
+          email: me.customerEmail,
+          menu: menuData.name,
+          category: menuData.category,
+          quantity:
+            cartData.menuList.find((v) => v.name === menuData.name).quantity +
+            menuCount,
+        },
+      });
     }
   }, [me, menuData, cartData]);
   if (!me) {
@@ -97,7 +110,7 @@ const Menu = () => {
   if (addMyCartError) {
     alert(addMyCartError);
   }
-  if (addMyCartDone) {
+  if (addMyCartDone || updateQuantityDone) {
     Router.push("/cart");
   }
   console.log(menuData);
