@@ -53,8 +53,9 @@ const Cart = () => {
     cartfetcher
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [target, setTarget] = useState(0);
   const router = useRouter();
-  const DeleteMenu = useCallback((menu) => {
+  const DeleteMenu = useCallback(() => {
     dispatch({
       type: DELETE_CART_MENU_REQUEST,
       data: {
@@ -63,9 +64,14 @@ const Cart = () => {
     });
   }, []);
 
-  const showModal = useCallback(() => {
-    setIsModalVisible(true);
-  }, [isModalVisible]);
+  const showModal = useCallback(
+    (i) => {
+      setIsModalVisible(true);
+      setTarget(i);
+      console.log(target);
+    },
+    [isModalVisible]
+  );
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false);
@@ -117,7 +123,7 @@ const Cart = () => {
                 </MenuDesc> */}
                 <MenuPrice>
                   {m.price}원
-                  <QuantitySelect onClick={showModal}>
+                  <QuantitySelect onClick={() => showModal(m)}>
                     <p>{m.quantity}</p>
                     <CaretDownOutlined />
                   </QuantitySelect>
@@ -128,8 +134,8 @@ const Cart = () => {
           <PlusMenuButton onClick={() => router.back()}>
             메뉴추가
           </PlusMenuButton>
+          {isModalVisible ? <Modal close={closeModal} menu={target} /> : null}
         </CartMenuCardBlock>
-        {isModalVisible ? <Modal close={closeModal} /> : null}
       </CartBlock>
     </>
   );

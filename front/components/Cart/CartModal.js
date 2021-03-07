@@ -51,8 +51,9 @@ const ListItem = styled(Menu.Item)`
     background-color: #d9f9ff;
   }
 `;
-const Modal = ({ close }) => {
+const Modal = ({ menu, close }) => {
   const [number, setNumber] = useState(1);
+  console.log(menu);
   const onValue = useCallback((e) => {
     console.log("click", e.key);
   }, []);
