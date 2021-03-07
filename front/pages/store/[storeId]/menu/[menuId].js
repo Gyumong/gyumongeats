@@ -96,7 +96,7 @@ const Menu = () => {
         },
       });
     }
-  }, [me, menuData, cartData]);
+  }, [me, menuData, cartData, menuCount]);
   if (!me) {
     return "로그인 정보가 없습니다.";
   }
