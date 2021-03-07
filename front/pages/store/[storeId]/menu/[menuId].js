@@ -68,7 +68,7 @@ const Menu = () => {
       });
     } else {
       if (
-        true == cartData.menuList.findIndex((v) => v.name !== menuData.name)
+        undefined == cartData.menuList.find((v) => v.name === menuData.name)
       ) {
         dispatch({
           type: ADD_MY_CART_REQUEST,
@@ -82,22 +82,25 @@ const Menu = () => {
             },
           },
         });
+      } else {
+        console.log(cartData.menuList);
+        console.log(menuData.name);
+        // patch api 호출
+        dispatch({
+          type: UPDATE_QUANTITY_REQUEST,
+          data: {
+            email: me.customerEmail,
+            menu: menuData.name,
+            category: menuData.category,
+            quantity:
+              cartData.menuList.find((v) => v.name === menuData.name).quantity +
+              menuCount,
+          },
+        });
       }
-      // patch api 호출
-      dispatch({
-        type: UPDATE_QUANTITY_REQUEST,
-        data: {
-          email: me.customerEmail,
-          menu: menuData.name,
-          category: menuData.category,
-          quantity:
-            cartData.menuList.find((v) => v.name === menuData.name).quantity +
-            menuCount,
-        },
-      });
     }
   }, [me, menuData, cartData, menuCount]);
-  if (!me) {
+  if (!me && !me.customerEmail) {
     return "로그인 정보가 없습니다.";
   }
   if (menuError) {
