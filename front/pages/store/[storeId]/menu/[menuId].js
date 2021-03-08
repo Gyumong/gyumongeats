@@ -101,7 +101,7 @@ const Menu = () => {
     }
   }, [me, menuData, cartData, menuCount]);
   if (!me && !me.customerEmail) {
-    return "로그인 정보가 없습니다.";
+    return router.push("/login");
   }
   if (menuError) {
     console.error(menuError);

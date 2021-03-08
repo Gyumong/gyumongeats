@@ -6,7 +6,7 @@ import router from "next/router";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
-import useSWR from "swr";
+import useSWR, { trigger } from "swr";
 import axios from "axios";
 import { Header, ExitButton } from "../components/Cart/Header";
 import {
@@ -53,7 +53,7 @@ const Cart = () => {
     cartfetcher
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [target, setTarget] = useState(0);
+  const [target, setTarget] = useState(null);
   const router = useRouter();
   const DeleteMenu = useCallback(() => {
     dispatch({
@@ -68,13 +68,13 @@ const Cart = () => {
     (i) => {
       setIsModalVisible(true);
       setTarget(i);
-      console.log(target);
     },
     [isModalVisible]
   );
 
-  const closeModal = useCallback(() => {
-    setIsModalVisible(false);
+  const closeModal = useCallback(async () => {
+    trigger(`http://localhost:3085/api/cart/info?e=${me.customerEmail}`);
+    await setIsModalVisible(false);
   }, [isModalVisible]);
   const ExitCart = useCallback(() => {
     router.push("/");
@@ -122,7 +122,7 @@ const Cart = () => {
                   치즈베이컨프라이로 변경 (+500원),스프라이트(355ml로)변경
                 </MenuDesc> */}
                 <MenuPrice>
-                  {m.price}원
+                  {m.price * m.quantity}원
                   <QuantitySelect onClick={() => showModal(m)}>
                     <p>{m.quantity}</p>
                     <CaretDownOutlined />
@@ -134,7 +134,9 @@ const Cart = () => {
           <PlusMenuButton onClick={() => router.back()}>
             메뉴추가
           </PlusMenuButton>
-          {isModalVisible ? <Modal close={closeModal} menu={target} /> : null}
+          {isModalVisible ? (
+            <Modal close={closeModal} menu={target} me={me} />
+          ) : null}
         </CartMenuCardBlock>
       </CartBlock>
     </>

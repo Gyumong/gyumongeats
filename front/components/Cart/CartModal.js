@@ -3,6 +3,8 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { Menu } from "antd";
+import { useDispatch } from "react-redux";
+import { UPDATE_QUANTITY_REQUEST } from "../../reducers/cart";
 const ModalBackground = styled.div`
   position: fixed;
   left: 0;
@@ -51,10 +53,22 @@ const ListItem = styled(Menu.Item)`
     background-color: #d9f9ff;
   }
 `;
-const Modal = ({ menu, close }) => {
-  const [number, setNumber] = useState(1);
+
+const Modal = ({ menu, close, me }) => {
+  const dispatch = useDispatch();
   console.log(menu);
-  const onValue = useCallback((e) => {
+  console.log(me);
+  const onValue = useCallback(async (e) => {
+    await dispatch({
+      type: UPDATE_QUANTITY_REQUEST,
+      data: {
+        email: me.customerEmail,
+        menu: menu.name,
+        category: menu.category,
+        quantity: e.key,
+      },
+    });
+    close();
     console.log("click", e.key);
   }, []);
   return (
