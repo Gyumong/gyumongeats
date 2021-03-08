@@ -1,10 +1,10 @@
 /** @format */
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppLayout from "../components/AppLayout";
 import StoreCard from "../components/Store/StoreCard";
 import Link from "next/link";
-import { StoreListBlock } from "../components/StyleMainPage";
+import { StoreListBlock, CartModal } from "../components/StyleMainPage";
 import PopularCard from "../components/Store/PopularCard";
 import store, { LOAD_STORES_REQUEST } from "../reducers/store";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
@@ -13,16 +13,23 @@ import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
 import axios from "axios";
 import useSWR from "swr";
+import Router from "next/router";
+const cartfetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Home = () => {
   const dispatch = useDispatch();
   const { store, hasMoreStore, loadStoresLoading } = useSelector(
     (state) => state.store
   );
-  // useEffect(() => {
-  //   dispatch({
-  //     type: LOAD_MY_INFO_REQUEST,
-  //   });
-  // }, []);
+  const { me } = useSelector((state) => state.user);
+  const { data: cartData, error: cartError } = useSWR(
+    `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`,
+    cartfetcher
+  );
+
+  const PushCart = useCallback(() => {
+    Router.push("/cart");
+  }, []);
   useEffect(() => {
     function onScroll() {
       if (
@@ -59,6 +66,13 @@ const Home = () => {
           );
         })}
       </StoreListBlock>
+      {cartData ? (
+        <CartModal onClick={PushCart}>
+          <strong>{cartData.menuCnt}</strong>
+          <h2>카트보기</h2>
+          <p>{cartData.price}원</p>
+        </CartModal>
+      ) : null}
     </AppLayout>
   );
 };

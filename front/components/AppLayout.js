@@ -51,7 +51,7 @@ const AppLayout = ({ children }) => {
       <Global />
 
       <Background onModal={onModalDone}>
-        {children}{" "}
+        {children}
         <MenuBlock mode="inline">
           <ItemBlock>
             <Link href="/">
