@@ -62,11 +62,11 @@ function* DeleteCartMenu(action) {
     });
   } catch (e) {
     console.log(action.data);
-    console.error(e);
     yield put({
       type: DELETE_CART_MENU_FAILURE,
       error: e.response.data.errorMessage,
     });
+    console.error(e.response);
   }
 }
 

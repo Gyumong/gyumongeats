@@ -55,13 +55,17 @@ const Cart = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [target, setTarget] = useState(null);
   const router = useRouter();
-  const DeleteMenu = useCallback(() => {
+  const DeleteMenu = useCallback((m) => {
+    console.log(m);
     dispatch({
       type: DELETE_CART_MENU_REQUEST,
       data: {
         email: me.customerEmail,
+        menu: m.name,
+        category: m.category,
       },
     });
+    // trigger(`http://localhost:3085/api/cart/info?e=${me.customerEmail}`);
   }, []);
 
   const showModal = useCallback(
@@ -76,6 +80,7 @@ const Cart = () => {
     trigger(`http://localhost:3085/api/cart/info?e=${me.customerEmail}`);
     await setIsModalVisible(false);
   }, [isModalVisible]);
+
   const ExitCart = useCallback(() => {
     router.push("/");
   }, []);
@@ -116,7 +121,7 @@ const Cart = () => {
             return (
               <CartMenuCard key={m.name + i}>
                 <MenuTitle>
-                  {m.name} <CloseOutlined />
+                  {m.name} <CloseOutlined onClick={() => DeleteMenu(m)} />
                 </MenuTitle>
                 {/* <MenuDesc>
                   치즈베이컨프라이로 변경 (+500원),스프라이트(355ml로)변경
