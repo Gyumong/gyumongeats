@@ -6,7 +6,7 @@
 
 /** @format */
 
-import { all, delay, put, fork, takeLatest, call } from "redux-saga/effects";
+import { all, put, fork, takeLatest, call } from "redux-saga/effects";
 import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
@@ -83,10 +83,12 @@ function* logIn(action) {
 //   axios.defaults.headers.common["Authorization"] = `Bearer${accessToken}`;
 // };
 function logOutAPI() {
-  return axios.post("/auth/logout");
+  // return axios.post("/auth/logout");
+  document.cookie = "";
 }
 function* logOut() {
   try {
+    // yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
@@ -99,7 +101,7 @@ function* logOut() {
 }
 
 function loadMyInfoAPI() {
-  return axios.get("/auth/check");
+  return axios.get("/auth/check", { withCredentials: true });
 }
 
 function* loadMyInfo() {
@@ -120,6 +122,7 @@ function* loadMyInfo() {
     });
   }
 }
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -134,6 +137,7 @@ function* watchSignUp() {
 function* watchLoadMyInfo() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),

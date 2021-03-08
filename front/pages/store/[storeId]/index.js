@@ -14,6 +14,7 @@ import {
 } from "../../../reducers/store";
 import wrapper from "../../../store/configureStore";
 import { END } from "redux-saga";
+import { LOAD_MY_INFO_REQUEST } from "../../../reducers/user";
 
 const StoreBlock = styled.div``;
 const Store = () => {
@@ -24,7 +25,11 @@ const Store = () => {
   const { oneStore, menu, loadMenusLoading, hasMoreMenu } = useSelector(
     (state) => state.store
   );
-
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+  });
   useEffect(() => {
     function onScroll() {
       if (

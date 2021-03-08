@@ -3,6 +3,9 @@
 import createReducer from "./createReducer";
 
 const initialState = {
+  addMyCartLoading: false, // 카트에 담기
+  addMyCartDone: false,
+  addMyCartError: null,
   loadMyInfoLoading: false, // 내정보 가져오기 시도중
   loadMyInfoDone: false,
   loadMyInfoError: null,
@@ -16,7 +19,11 @@ const initialState = {
   signUpDone: false,
   signUpError: null,
   me: null,
+  cart: null,
 };
+export const ADD_MY_CART_REQUEST = "ADD_MY_CART_REQUEST";
+export const ADD_MY_CART_SUCCESS = "ADD_MY_CART_SUCCESS";
+export const ADD_MY_CART_FAILURE = "ADD_MY_CART_FAILURE";
 
 export const LOAD_MY_INFO_REQUEST = "LOAD_MY_INFO_REQUEST";
 export const LOAD_MY_INFO_SUCCESS = "LOAD_MY_INFO_SUCCESS";
@@ -76,10 +83,9 @@ export default createReducer(initialState, {
     state.logOutError = null;
     state.logOutDone = false;
   },
-  [LOG_OUT_SUCCESS]: (state, action) => {
+  [LOG_OUT_SUCCESS]: (state) => {
     state.logOutLoading = false;
     state.logOutDone = true;
-    state.me = action.data;
   },
   [LOG_OUT_FAILURE]: (state, action) => {
     state.logOutLoading = false;

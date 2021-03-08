@@ -32,7 +32,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (signUpDone) {
-      Router.push("/");
+      Router.push("/login");
     }
   }, [signUpDone]);
 

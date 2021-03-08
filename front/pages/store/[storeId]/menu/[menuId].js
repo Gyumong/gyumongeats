@@ -1,6 +1,7 @@
 /** @format */
-import React, { useState, useCallback } from "react";
-import { useRouter } from "next/router";
+import React, { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Router, { useRouter } from "next/router";
 import useSWR from "swr";
 import axios from "axios";
 import { Thumbnail } from "../../../../components/Store/StyleTitleCard";
@@ -14,18 +15,35 @@ import {
   CountButton,
 } from "./style";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-
+import { LOAD_MY_INFO_REQUEST } from "../../../../reducers/user";
+import {
+  ADD_MY_CART_REQUEST,
+  UPDATE_QUANTITY_REQUEST,
+} from "../../../../reducers/cart";
+import wrapper from "../../../../store/configureStore";
+import { END } from "redux-saga";
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data.menu);
+const cartfetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Menu = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { storeId, menuId } = router.query;
+  const { me } = useSelector((state) => state.user);
   const { data: menuData, error: menuError } = useSWR(
     `http://localhost:3085/api/store/menu?s=${storeId}&m=${menuId}`,
     fetcher
   );
-  const [menuCount, setMenuCount] = useState(1);
+  const { data: cartData, error: cartError } = useSWR(
+    `http://localhost:3085/api/cart/info?e=${me.customerEmail}`,
+    cartfetcher
+  );
 
+  const [menuCount, setMenuCount] = useState(1);
+  const { addMyCartDone, addMyCartError, updateQuantityDone } = useSelector(
+    (state) => state.cart
+  );
   const onIncrease = useCallback(() => {
     setMenuCount((prev) => prev + 1);
   }, [menuCount]);
@@ -34,14 +52,72 @@ const Menu = () => {
       setMenuCount((prev) => prev - 1);
     }
   }, [menuCount]);
+  const AddCart = useCallback(() => {
+    if (!cartData) {
+      dispatch({
+        type: ADD_MY_CART_REQUEST,
+        data: {
+          storeId,
+          data: {
+            email: me.customerEmail,
+            menu: menuData.name,
+            category: menuData.category,
+            quantity: menuCount,
+          },
+        },
+      });
+    } else {
+      if (
+        undefined == cartData.menuList.find((v) => v.name === menuData.name)
+      ) {
+        dispatch({
+          type: ADD_MY_CART_REQUEST,
+          data: {
+            storeId,
+            data: {
+              email: me.customerEmail,
+              menu: menuData.name,
+              category: menuData.category,
+              quantity: menuCount,
+            },
+          },
+        });
+      } else {
+        console.log(cartData.menuList);
+        console.log(menuData.name);
+        // patch api 호출
+        dispatch({
+          type: UPDATE_QUANTITY_REQUEST,
+          data: {
+            email: me.customerEmail,
+            menu: menuData.name,
+            category: menuData.category,
+            quantity:
+              cartData.menuList.find((v) => v.name === menuData.name).quantity +
+              menuCount,
+          },
+        });
+      }
+    }
+  }, [me, menuData, cartData, menuCount]);
+  if (!me && !me.customerEmail) {
+    return router.push("/login");
+  }
   if (menuError) {
     console.error(menuError);
     return "메뉴 데이터를 가져오는데 실패 하였습니다.";
   }
   if (!menuData) {
-    return null;
+    return "메뉴 데이터가 없습니다.";
+  }
+  if (addMyCartError) {
+    alert(addMyCartError);
+  }
+  if (addMyCartDone || updateQuantityDone) {
+    Router.push("/cart");
   }
   console.log(menuData);
+  console.log(cartData);
   return (
     <MenuBlock>
       <Thumbnail src={`http://localhost:3085/img/thumbnail/3_1.png`} />
@@ -75,9 +151,34 @@ const Menu = () => {
           </p>
         </Count>
       </MenuDesc>
-      <CartModal>카트에 담기</CartModal>
+      <CartModal onClick={AddCart}>카트에 담기</CartModal>
     </MenuBlock>
   );
 };
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+      const { accessToken } = await axios
+        .get("/auth/reissue", {
+          withCredentials: true,
+        })
+        .then((res) => res.data);
+      console.log("acctoken", accessToken);
+      if (accessToken) {
+        axios.defaults.headers.common[
+          "x-access-token"
+        ] = await `${accessToken}`;
+        context.store.dispatch({
+          type: LOAD_MY_INFO_REQUEST,
+        });
+      }
+    }
 
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 export default Menu;
