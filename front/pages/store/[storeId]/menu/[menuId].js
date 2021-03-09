@@ -36,7 +36,9 @@ const Menu = () => {
     fetcher
   );
   const { data: cartData, error: cartError } = useSWR(
-    `http://localhost:3085/api/cart/info?e=${me.customerEmail}`,
+    me?.customerEmail
+      ? `http://localhost:3085/api/cart/info?e=${me.customerEmail}`
+      : null,
     cartfetcher
   );
 
@@ -53,23 +55,8 @@ const Menu = () => {
     }
   }, [menuCount]);
   const AddCart = useCallback(() => {
-    if (!cartData) {
-      dispatch({
-        type: ADD_MY_CART_REQUEST,
-        data: {
-          storeId,
-          data: {
-            email: me.customerEmail,
-            menu: menuData.name,
-            category: menuData.category,
-            quantity: menuCount,
-          },
-        },
-      });
-    } else {
-      if (
-        undefined == cartData.menuList.find((v) => v.name === menuData.name)
-      ) {
+    if (me?.customerEmail) {
+      if (!cartData) {
         dispatch({
           type: ADD_MY_CART_REQUEST,
           data: {
@@ -83,26 +70,43 @@ const Menu = () => {
           },
         });
       } else {
-        console.log(cartData.menuList);
-        console.log(menuData.name);
-        // patch api 호출
-        dispatch({
-          type: UPDATE_QUANTITY_REQUEST,
-          data: {
-            email: me.customerEmail,
-            menu: menuData.name,
-            category: menuData.category,
-            quantity:
-              cartData.menuList.find((v) => v.name === menuData.name).quantity +
-              menuCount,
-          },
-        });
+        if (
+          undefined == cartData.menuList.find((v) => v.name === menuData.name)
+        ) {
+          dispatch({
+            type: ADD_MY_CART_REQUEST,
+            data: {
+              storeId,
+              data: {
+                email: me.customerEmail,
+                menu: menuData.name,
+                category: menuData.category,
+                quantity: menuCount,
+              },
+            },
+          });
+        } else {
+          console.log(cartData.menuList);
+          console.log(menuData.name);
+          // patch api 호출
+          dispatch({
+            type: UPDATE_QUANTITY_REQUEST,
+            data: {
+              email: me.customerEmail,
+              menu: menuData.name,
+              category: menuData.category,
+              quantity:
+                cartData.menuList.find((v) => v.name === menuData.name)
+                  .quantity + menuCount,
+            },
+          });
+        }
       }
+    } else {
+      router.push("/login");
     }
   }, [me, menuData, cartData, menuCount]);
-  if (!me && !me.customerEmail) {
-    return router.push("/login");
-  }
+
   if (menuError) {
     console.error(menuError);
     return "메뉴 데이터를 가져오는데 실패 하였습니다.";
@@ -116,8 +120,7 @@ const Menu = () => {
   if (addMyCartDone || updateQuantityDone) {
     Router.push("/cart");
   }
-  console.log(menuData);
-  console.log(cartData);
+
   return (
     <MenuBlock>
       <Thumbnail src={`http://localhost:3085/img/thumbnail/3_1.png`} />
@@ -160,20 +163,25 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const cookie = context.req ? context.req.headers.cookie : "";
     axios.defaults.headers.Cookie = "";
     if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-      const { accessToken } = await axios
-        .get("/auth/reissue", {
-          withCredentials: true,
-        })
-        .then((res) => res.data);
-      console.log("acctoken", accessToken);
-      if (accessToken) {
-        axios.defaults.headers.common[
-          "x-access-token"
-        ] = await `${accessToken}`;
-        context.store.dispatch({
-          type: LOAD_MY_INFO_REQUEST,
-        });
+      try {
+        axios.defaults.headers.Cookie = cookie;
+        const { accessToken } = await axios
+          .get("/auth/reissue", {
+            withCredentials: true,
+          })
+          .then((res) => res.data);
+        console.log("acctoken", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common[
+            "x-access-token"
+          ] = await `${accessToken}`;
+          context.store.dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        const gotologin = true;
+        return { props: {} };
       }
     }
 
