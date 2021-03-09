@@ -8,6 +8,7 @@ import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
 import useSWR, { trigger } from "swr";
 import axios from "axios";
+import ReqCard from "../components/Cart/ReqCard";
 import { Header, ExitButton } from "../components/Cart/Header";
 import {
   CartMenuCardBlock,
@@ -20,6 +21,7 @@ import {
   PlusMenuButton,
 } from "../components/Cart/MenuCard";
 import Modal from "../components/Cart/CartModal";
+import { CartModal } from "../components/StyleMainPage";
 import {
   CloseOutlined,
   ShoppingCartOutlined,
@@ -28,6 +30,8 @@ import {
 import styled from "styled-components";
 import { DELETE_CART_MENU_REQUEST } from "../reducers/cart";
 import { useRouter } from "next/router";
+import useInput from "../hooks/useInput";
+import { TAKE_ORDER_REQUEST } from "../reducers/order";
 const CartBlock = styled.div`
   padding-top: 5vh;
   height: 100vh;
@@ -42,6 +46,9 @@ const NoDataCart = styled.div`
   align-items: center;
   justify-content: center;
 `;
+const OrderButton = styled(CartModal)`
+  bottom: 0;
+`;
 const cartfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 
@@ -55,6 +62,8 @@ const Cart = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [target, setTarget] = useState(null);
   const router = useRouter();
+  const [inputText, onChangeInputText] = useInput();
+  const [selectText, setSelectText] = useState("직접 수령(부재 시 문 앞)");
   const DeleteMenu = useCallback((m) => {
     console.log(m);
     dispatch({
@@ -66,6 +75,20 @@ const Cart = () => {
       },
     });
     // trigger(`http://localhost:3085/api/cart/info?e=${me.customerEmail}`);
+  }, []);
+  const Order = useCallback(() => {
+    dispatch({
+      type: TAKE_ORDER_REQUEST,
+      data: {
+        email: me.customerEmail,
+        //storeId:
+        price: lastPrice,
+        requestForOwner: inputText,
+        requestForRider: selectText,
+        //address
+        menuList: cartData.menuList,
+      },
+    });
   }, []);
 
   const showModal = useCallback(
@@ -81,12 +104,17 @@ const Cart = () => {
     await setIsModalVisible(false);
   }, [isModalVisible]);
 
+  const onChangeSelectText = useCallback((value) => {
+    setSelectText(value);
+  }, []);
+
   const ExitCart = useCallback(() => {
     router.push("/");
   }, []);
   if (!me) {
     return router.push("/login");
   }
+
   if (!cartData) {
     return (
       <>
@@ -104,8 +132,13 @@ const Cart = () => {
   if (cartError) {
     return "카트 정보를 가져오는데 실패했습니다.";
   }
-
+  const lastPrice = cartData.menuList
+    .map((v) => v.price * v.quantity)
+    .reduce((a, b) => a + b);
+  console.log(lastPrice);
   console.log(cartData);
+  console.log(inputText);
+  console.log(selectText);
   return (
     <>
       <Header>
@@ -143,6 +176,15 @@ const Cart = () => {
             <Modal close={closeModal} menu={target} me={me} />
           ) : null}
         </CartMenuCardBlock>
+        <ReqCard
+          inputText={inputText}
+          onChangeInputText={onChangeInputText}
+          SelectText={selectText}
+          onChangeSelectText={onChangeSelectText}
+        />
+        <OrderButton onClick={Order}>
+          <h2>{lastPrice}원 결제하기</h2>
+        </OrderButton>
       </CartBlock>
     </>
   );
@@ -175,4 +217,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default Cart;
+export default React.memo(Cart);

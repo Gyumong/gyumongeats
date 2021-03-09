@@ -4,6 +4,7 @@ import { HYDRATE } from "next-redux-wrapper";
 import user from "./user";
 import store from "./store";
 import cart from "./cart";
+import order from "./order";
 import { combineReducers } from "redux";
 
 const rootReducer = (state, action) => {
@@ -16,6 +17,7 @@ const rootReducer = (state, action) => {
         user,
         store,
         cart,
+        order,
       });
       return combinedReducer(state, action);
     }
