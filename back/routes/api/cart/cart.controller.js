@@ -1,5 +1,3 @@
-/** @format */
-
 const { Cart, Store, Menu } = require("../../../models");
 
 exports.addMenu = async (req, res) => {
@@ -43,7 +41,7 @@ exports.getCartInfo = async (req, res) => {
     const storeId = cart[0].dataValues.storeId;
 
     const store = await Store.findOne({
-      attributes: ["storeName", "minOrderPrice", "deliveryFee"],
+      attributes: ["storeId", "storeName", "minOrderPrice", "deliveryFee"],
       where: { storeId: storeId },
     });
 
@@ -108,10 +106,8 @@ exports.deleteMenu = async (req, res) => {
         category: category,
       },
     });
-    console.log("done?");
-    res.status(200).json({ success: true });
+    res.status(204).send();
   } catch (err) {
-    console.log("err");
     res.status(400).json({
       success: false,
       errorMessage: err,
