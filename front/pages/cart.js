@@ -8,6 +8,7 @@ import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
 import useSWR, { trigger } from "swr";
 import axios from "axios";
+import ReqCard from "../components/Cart/ReqCard";
 import { Header, ExitButton } from "../components/Cart/Header";
 import {
   CartMenuCardBlock,
@@ -20,6 +21,7 @@ import {
   PlusMenuButton,
 } from "../components/Cart/MenuCard";
 import Modal from "../components/Cart/CartModal";
+import { CartModal } from "../components/StyleMainPage";
 import {
   CloseOutlined,
   ShoppingCartOutlined,
@@ -41,6 +43,9 @@ const NoDataCart = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+const OrderButton = styled(CartModal)`
+  bottom: 0;
 `;
 const cartfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
@@ -104,7 +109,10 @@ const Cart = () => {
   if (cartError) {
     return "카트 정보를 가져오는데 실패했습니다.";
   }
-
+  const lastPrice = cartData.menuList
+    .map((v) => v.price * v.quantity)
+    .reduce((a, b) => a + b);
+  console.log(lastPrice);
   console.log(cartData);
   return (
     <>
@@ -143,6 +151,10 @@ const Cart = () => {
             <Modal close={closeModal} menu={target} me={me} />
           ) : null}
         </CartMenuCardBlock>
+        <ReqCard />
+        <OrderButton>
+          <h2>{lastPrice}원 결제하기</h2>
+        </OrderButton>
       </CartBlock>
     </>
   );

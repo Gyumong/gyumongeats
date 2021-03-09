@@ -22,6 +22,7 @@ const Home = () => {
     (state) => state.store
   );
   const { me } = useSelector((state) => state.user);
+
   const { data: cartData, error: cartError } = useSWR(
     `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`,
     cartfetcher
@@ -48,7 +49,9 @@ const Home = () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, [store, hasMoreStore, loadStoresLoading]);
-
+  if (!cartData) {
+    return null;
+  }
   return (
     <AppLayout>
       <PopularCard />
@@ -66,7 +69,7 @@ const Home = () => {
           );
         })}
       </StoreListBlock>
-      {cartData ? (
+      {cartData.menuCnt ? (
         <CartModal onClick={PushCart}>
           <strong>{cartData.menuCnt}</strong>
           <h2>카트보기</h2>
