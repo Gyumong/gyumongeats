@@ -38,20 +38,23 @@ const SelectText = styled(Select)`
   width: 100%;
   overflow: hidden;
 `;
-const ReqCard = () => {
+const ReqCard = ({ inputText, onChangeInputText, onChangeSelectText }) => {
   return (
     <ReqCardBlock>
       <ReqCardTitle>
         <h2>요청사항</h2>
       </ReqCardTitle>
       <ReqCardBox>
-        <InputTitle>
+        <InputTitle value={inputText} onChange={onChangeInputText}>
           <h2>가게 사장님에게</h2>
           <InputText rows={1} placeholder="예) 견과류는 빼주세요" autoSize />
         </InputTitle>
         <InputTitle>
           <h2>배달 기사님에게</h2>
-          <SelectText defaultValue="직접 수령(부재 시 문 앞)">
+          <SelectText
+            defaultValue="직접 수령(부재 시 문 앞)"
+            onChange={onChangeSelectText}
+          >
             <Option value="직접 수령(부재 시 문 앞)">
               직접 수령(부재 시 문 앞)
             </Option>

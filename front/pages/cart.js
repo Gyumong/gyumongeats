@@ -30,6 +30,8 @@ import {
 import styled from "styled-components";
 import { DELETE_CART_MENU_REQUEST } from "../reducers/cart";
 import { useRouter } from "next/router";
+import useInput from "../hooks/useInput";
+import { TAKE_ORDER_REQUEST } from "../reducers/order";
 const CartBlock = styled.div`
   padding-top: 5vh;
   height: 100vh;
@@ -60,6 +62,8 @@ const Cart = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [target, setTarget] = useState(null);
   const router = useRouter();
+  const [inputText, onChangeInputText] = useInput();
+  const [selectText, setSelectText] = useState("직접 수령(부재 시 문 앞)");
   const DeleteMenu = useCallback((m) => {
     console.log(m);
     dispatch({
@@ -71,6 +75,20 @@ const Cart = () => {
       },
     });
     // trigger(`http://localhost:3085/api/cart/info?e=${me.customerEmail}`);
+  }, []);
+  const Order = useCallback(() => {
+    dispatch({
+      type: TAKE_ORDER_REQUEST,
+      data: {
+        email: me.customerEmail,
+        //storeId:
+        price: lastPrice,
+        requestForOwner: inputText,
+        requestForRider: selectText,
+        //address
+        menuList: cartData.menuList,
+      },
+    });
   }, []);
 
   const showModal = useCallback(
@@ -86,12 +104,17 @@ const Cart = () => {
     await setIsModalVisible(false);
   }, [isModalVisible]);
 
+  const onChangeSelectText = useCallback((value) => {
+    setSelectText(value);
+  }, []);
+
   const ExitCart = useCallback(() => {
     router.push("/");
   }, []);
   if (!me) {
     return router.push("/login");
   }
+
   if (!cartData) {
     return (
       <>
@@ -114,6 +137,8 @@ const Cart = () => {
     .reduce((a, b) => a + b);
   console.log(lastPrice);
   console.log(cartData);
+  console.log(inputText);
+  console.log(selectText);
   return (
     <>
       <Header>
@@ -151,8 +176,13 @@ const Cart = () => {
             <Modal close={closeModal} menu={target} me={me} />
           ) : null}
         </CartMenuCardBlock>
-        <ReqCard />
-        <OrderButton>
+        <ReqCard
+          inputText={inputText}
+          onChangeInputText={onChangeInputText}
+          SelectText={selectText}
+          onChangeSelectText={onChangeSelectText}
+        />
+        <OrderButton onClick={Order}>
           <h2>{lastPrice}원 결제하기</h2>
         </OrderButton>
       </CartBlock>
@@ -187,4 +217,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default Cart;
+export default React.memo(Cart);
