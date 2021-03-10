@@ -6,7 +6,7 @@ import StoreCard from "../components/Store/StoreCard";
 import Link from "next/link";
 import { StoreListBlock, CartModal } from "../components/StyleMainPage";
 import PopularCard from "../components/Store/PopularCard";
-import store, { LOAD_STORES_REQUEST } from "../reducers/store";
+import { LOAD_STORES_REQUEST } from "../reducers/store";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import Category from "../components/Category";
 import wrapper from "../store/configureStore";
@@ -21,10 +21,13 @@ const Home = () => {
   const { store, hasMoreStore, loadStoresLoading } = useSelector(
     (state) => state.store
   );
+
   const { me } = useSelector((state) => state.user);
 
-  const { data: cartData, error: cartError } = useSWR(
-    `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`,
+  const { data: cartData } = useSWR(
+    me?.customerEmail
+      ? `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`
+      : null,
     cartfetcher
   );
 
@@ -49,9 +52,7 @@ const Home = () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, [store, hasMoreStore, loadStoresLoading]);
-  if (!cartData) {
-    return null;
-  }
+
   return (
     <AppLayout>
       <PopularCard />
@@ -69,7 +70,7 @@ const Home = () => {
           );
         })}
       </StoreListBlock>
-      {cartData.menuCnt ? (
+      {cartData?.menuCnt ? (
         <CartModal onClick={PushCart}>
           <strong>{cartData.menuCnt}</strong>
           <h2>카트보기</h2>
@@ -79,35 +80,38 @@ const Home = () => {
     </AppLayout>
   );
 };
+
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
     const cookie = context.req ? context.req.headers.cookie : "";
     axios.defaults.headers.Cookie = "";
     if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-      const { accessToken } = await axios
-        .get("/auth/reissue", {
-          withCredentials: true,
-        })
-        .then((res) => res.data);
-      console.log("acctoken", accessToken);
-      if (accessToken) {
-        axios.defaults.headers.common[
-          "x-access-token"
-        ] = await `${accessToken}`;
+      try {
+        axios.defaults.headers.Cookie = cookie;
+        const { accessToken } = await axios
+          .get("/auth/reissue", {
+            withCredentials: true,
+          })
+          .then((res) => res.data);
+        console.log("acctoken", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common[
+            "x-access-token"
+          ] = await `${accessToken}`;
+          context.store.dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
         context.store.dispatch({
-          type: LOAD_MY_INFO_REQUEST,
+          type: LOAD_STORES_REQUEST,
         });
+      } catch (e) {
+        return { props: {} };
       }
     }
-
-    context.store.dispatch({
-      type: LOAD_STORES_REQUEST,
-    });
 
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }
 );
-
 export default Home;

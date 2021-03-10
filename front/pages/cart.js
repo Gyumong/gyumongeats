@@ -56,7 +56,9 @@ const Cart = () => {
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { data: cartData, error: cartError } = useSWR(
-    `http://localhost:3085/api/cart/info?e=${me.customerEmail}`,
+    me.customerEmail
+      ? `http://localhost:3085/api/cart/info?e=${me.customerEmail}`
+      : null,
     cartfetcher
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
