@@ -102,11 +102,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
             type: LOAD_MY_INFO_REQUEST,
           });
         }
+      } catch (e) {
+        return { props: {} };
+      } finally {
         context.store.dispatch({
           type: LOAD_STORES_REQUEST,
         });
-      } catch (e) {
-        return { props: {} };
       }
     }
 
