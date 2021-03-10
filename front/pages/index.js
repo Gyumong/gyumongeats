@@ -22,14 +22,9 @@ const Home = () => {
     (state) => state.store
   );
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-  }, []);
   const { me } = useSelector((state) => state.user);
 
-  const { data: cartData, error: cartError } = useSWR(
+  const { data: cartData } = useSWR(
     me?.customerEmail
       ? `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`
       : null,
@@ -85,14 +80,38 @@ const Home = () => {
     </AppLayout>
   );
 };
+
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
-    context.store.dispatch({
-      type: LOAD_STORES_REQUEST,
-    });
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      try {
+        axios.defaults.headers.Cookie = cookie;
+        const { accessToken } = await axios
+          .get("/auth/reissue", {
+            withCredentials: true,
+          })
+          .then((res) => res.data);
+        console.log("acctoken", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common[
+            "x-access-token"
+          ] = await `${accessToken}`;
+          context.store.dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+        context.store.dispatch({
+          type: LOAD_STORES_REQUEST,
+        });
+      } catch (e) {
+        return { props: {} };
+      }
+    }
+
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }
 );
-
 export default Home;

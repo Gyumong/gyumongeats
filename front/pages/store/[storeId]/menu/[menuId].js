@@ -180,7 +180,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
           });
         }
       } catch (e) {
-        const gotologin = true;
         return { props: {} };
       }
     }
