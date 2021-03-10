@@ -5,9 +5,8 @@ export const initialState = {
   oneStore: null,
   store: [],
   menu: [],
-  storeid: 0,
+  storeid: 10,
   menuid: 0,
-  hasMoreStore: true,
   hasMoreMenu: true,
   loadStoresLoading: false,
   loadStoresDone: false,
@@ -19,6 +18,8 @@ export const initialState = {
   loadOneStoreDone: false,
   loadOneStoreError: null,
 };
+
+export const MORE_STORES = "MORE_STORES";
 
 export const ON_MODAL = "ON_MODAL";
 export const OFF_MODAL = "OFF_MODAL";
@@ -35,6 +36,9 @@ export const LOAD_MENUS_SUCCESS = "LOAD_MENUS_SUCCESS";
 export const LOAD_MENUS_FAILURE = "LOAD_MENUS_FAILURE";
 
 export default createReducer(initialState, {
+  [MORE_STORES]: (state) => {
+    state.storeid = state.storeid + 10;
+  },
   [ON_MODAL]: (state) => {
     state.onModalDone = true;
   },
@@ -68,10 +72,7 @@ export default createReducer(initialState, {
   [LOAD_STORES_SUCCESS]: (state, action) => {
     state.loadStoresLoading = false;
     state.loadStoresDone = true;
-    state.store = state.store.concat(
-      action.data.slice(state.stored, state.storeid + 10)
-    );
-    state.hasMoreStore = state.store.length < 100;
+    state.store = state.store.concat(action.data);
   },
   [LOAD_STORES_FAILURE]: (state, action) => {
     state.loadStoresLoading = false;
