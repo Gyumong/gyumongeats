@@ -178,12 +178,14 @@ const Cart = () => {
             <Modal close={closeModal} menu={target} me={me} />
           ) : null}
         </CartMenuCardBlock>
-        <ReqCard
-          inputText={inputText}
-          onChangeInputText={onChangeInputText}
-          SelectText={selectText}
-          onChangeSelectText={onChangeSelectText}
-        />
+        {!isModalVisible ? (
+          <ReqCard
+            inputText={inputText}
+            onChangeInputText={onChangeInputText}
+            SelectText={selectText}
+            onChangeSelectText={onChangeSelectText}
+          />
+        ) : null}
         <OrderButton onClick={Order}>
           <h2>{lastPrice}원 결제하기</h2>
         </OrderButton>
