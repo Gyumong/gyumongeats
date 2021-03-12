@@ -118,7 +118,7 @@ const Menu = () => {
     alert(addMyCartError);
   }
   if (addMyCartDone || updateQuantityDone) {
-    Router.push("/cart");
+    Router.push(`/store/${storeId}`);
   }
 
   return (
