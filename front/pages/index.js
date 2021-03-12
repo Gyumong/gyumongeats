@@ -16,7 +16,7 @@ import useSWR from "swr";
 import Router from "next/router";
 const cartfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
-const Home = () => {
+const Home = ({ props }) => {
   const dispatch = useDispatch();
   const { store, loadStoresLoading, storeid } = useSelector(
     (state) => state.store
@@ -52,7 +52,7 @@ const Home = () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, [store, storeid, loadStoresLoading]);
-
+  console.log(props);
   return (
     <AppLayout>
       <PopularCard />
@@ -83,6 +83,9 @@ const Home = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
+    context.store.dispatch({
+      type: LOAD_STORES_REQUEST,
+    });
     const cookie = context.req ? context.req.headers.cookie : "";
     axios.defaults.headers.Cookie = "";
     if (context.req && cookie) {
@@ -102,16 +105,16 @@ export const getServerSideProps = wrapper.getServerSideProps(
             type: LOAD_MY_INFO_REQUEST,
           });
         }
-        context.store.dispatch({
-          type: LOAD_STORES_REQUEST,
-        });
       } catch (e) {
-        return { props: {} };
+        console.log("ERROR", e);
       }
     }
-
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
+    console.log(
+      "CCCCCCCCCCCCCCCCCCCCCCCC",
+      context.store.getState().store.store
+    );
   }
 );
 export default Home;
