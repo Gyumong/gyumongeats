@@ -1,6 +1,7 @@
 const {
   sequelize,
   Cart,
+  Store,
   Order,
   OrderingMenu
 } = require('../../../models');
@@ -25,7 +26,8 @@ exports.takeOrder = async (req, res) => {
       price,
       requestForOwner,
       requestForRider,
-      address
+      address,
+      reviewRegistered: false
     }, { transaction: t });
     for(const menu of menuList) {
       await OrderingMenu.create({
@@ -35,6 +37,7 @@ exports.takeOrder = async (req, res) => {
         quantity: menu.quantity
       }, { transaction: t });
     }
+
     await Cart.destroy({
       where: {
         userId: email,
@@ -42,6 +45,20 @@ exports.takeOrder = async (req, res) => {
       },
       transaction: t
     });
+
+    const { orderCnt } = (await Store.findOne({
+      attributes: ["orderCnt"],
+      where: { storeId },
+      transaction: t
+    })).dataValues;
+    await Store.update(
+      { orderCnt: orderCnt+1 },
+      {
+        where: { storeId },
+        transaction: t
+      }
+    );
+
     await t.commit();
     res.status(201).json({
       success: true,

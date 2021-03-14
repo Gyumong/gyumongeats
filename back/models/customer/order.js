@@ -38,9 +38,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       field: "address"
+    },
+    reviewRegistered: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      field: "review_registered"
     }
   }, {
     timestamps: true,
     freezeTableName: true
   });
-}
+};

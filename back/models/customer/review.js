@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       field: 'img'
     },
     GPA: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: false,
       field: 'gpa'
     },
@@ -37,4 +37,4 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     freezeTableName: true
   });
-}
+};
