@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Menu } from "antd";
 import { useDispatch } from "react-redux";
 import { UPDATE_QUANTITY_REQUEST } from "../../reducers/cart";
-const ModalBackground = styled.div`
+export const ModalBackground = styled.div`
   position: fixed;
   left: 0;
   right: 0;
@@ -14,7 +14,7 @@ const ModalBackground = styled.div`
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
 `;
-const ModalBlock = styled.div`
+export const ModalBlock = styled.div`
   position: fixed;
   font-family: "Noto Sans KR", sans-serif;
   margin: auto auto;
@@ -29,7 +29,7 @@ const ModalBlock = styled.div`
   height: 60vh;
   background-color: #fff;
 `;
-const ModalList = styled(Menu)`
+export const ModalList = styled(Menu)`
   width: 100%;
   height: 100%;
   display: flex;
@@ -43,7 +43,7 @@ const ModalList = styled(Menu)`
     margin-bottom: 0;
   }
 `;
-const ListItem = styled(Menu.Item)`
+export const ListItem = styled(Menu.Item)`
   display: flex;
   align-items: center;
   flex-grow: 1;
