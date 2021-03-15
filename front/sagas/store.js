@@ -6,15 +6,7 @@
 
 /** @format */
 
-import {
-  all,
-  delay,
-  put,
-  fork,
-  takeLatest,
-  call,
-  throttle,
-} from "redux-saga/effects";
+import { all, put, fork, takeLatest, call, throttle } from "redux-saga/effects";
 import {
   LOAD_STORES_REQUEST,
   LOAD_STORES_SUCCESS,
@@ -25,6 +17,9 @@ import {
   LOAD_MENUS_REQUEST,
   LOAD_MENUS_SUCCESS,
   LOAD_MENUS_FAILURE,
+  LOAD_DSTORES_REQUEST,
+  LOAD_DSTORES_SUCCESS,
+  LOAD_DSTORES_FAILURE,
 } from "../reducers/store";
 import axios from "axios";
 
@@ -74,6 +69,29 @@ function* loadStores(action) {
   }
 }
 
+function loadDStoresAPI(data) {
+  return axios.get(`/store/all?f=${data}`);
+}
+
+function* loadDStores(action) {
+  // 액션을 받음
+  try {
+    const result = yield call(loadDStoresAPI, action.data);
+    console.log(result);
+    yield put({
+      // 액션을 dispatch
+      type: LOAD_DSTORES_SUCCESS,
+      data: result.data.Store,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: LOAD_DSTORES_FAILURE,
+      error: e.response.error,
+    });
+  }
+}
+
 function loadOneStoreAPI(data) {
   return axios.get(`/store/info-and-menu/?id=${data}`);
 }
@@ -102,6 +120,10 @@ function* watchLoadStores() {
   yield throttle(1000, LOAD_STORES_REQUEST, loadStores);
 }
 
+function* watchLoadDStores() {
+  yield throttle(1000, LOAD_DSTORES_REQUEST, loadDStores);
+}
+
 function* watchLoadMenus() {
   yield throttle(1000, LOAD_MENUS_REQUEST, loadMenus);
 }
@@ -114,5 +136,6 @@ export default function* storeSaga() {
     fork(watchLoadStores),
     fork(watchLoadOneStore),
     fork(watchLoadMenus),
+    fork(watchLoadDStores),
   ]);
 }
