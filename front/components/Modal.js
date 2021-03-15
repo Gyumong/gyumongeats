@@ -7,6 +7,7 @@ import {
   LOAD_DSTORES_REQUEST,
   OFF_MODAL,
   LOAD_MSTORES_REQUEST,
+  LOAD_ASTORES_REQUEST,
 } from "../reducers/store";
 import {
   ModalBackground,
@@ -106,8 +107,10 @@ const Modal = ({ whatModal }) => {
   const onValue = useCallback(async (e) => {
     console.log("click", e.key);
     dispatch({
-      type: OFF_MODAL,
+      type: LOAD_ASTORES_REQUEST,
+      data: e.key,
     });
+    removeModal();
   }, []);
 
   const onBValue = useCallback(
@@ -256,11 +259,8 @@ const Modal = ({ whatModal }) => {
           </ModalExit>
         </ModalTop>
         <MainModalList onClick={onValue}>
-          <MainListItem key="추천순">추천순</MainListItem>
-          <MainListItem key="2">주문많은순</MainListItem>
-          <MainListItem key="3">가까운순</MainListItem>
-          <MainListItem key="4">별점높은순</MainListItem>
-          <MainListItem key="5">신규매장순</MainListItem>
+          <MainListItem key="order_cnt">주문많은순</MainListItem>
+          <MainListItem key="gpa">별점높은순</MainListItem>
         </MainModalList>
       </ModalBlock>
     </MainModalBackground>

@@ -23,6 +23,9 @@ import {
   LOAD_MSTORES_REQUEST,
   LOAD_MSTORES_SUCCESS,
   LOAD_MSTORES_FAILURE,
+  LOAD_ASTORES_SUCCESS,
+  LOAD_ASTORES_FAILURE,
+  LOAD_ASTORES_REQUEST,
 } from "../reducers/store";
 import axios from "axios";
 
@@ -118,6 +121,29 @@ function* loadMStores(action) {
   }
 }
 
+function loadAStoresAPI(data) {
+  return axios.get(`/store/all?T=${data}`);
+}
+
+function* loadAStores(action) {
+  // 액션을 받음
+  try {
+    const result = yield call(loadAStoresAPI, action.data);
+    console.log(result);
+    yield put({
+      // 액션을 dispatch
+      type: LOAD_ASTORES_SUCCESS,
+      data: result.data.Store,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: LOAD_ASTORES_FAILURE,
+      error: e.response.error,
+    });
+  }
+}
+
 function loadOneStoreAPI(data) {
   return axios.get(`/store/info-and-menu/?id=${data}`);
 }
@@ -152,6 +178,9 @@ function* watchLoadDStores() {
 function* watchLoadMStores() {
   yield throttle(1000, LOAD_MSTORES_REQUEST, loadMStores);
 }
+function* watchLoadAStores() {
+  yield throttle(1000, LOAD_ASTORES_REQUEST, loadAStores);
+}
 
 function* watchLoadMenus() {
   yield throttle(1000, LOAD_MENUS_REQUEST, loadMenus);
@@ -167,5 +196,6 @@ export default function* storeSaga() {
     fork(watchLoadMenus),
     fork(watchLoadDStores),
     fork(watchLoadMStores),
+    fork(watchLoadAStores),
   ]);
 }
