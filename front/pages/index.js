@@ -6,7 +6,7 @@ import StoreCard from "../components/Store/StoreCard";
 import Link from "next/link";
 import { StoreListBlock, CartModal } from "../components/StyleMainPage";
 import PopularCard from "../components/Store/PopularCard";
-import { LOAD_STORES_REQUEST } from "../reducers/store";
+import { LOAD_STORES_REQUEST, MORE_STORES } from "../reducers/store";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import Category from "../components/Category";
 import wrapper from "../store/configureStore";
@@ -18,7 +18,7 @@ const cartfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Home = () => {
   const dispatch = useDispatch();
-  const { store, hasMoreStore, loadStoresLoading } = useSelector(
+  const { store, loadStoresLoading, storeid } = useSelector(
     (state) => state.store
   );
 
@@ -40,9 +40,9 @@ const Home = () => {
         window.scrollY + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 150
       ) {
-        if (hasMoreStore && !loadStoresLoading) {
+        if (storeid < store.length && !loadStoresLoading) {
           dispatch({
-            type: LOAD_STORES_REQUEST,
+            type: MORE_STORES,
           });
         }
       }
@@ -51,7 +51,7 @@ const Home = () => {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [store, hasMoreStore, loadStoresLoading]);
+  }, [store, storeid, loadStoresLoading]);
 
   return (
     <AppLayout>
@@ -59,7 +59,7 @@ const Home = () => {
       <StoreListBlock>
         <h2>골라먹는 맛집</h2>
         <Category />
-        {store.map((store) => {
+        {store.slice(0, storeid).map((store) => {
           return (
             // eslint-disable-next-line react/jsx-key
             <Link href="/store/[storeId]" as={`/store/${store.storeId}`}>
@@ -83,6 +83,9 @@ const Home = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
+    context.store.dispatch({
+      type: LOAD_STORES_REQUEST,
+    });
     const cookie = context.req ? context.req.headers.cookie : "";
     axios.defaults.headers.Cookie = "";
     if (context.req && cookie) {
@@ -103,14 +106,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
           });
         }
       } catch (e) {
-        return { props: {} };
-      } finally {
-        context.store.dispatch({
-          type: LOAD_STORES_REQUEST,
-        });
+        console.log("ERROR", e);
       }
     }
-
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }

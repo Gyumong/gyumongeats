@@ -11,7 +11,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import styled, { createGlobalStyle } from "styled-components";
-import { useSelector } from "react-redux";
+
 export const Global = createGlobalStyle`
     *{
       margin:0;
@@ -38,58 +38,49 @@ const ItemBlock = styled(Menu.Item)`
   text-align: center;
 `;
 
-const Background = styled.div`
-  background: ${(props) => (props.onModal ? "rgba(0, 0, 0, 0.5)" : null)};
-  opacity: ${(props) => (props.onModal ? 0.9 : null)};
-`;
-
 // eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
-  const { onModalDone } = useSelector((state) => state.store);
   return (
     <div>
       <Global />
-
-      <Background onModal={onModalDone}>
-        {children}
-        <MenuBlock mode="inline">
-          <ItemBlock>
-            <Link href="/">
-              <a>
-                <HomeOutlined />
-              </a>
-            </Link>
-          </ItemBlock>
-          <ItemBlock>
-            <Link href="/search">
-              <a>
-                <SearchOutlined />
-              </a>
-            </Link>
-          </ItemBlock>
-          <ItemBlock>
-            <Link href="/favorite">
-              <a>
-                <HeartOutlined />
-              </a>
-            </Link>
-          </ItemBlock>
-          <ItemBlock>
-            <Link href="/cart">
-              <a>
-                <CarryOutOutlined />
-              </a>
-            </Link>
-          </ItemBlock>
-          <ItemBlock>
-            <Link href="/profile">
-              <a>
-                <UserOutlined />
-              </a>
-            </Link>
-          </ItemBlock>
-        </MenuBlock>
-      </Background>
+      {children}
+      <MenuBlock mode="inline">
+        <ItemBlock>
+          <Link href="/">
+            <a>
+              <HomeOutlined />
+            </a>
+          </Link>
+        </ItemBlock>
+        <ItemBlock>
+          <Link href="/search">
+            <a>
+              <SearchOutlined />
+            </a>
+          </Link>
+        </ItemBlock>
+        <ItemBlock>
+          <Link href="/favorite">
+            <a>
+              <HeartOutlined />
+            </a>
+          </Link>
+        </ItemBlock>
+        <ItemBlock>
+          <Link href="/cart">
+            <a>
+              <CarryOutOutlined />
+            </a>
+          </Link>
+        </ItemBlock>
+        <ItemBlock>
+          <Link href="/profile">
+            <a>
+              <UserOutlined />
+            </a>
+          </Link>
+        </ItemBlock>
+      </MenuBlock>
     </div>
   );
 };

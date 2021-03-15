@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -53,13 +53,29 @@ const CategoryMark = styled.div`
   margin-right: 0.15rem;
 `;
 const Category = () => {
-  const { onModalDone } = useSelector((state) => state.store);
+  const {
+    onModalDone,
+    loadDStoresDone,
+    loadAStoresDone,
+    loadMStoresDone,
+  } = useSelector((state) => state.store);
   const dispatch = useDispatch();
-  const onModal = useCallback(() => {
+  const [whatModal, setWhatModal] = useState();
+  const onModal = useCallback((i) => {
+    setWhatModal(i);
     dispatch({
       type: ON_MODAL,
     });
   }, []);
+  const myRef = useRef(null);
+  useEffect(() => {
+    if (loadDStoresDone || loadAStoresDone || loadMStoresDone) {
+      myRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [loadDStoresDone, loadAStoresDone, loadMStoresDone]);
   const a = [
     { text: "추천순" },
     { text: "치타배달" },
@@ -76,13 +92,13 @@ const Category = () => {
   };
   return (
     <>
-      <CategoryBlock>
+      <CategoryBlock ref={myRef}>
         <StyledSlider {...settings}>
           {a.map((item) => {
             return (
               <>
                 <CategoryList key={item}>
-                  <CategoryMark onClick={onModal}>
+                  <CategoryMark onClick={() => onModal(item.text)}>
                     <div>{item.text}</div>
                     <DownOutlined />
                   </CategoryMark>
@@ -92,7 +108,7 @@ const Category = () => {
           })}
         </StyledSlider>
       </CategoryBlock>
-      {onModalDone && <Modal />}
+      {onModalDone && <Modal whatModal={whatModal} />}
     </>
   );
 };
