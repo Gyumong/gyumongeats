@@ -3,7 +3,11 @@ import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { CloseOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
-import { LOAD_DSTORES_REQUEST, OFF_MODAL } from "../reducers/store";
+import {
+  LOAD_DSTORES_REQUEST,
+  OFF_MODAL,
+  LOAD_MSTORES_REQUEST,
+} from "../reducers/store";
 import {
   ModalBackground,
   ModalList,
@@ -92,6 +96,8 @@ const Modal = ({ whatModal }) => {
   const dispatch = useDispatch();
   const [deliveryFee, setDeliveryFee] = useState(10000);
   const [deliveryDes, setDeliveryDes] = useState("배달비 전체");
+  const [minOrderP, setMinOrderP] = useState(30000);
+  const [minOrderD, setMinOrderD] = useState("전체");
   const removeModal = useCallback(() => {
     dispatch({
       type: OFF_MODAL,
@@ -128,18 +134,57 @@ const Modal = ({ whatModal }) => {
     [deliveryFee, deliveryDes]
   );
   const onSubmitB = useCallback(() => {
-    console.log(deliveryFee, deliveryDes);
     dispatch({
       type: LOAD_DSTORES_REQUEST,
       data: deliveryFee,
     });
     removeModal();
   }, [deliveryFee, deliveryDes]);
+
+  const onSubmitM = useCallback(() => {
+    dispatch({
+      type: LOAD_MSTORES_REQUEST,
+      data: minOrderP,
+    });
+    removeModal();
+  }, [minOrderP]);
+
+  const onMValue = useCallback(
+    (e) => {
+      setTimeout(300);
+      console.log("click", e);
+      if (e === 0) {
+        setMinOrderP(5000);
+        setMinOrderD("5,000원 이하");
+      } else if (e === 25) {
+        setMinOrderP(10000);
+        setMinOrderD("10,000원 이하");
+      } else if (e === 50) {
+        setMinOrderP(12000);
+        setMinOrderD("12,000원 이하");
+      } else if (e === 75) {
+        setMinOrderP(15000);
+        setMinOrderD("15,000원 이하");
+      } else if (e === 100) {
+        setMinOrderP(30000);
+        setMinOrderD("전체");
+      }
+    },
+    [deliveryFee, deliveryDes]
+  );
   const marks = {
     0: "무료배달",
     25: "1000",
     50: "2000",
     75: "3000",
+    100: "전체",
+  };
+
+  const marksM = {
+    0: "5000",
+    25: "10000",
+    50: "12000",
+    75: "15000",
     100: "전체",
   };
   if (whatModal === "배달비") {
@@ -164,6 +209,35 @@ const Modal = ({ whatModal }) => {
                 defaultValue={100}
                 tooltipVisible={false}
                 onAfterChange={onBValue}
+              />
+              <button type="submit">적용하기</button>
+            </BModalSlide>
+          </Form>
+        </ModalBlock>
+      </MainModalBackground>
+    );
+  }
+  if (whatModal === "최소주문") {
+    return (
+      <MainModalBackground>
+        <ModalBlock>
+          <ModalTop>
+            최소주문
+            <ModalExit onClick={removeModal}>
+              <CloseOutlined />
+            </ModalExit>
+          </ModalTop>
+          <Form onFinish={onSubmitM}>
+            <BModalSlide>
+              <h1 style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+                {minOrderD}
+              </h1>
+              <BSlider
+                marks={marksM}
+                step={25}
+                defaultValue={100}
+                tooltipVisible={false}
+                onAfterChange={onMValue}
               />
               <button type="submit">적용하기</button>
             </BModalSlide>

@@ -11,6 +11,9 @@ export const initialState = {
   loadDStoresLoading: false,
   loadDStoresDone: false,
   loadDStoresError: null,
+  loadMStoresLoading: false,
+  loadMStoresDone: false,
+  loadMStoresError: null,
   loadStoresLoading: false,
   loadStoresDone: false,
   loadStoresError: null,
@@ -26,6 +29,10 @@ export const MORE_STORES = "MORE_STORES";
 
 export const ON_MODAL = "ON_MODAL";
 export const OFF_MODAL = "OFF_MODAL";
+
+export const LOAD_MSTORES_REQUEST = "LOAD_MSTORES_REQUEST";
+export const LOAD_MSTORES_SUCCESS = "LOAD_MSTORES_SUCCESS";
+export const LOAD_MSTORES_FAILURE = "LOAD_MSTORES_FAILURE";
 
 export const LOAD_DSTORES_REQUEST = "LOAD_DSTORES_REQUEST";
 export const LOAD_DSTORES_SUCCESS = "LOAD_DSTORES_SUCCESS";
@@ -70,6 +77,20 @@ export default createReducer(initialState, {
   [LOAD_MENUS_FAILURE]: (state, action) => {
     state.loadMENUSLoading = false;
     state.loadMENUSError = action.error;
+  },
+  [LOAD_MSTORES_REQUEST]: (state) => {
+    state.loadMStoresLoading = true;
+    state.loadMStoresError = null;
+    state.loadMStoresDone = false;
+  },
+  [LOAD_MSTORES_SUCCESS]: (state, action) => {
+    state.loadMStoresLoading = false;
+    state.loadMStoresDone = true;
+    state.store = action.data;
+  },
+  [LOAD_MSTORES_FAILURE]: (state, action) => {
+    state.loadMStoresLoading = false;
+    state.loadMStoresError = action.error;
   },
   [LOAD_DSTORES_REQUEST]: (state) => {
     state.loadDStoresLoading = true;
