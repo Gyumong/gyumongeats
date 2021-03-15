@@ -30,7 +30,7 @@ const Store = () => {
   const { storeId } = router.query;
   const dispatch = useDispatch();
   console.log(storeId);
-  const { oneStore, menu, loadMenusLoading, hasMoreMenu } = useSelector(
+  const { oneStore, menu, loadMenusLoading, hasMoreMenu, load } = useSelector(
     (state) => state.store
   );
   const { me } = useSelector((state) => state.user);
@@ -64,6 +64,7 @@ const Store = () => {
   const PushCart = useCallback(() => {
     Router.push("/cart");
   }, []);
+
   if (!oneStore || !menu) {
     return null;
   }
