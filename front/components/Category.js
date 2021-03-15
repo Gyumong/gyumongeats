@@ -55,7 +55,9 @@ const CategoryMark = styled.div`
 const Category = () => {
   const { onModalDone } = useSelector((state) => state.store);
   const dispatch = useDispatch();
-  const onModal = useCallback(() => {
+  const [whatModal, setWhatModal] = useState();
+  const onModal = useCallback((i) => {
+    setWhatModal(i);
     dispatch({
       type: ON_MODAL,
     });
@@ -82,7 +84,7 @@ const Category = () => {
             return (
               <>
                 <CategoryList key={item}>
-                  <CategoryMark onClick={onModal}>
+                  <CategoryMark onClick={() => onModal(item.text)}>
                     <div>{item.text}</div>
                     <DownOutlined />
                   </CategoryMark>
@@ -92,7 +94,7 @@ const Category = () => {
           })}
         </StyledSlider>
       </CategoryBlock>
-      {onModalDone && <Modal />}
+      {onModalDone && <Modal whatModal={whatModal} />}
     </>
   );
 };
