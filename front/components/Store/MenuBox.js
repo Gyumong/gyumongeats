@@ -16,9 +16,10 @@ const Category = styled.div`
 `;
 
 const MenuBox = ({ menu }) => {
+  console.log(menu);
   return (
     <MenuBlock>
-      <Category>추천메뉴</Category>
+      <Category>{menu.category}</Category>
       <MenuCard menu={menu} />
     </MenuBlock>
   );

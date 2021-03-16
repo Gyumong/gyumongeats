@@ -1,5 +1,5 @@
 /** @format */
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Router, { useRouter } from "next/router";
 import useSWR from "swr";
@@ -22,6 +22,7 @@ import {
 } from "../../../../reducers/cart";
 import wrapper from "../../../../store/configureStore";
 import { END } from "redux-saga";
+
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data.menu);
 const cartfetcher = (url) =>
