@@ -67,7 +67,7 @@ const AppLayout = ({ children }) => {
           </Link>
         </ItemBlock>
         <ItemBlock>
-          <Link href="/cart">
+          <Link href="/orderlist">
             <a>
               <CarryOutOutlined />
             </a>

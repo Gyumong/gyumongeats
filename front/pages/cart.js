@@ -15,7 +15,6 @@ import {
   CartMenuCardTitle,
   CartMenuCard,
   MenuTitle,
-  MenuDesc,
   MenuPrice,
   QuantitySelect,
   PlusMenuButton,
@@ -64,8 +63,9 @@ const Cart = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [target, setTarget] = useState(null);
   const router = useRouter();
-  const [inputText, onChangeInputText] = useInput();
+  const [inputText, onChangeInputText] = useInput("");
   const [selectText, setSelectText] = useState("직접 수령(부재 시 문 앞)");
+  const { takeOrderDone, msg } = useSelector((state) => state.order);
   const DeleteMenu = useCallback((m) => {
     console.log(m);
     dispatch({
@@ -83,15 +83,15 @@ const Cart = () => {
       type: TAKE_ORDER_REQUEST,
       data: {
         email: me.customerEmail,
-        //storeId:
+        storeId: cartData.store.storeId,
         price: lastPrice,
         requestForOwner: inputText,
         requestForRider: selectText,
-        //address
+        address: "문정동",
         menuList: cartData.menuList,
       },
     });
-  }, []);
+  }, [me, cartData, lastPrice, inputText, selectText]);
 
   const showModal = useCallback(
     (i) => {
@@ -117,7 +117,7 @@ const Cart = () => {
     return router.push("/login");
   }
 
-  if (!cartData) {
+  if (!cartData || cartError) {
     return (
       <>
         <Header>
@@ -131,16 +131,16 @@ const Cart = () => {
       </>
     );
   }
-  if (cartError) {
-    return "카트 정보를 가져오는데 실패했습니다.";
+
+  if (takeOrderDone) {
+    alert(`${msg}`);
+    router.push("/");
   }
+
   const lastPrice = cartData.menuList
     .map((v) => v.price * v.quantity)
     .reduce((a, b) => a + b);
-  console.log(lastPrice);
-  console.log(cartData);
-  console.log(inputText);
-  console.log(selectText);
+
   return (
     <>
       <Header>
