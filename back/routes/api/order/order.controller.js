@@ -72,3 +72,43 @@ exports.takeOrder = async (req, res) => {
     });
   }
 };
+
+exports.getPastOrderList = async (req, res) => {
+  const email = req.query.e;
+
+  try {
+    const orderList = await Order.findAll({
+      attributes: ["id", "storeId", "orderDate", "price", "reviewRegistered"],
+      where: { userId: email },
+      order: [ ["id", "DESC"] ]
+    });
+
+    const n_orderList = await Promise.all(
+      orderList.map(async ({ dataValues }) => {
+        const menuList = await OrderingMenu.findAll({
+          attributes: ["menu", "quantity"],
+          where: { orderId: dataValues.id }
+        });
+        const { storeName, thumb1 } = (await Store.findOne({
+          attributes: ["storeName", "thumb1"],
+          where: { storeId: dataValues.storeId }
+        })).dataValues;
+        
+        dataValues["storeName"] = storeName;
+        dataValues["thumb"] = thumb1;
+        dataValues["menu"] = menuList;
+        return dataValues;
+      })
+    );
+
+    res.status(200).json({
+      success: true,
+      orderList: n_orderList
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err
+    });
+  }
+};
