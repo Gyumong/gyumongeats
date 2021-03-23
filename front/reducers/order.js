@@ -6,6 +6,7 @@ const initialState = {
   takeOrderLoading: false,
   takeOrderDone: false,
   takeOrderError: null,
+  msg: null,
 };
 export const TAKE_ORDER_REQUEST = "TAKE_ORDER_REQUEST";
 export const TAKE_ORDER_SUCCESS = "TAKE_ORDER_SUCCESS";
@@ -18,9 +19,9 @@ export default createReducer(initialState, {
     state.takeOrderDone = false;
   },
   [TAKE_ORDER_SUCCESS]: (state, action) => {
-    console.log(action);
     state.takeOrderLoading = false;
     state.takeOrderDone = true;
+    state.msg = action.data.msg;
   },
   [TAKE_ORDER_FAILURE]: (state, action) => {
     state.takeOrderLoading = false;
