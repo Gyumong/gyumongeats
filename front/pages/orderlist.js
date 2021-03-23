@@ -4,13 +4,21 @@ import React from "react";
 import AppLayout from "../components/AppLayout";
 import styled from "styled-components";
 import Link from "next/link";
-
+import axios from "axios";
+import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import wrapper from "../store/configureStore";
+import { END } from "redux-saga";
+import { useSelector } from "react-redux";
+import useSWR from "swr";
+import { useRouter } from "next/router";
+import dayjs from "dayjs";
 const OrderListBlock = styled.div`
   max-width: 768px;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 15vh;
 `;
 
 const Tab = styled.div`
@@ -42,6 +50,7 @@ const TitleBlock = styled.div`
   }
   h2 {
     font-weight: bold;
+    font-size: 1rem;
   }
   p {
     color: #9d9d9e;
@@ -52,10 +61,10 @@ const TitleBlock = styled.div`
     font-size: 0.9rem;
   }
 `;
-const Thum = styled.div`
+const Thum = styled.img`
   width: 70px;
   height: 70px;
-  background: #efefef;
+  display: inline-block;
 `;
 const OrderMenu = styled.div`
   display: flex;
@@ -118,42 +127,108 @@ const WriteReviewBtn = styled(ReOrderBtn)`
   width: 30%;
   background-color: #fc846a;
 `;
+
+const orderListfetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
+
+dayjs.locale("ko");
+
 const OrderList = () => {
+  const { me } = useSelector((state) => state?.user);
+  const router = useRouter();
+  const { data: OrderListData, error: OrderListError } = useSWR(
+    me ? `http://localhost:3085/api/order/list?e=${me.customerEmail}` : null,
+    orderListfetcher
+  );
+
+  console.log(OrderListData);
+  if (!me) {
+    router.push("/login");
+  }
+  if (OrderListError) {
+    return "주문기록을 가져오는데 실패 했습니다.";
+  }
+
+  if (!OrderListData) {
+    return "아직 주문기록이 없습니다.";
+  }
+  console.log(OrderListData.orderList.map((v) => v.storeName));
   return (
     <AppLayout>
       <OrderListBlock>
         <Tab>과거 주문 내역</Tab>
-        <OrderCard>
-          <Link href="/">
-            <LinkBlock>
-              <TitleBlock>
-                <h2>만다린 송파점</h2>
-                <p>2021-02-18</p>
-                <h4>배달 완료</h4>
-              </TitleBlock>
-              <Thum></Thum>
-            </LinkBlock>
-          </Link>
-          <OrderMenu>
-            <p>1</p>
-            <h4>열무물냉면</h4>
-          </OrderMenu>
-          <OrderMenu>
-            <p>1</p>
-            <h4>열무물냉면</h4>
-          </OrderMenu>
-          <OrderPrice>
-            <p>합계:</p>
-            <h4>10,000원</h4>
-          </OrderPrice>
-          <BtnGroup>
-            <WriteReviewBtn>리뷰 쓰기</WriteReviewBtn>
-            <ReOrderBtn>재주문하기</ReOrderBtn>
-          </BtnGroup>
-        </OrderCard>
+        {OrderListData &&
+          OrderListData.orderList.map((v, i) => {
+            console.log(v);
+            return (
+              <OrderCard key={v + i}>
+                <Link href={`http://localhost:3080/store/${v.storeId}`}>
+                  <LinkBlock>
+                    <TitleBlock>
+                      <h2>{v.storeName}</h2>
+                      <p>{dayjs(v.orderDate).format("YYYY.MM.DD H:mm")}</p>
+                      <h4>배달 완료</h4>
+                    </TitleBlock>
+                    <Thum
+                      src={`http://localhost:3085/img/thumbnail/${v.thumb}.png`}
+                    />
+                  </LinkBlock>
+                </Link>
+                {v.menu &&
+                  v.menu.map((m, i) => {
+                    console.log(m);
+                    return (
+                      <OrderMenu key={m + i}>
+                        <p>{m.quantity}</p>
+                        <h4>{m.menu}</h4>
+                      </OrderMenu>
+                    );
+                  })}
+                <OrderPrice>
+                  <p>합계:</p>
+                  <h4>{v.price}원</h4>
+                </OrderPrice>
+                <BtnGroup>
+                  <WriteReviewBtn>리뷰 쓰기</WriteReviewBtn>
+                  <ReOrderBtn>재주문하기</ReOrderBtn>
+                </BtnGroup>
+              </OrderCard>
+            );
+          })}
       </OrderListBlock>
     </AppLayout>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      try {
+        axios.defaults.headers.Cookie = cookie;
+        const { accessToken } = await axios
+          .get("/auth/reissue", {
+            withCredentials: true,
+          })
+          .then((res) => res.data);
+        console.log("acctoken", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common[
+            "x-access-token"
+          ] = await `${accessToken}`;
+          context.store.dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        return { props: {} };
+      }
+    }
+
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 
 export default OrderList;
