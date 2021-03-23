@@ -34,6 +34,7 @@ const Home = () => {
   const PushCart = useCallback(() => {
     Router.push("/cart");
   }, []);
+
   useEffect(() => {
     function onScroll() {
       if (
