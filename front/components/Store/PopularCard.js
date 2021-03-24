@@ -38,10 +38,9 @@ export const StyledSlider = styled(Slider)`
 `;
 const PopCardBlock = styled.div``;
 
-const Image = styled.div`
+const Image = styled.img`
   max-width: 100%;
   height: 60px;
-  background-color: rgb(0, 102, 238);
 `;
 
 const Desc = styled.div`
@@ -106,7 +105,9 @@ const PopularCard = () => {
             <Link href="/store/[id]" as={`/store/${item.id}`} key={item.id}>
               <a>
                 <PopCardBlock>
-                  <Image />
+                  <Image
+                    src={`http://localhost:3085/img/thumbnail/${item.thumb[0]}.png`}
+                  />
                   <Desc>
                     <h4>{item.storeName}</h4>
                     <p>

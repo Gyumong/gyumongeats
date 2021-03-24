@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import router from "next/router";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
