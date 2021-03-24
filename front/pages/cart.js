@@ -170,7 +170,9 @@ const Cart = () => {
               </CartMenuCard>
             );
           })}
-          <PlusMenuButton onClick={() => router.back()}>
+          <PlusMenuButton
+            onClick={() => router.push(`/store/${cartData.store.storeId}`)}
+          >
             메뉴추가
           </PlusMenuButton>
           {isModalVisible ? (

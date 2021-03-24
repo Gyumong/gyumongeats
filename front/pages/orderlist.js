@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useCallback } from "react";
 import AppLayout from "../components/AppLayout";
 import styled from "styled-components";
 import Link from "next/link";
@@ -8,10 +8,12 @@ import axios from "axios";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
+import { ADD_MY_CART_REQUEST } from "../reducers/cart";
+
 const OrderListBlock = styled.div`
   max-width: 768px;
   width: 100%;
@@ -135,12 +137,29 @@ dayjs.locale("ko");
 
 const OrderList = () => {
   const { me } = useSelector((state) => state?.user);
+  const { addMyCartDone } = useSelector((state) => state.cart);
   const router = useRouter();
+  const dispatch = useDispatch();
   const { data: OrderListData, error: OrderListError } = useSWR(
     me ? `http://localhost:3085/api/order/list?e=${me.customerEmail}` : null,
     orderListfetcher
   );
-
+  const addCart = useCallback((orderList) => {
+    orderList.menuList.map((v) => {
+      dispatch({
+        type: ADD_MY_CART_REQUEST,
+        data: {
+          storeId: orderList.storeId,
+          data: {
+            email: me.customerEmail,
+            menu: v.menu,
+            category: v.category,
+            quantity: Number(v.quantity),
+          },
+        },
+      });
+    });
+  }, []);
   console.log(OrderListData);
   if (!me) {
     router.push("/login");
@@ -151,6 +170,9 @@ const OrderList = () => {
 
   if (!OrderListData) {
     return "아직 주문기록이 없습니다.";
+  }
+  if (addMyCartDone) {
+    router.push("/cart");
   }
   console.log(OrderListData.orderList.map((v) => v.storeName));
   return (
@@ -190,7 +212,7 @@ const OrderList = () => {
                 </OrderPrice>
                 <BtnGroup>
                   <WriteReviewBtn>리뷰 쓰기</WriteReviewBtn>
-                  <ReOrderBtn>재주문하기</ReOrderBtn>
+                  <ReOrderBtn onClick={() => addCart(v)}>재주문하기</ReOrderBtn>
                 </BtnGroup>
               </OrderCard>
             );
