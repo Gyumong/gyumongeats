@@ -34,7 +34,8 @@ exports.takeOrder = async (req, res) => {
         orderId: ordering.id,
         userId: email,
         menu: menu.name,
-        quantity: menu.quantity
+        quantity: menu.quantity,
+        category: menu.category
       }, { transaction: t });
     }
 
@@ -86,7 +87,7 @@ exports.getPastOrderList = async (req, res) => {
     const n_orderList = await Promise.all(
       orderList.map(async ({ dataValues }) => {
         const menuList = await OrderingMenu.findAll({
-          attributes: ["menu", "quantity"],
+          attributes: ["menu", "quantity", "category"],
           where: { orderId: dataValues.id }
         });
         const { storeName, thumb1 } = (await Store.findOne({
@@ -96,7 +97,7 @@ exports.getPastOrderList = async (req, res) => {
         
         dataValues["storeName"] = storeName;
         dataValues["thumb"] = thumb1;
-        dataValues["menu"] = menuList;
+        dataValues["menuList"] = menuList;
         return dataValues;
       })
     );
