@@ -7,9 +7,7 @@ import styled from "styled-components";
 import { Button } from "antd";
 import { LOAD_MY_INFO_REQUEST, LOG_OUT_REQUEST } from "../reducers/user";
 import Router from "next/router";
-import wrapper from "../store/configureStore";
-import { END } from "redux-saga";
-import axios from "axios";
+
 const MyProfileBlock = styled.div`
   * {
     margin: 0;
@@ -30,7 +28,7 @@ const LogOutButton = styled(Button)`
   right: 5%;
 `;
 const Profile = () => {
-  const { me, logOutLoading } = useSelector((state) => state.user);
+  const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,9 +42,8 @@ const Profile = () => {
       Router.push("/login");
     }
   }, [me]);
-
-  if (!me) {
-    return null;
+  if (logOutDone) {
+    Router.push("/");
   }
   const onLogOut = useCallback(() => {
     dispatch({

@@ -83,12 +83,11 @@ function* logIn(action) {
 //   axios.defaults.headers.common["Authorization"] = `Bearer${accessToken}`;
 // };
 function logOutAPI() {
-  // return axios.post("/auth/logout");
-  document.cookie = "";
+  return axios.post("/auth/logout");
 }
 function* logOut() {
   try {
-    // yield call(logOutAPI);
+    yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
