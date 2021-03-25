@@ -13,7 +13,6 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import { ADD_MY_CART_REQUEST } from "../reducers/cart";
-import { FetchReviewData } from "../reducers/order";
 
 const OrderListBlock = styled.div`
   max-width: 768px;
@@ -163,10 +162,6 @@ const OrderList = () => {
   }, []);
 
   const writeReview = useCallback((v) => {
-    dispatch({
-      type: FetchReviewData,
-      data: v.menuList,
-    });
     router.push(
       `/review/${v.storeId}/${v.id}?menu=${JSON.stringify(
         v.menuList.map((i) => i.menu)

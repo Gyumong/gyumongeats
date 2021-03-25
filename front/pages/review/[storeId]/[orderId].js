@@ -11,6 +11,8 @@ import styled from "styled-components";
 import { Rate, Input } from "antd";
 import { useRouter } from "next/router";
 import { CartModal } from "../../../components/StyleMainPage";
+import { useSelector, useDispatch } from "react-redux";
+import { WRITE_REVIEW_REQUEST } from "../../../reducers/review";
 const ReviewBlock = styled.div`
   padding-top: 5vh;
   height: 100vh;
@@ -51,8 +53,10 @@ const AddReview = styled(CartModal)`
 `;
 const Review = () => {
   const router = useRouter();
-  const { menu } = router.query;
-  const [star, setStar] = useState();
+  const { customerEmail } = useSelector((state) => state.user?.me);
+  const dispatch = useDispatch();
+  const { menu, storeId, orderId } = router.query;
+  const [star, setStar] = useState(0);
   const [text, setText] = useState("");
   const starchecked = useCallback(
     (e) => {
@@ -67,6 +71,23 @@ const Review = () => {
     [text]
   );
 
+  const writeReview = useCallback(() => {
+    if (star > 0 && customerEmail) {
+      dispatch({
+        type: WRITE_REVIEW_REQUEST,
+        data: {
+          email: customerEmail,
+          storeId: storeId,
+          orderId: orderId,
+          content: text,
+          img: "",
+          GPA: star,
+          menuName: JSON.parse(menu).join("·"),
+        },
+      });
+    }
+  }, [customerEmail, text, star]);
+  console.log(JSON.parse(menu).join("·"));
   return (
     <>
       <Header>
@@ -97,7 +118,7 @@ const Review = () => {
             })}
           </ReviewInputBlock>
         </ReviewBox>
-        <AddReview>등록하기</AddReview>
+        <AddReview onClick={writeReview}>등록하기</AddReview>
       </ReviewBlock>
     </>
   );
