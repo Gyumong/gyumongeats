@@ -13,6 +13,7 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import { ADD_MY_CART_REQUEST } from "../reducers/cart";
+import { FetchReviewData } from "../reducers/order";
 
 const OrderListBlock = styled.div`
   max-width: 768px;
@@ -160,6 +161,18 @@ const OrderList = () => {
       });
     });
   }, []);
+
+  const writeReview = useCallback((v) => {
+    dispatch({
+      type: FetchReviewData,
+      data: v.menuList,
+    });
+    router.push(
+      `/review/${v.storeId}/${v.id}?menu=${JSON.stringify(
+        v.menuList.map((i) => i.menu)
+      )}`
+    );
+  }, []);
   console.log(OrderListData);
   if (!me) {
     router.push("/login");
@@ -211,9 +224,7 @@ const OrderList = () => {
                   <h4>{v.price}원</h4>
                 </OrderPrice>
                 <BtnGroup>
-                  <WriteReviewBtn
-                    onClick={() => router.push(`/review/${v.storeId}/${v.id}`)}
-                  >
+                  <WriteReviewBtn onClick={() => writeReview(v)}>
                     리뷰 쓰기
                   </WriteReviewBtn>
 
