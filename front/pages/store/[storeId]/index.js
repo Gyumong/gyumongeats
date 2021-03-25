@@ -30,7 +30,7 @@ const Store = () => {
   const { storeId } = router.query;
   const dispatch = useDispatch();
   console.log(storeId);
-  const { oneStore, menu, loadMenusLoading, hasMoreMenu, load } = useSelector(
+  const { oneStore, menu, loadMenusLoading, hasMoreMenu } = useSelector(
     (state) => state.store
   );
   const { me } = useSelector((state) => state.user);

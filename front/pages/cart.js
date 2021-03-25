@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import wrapper from "../store/configureStore";
@@ -90,7 +90,7 @@ const Cart = () => {
         menuList: cartData.menuList,
       },
     });
-  }, [me, cartData, lastPrice, inputText, selectText]);
+  }, [me, cartData, inputText, selectText]);
 
   const showModal = useCallback(
     (i) => {

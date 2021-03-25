@@ -36,7 +36,7 @@ const Menu = () => {
     `http://localhost:3085/api/store/menu?s=${storeId}&m=${menuId}`,
     fetcher
   );
-  const { data: cartData, error: cartError } = useSWR(
+  const { data: cartData } = useSWR(
     me?.customerEmail
       ? `http://localhost:3085/api/cart/info?e=${me.customerEmail}`
       : null,

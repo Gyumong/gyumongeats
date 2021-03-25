@@ -126,8 +126,8 @@ const BtnGroup = styled.div`
 `;
 
 const WriteReviewBtn = styled(ReOrderBtn)`
-  width: 30%;
   background-color: #fc846a;
+  width: 30%;
 `;
 
 const orderListfetcher = (url) =>
@@ -211,7 +211,12 @@ const OrderList = () => {
                   <h4>{v.price}원</h4>
                 </OrderPrice>
                 <BtnGroup>
-                  <WriteReviewBtn>리뷰 쓰기</WriteReviewBtn>
+                  <WriteReviewBtn
+                    onClick={() => router.push(`/review/${v.storeId}/${v.id}`)}
+                  >
+                    리뷰 쓰기
+                  </WriteReviewBtn>
+
                   <ReOrderBtn onClick={() => addCart(v)}>재주문하기</ReOrderBtn>
                 </BtnGroup>
               </OrderCard>
