@@ -85,6 +85,7 @@ const Review = () => {
           menuName: JSON.parse(menu).join("·"),
         },
       });
+      router.push("/");
     }
   }, [customerEmail, text, star]);
   console.log(JSON.parse(menu).join("·"));

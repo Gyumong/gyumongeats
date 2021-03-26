@@ -44,7 +44,7 @@ const Store = () => {
     cartfetcher
   );
   const { data: reviewData, error: reviewError } = useSWR(
-    `http://localhost:3085/api/review/list/:id?id=${storeId}`,
+    `http://localhost:3085/api/review/list/${storeId}`,
     reviewfetcher
   );
 
