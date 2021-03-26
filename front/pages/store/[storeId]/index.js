@@ -25,6 +25,8 @@ const MCartModal = styled(CartModal)`
 const cartfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 
+const reviewfetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Store = () => {
   const router = useRouter();
   const { storeId } = router.query;
@@ -40,6 +42,10 @@ const Store = () => {
       ? `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`
       : null,
     cartfetcher
+  );
+  const { data: reviewData, error: reviewError } = useSWR(
+    `http://localhost:3085/api/review/list/:id?id=${storeId}`,
+    reviewfetcher
   );
 
   useEffect(() => {
@@ -68,6 +74,9 @@ const Store = () => {
   if (!oneStore || !menu) {
     return null;
   }
+  if (!reviewError) {
+    console.log(reviewData);
+  }
   return (
     <>
       <Global />
@@ -77,6 +86,7 @@ const Store = () => {
         thumb={oneStore.store_info.info1.thumb}
         estimatedDelTime={oneStore.store_info.info1.estimatedDelTime}
         deliveryFee={oneStore.store_info.info1.deliveryFee}
+        reviewData={reviewData.review}
       />
       <ReviewCard />
       {menu.map((menu) => {

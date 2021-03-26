@@ -62,6 +62,26 @@ export const TitleBox = styled.div`
   h2 {
     font-weight: bold;
   }
+  strong {
+    font-weight: 700;
+  }
+  p {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    color: rgb(1, 175, 255);
+  }
+`;
+export const TitleText = styled.div`
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  p {
+    margin-left: 0.5rem;
+    color: rgb(1, 175, 255);
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
 `;
 
 export const Description = styled.div`
