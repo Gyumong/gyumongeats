@@ -77,6 +77,9 @@ const Store = () => {
   if (!reviewError) {
     console.log(reviewData);
   }
+  if (!reviewData) {
+    return null;
+  }
   return (
     <>
       <Global />
