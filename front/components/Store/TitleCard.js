@@ -27,6 +27,7 @@ const TitleCard = ({
   deliveryFee,
   thumb,
   reviewData,
+  PushReview,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -69,8 +70,8 @@ const TitleCard = ({
           {reviewData.length !== 0 ? (
             <TitleText>
               <StarFilled style={{ color: "#ffeaa7" }} />
-              {gpa}
-              <p>
+              {gpa / reviewData.length}
+              <p onClick={PushReview}>
                 리뷰 {reviewData.length}개{" "}
                 <RightOutlined style={{ color: "rgb(1, 175, 255)" }} />
               </p>
