@@ -12,6 +12,7 @@ import {
   DescSideD,
   ThumbSlider,
   Indicator,
+  TitleText,
 } from "./StyleTitleCard";
 import {
   StarFilled,
@@ -25,6 +26,8 @@ const TitleCard = ({
   estimatedDelTime,
   deliveryFee,
   thumb,
+  reviewData,
+  PushReview,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -64,10 +67,16 @@ const TitleCard = ({
         </Indicator>
         <TitleBox>
           <h2>{storeName}</h2>
-          <p>
-            <StarFilled style={{ color: "#ffeaa7" }} />
-            {gpa} · 거리 · 원
-          </p>
+          {reviewData.length !== 0 ? (
+            <TitleText>
+              <StarFilled style={{ color: "#ffeaa7" }} />
+              {gpa / reviewData.length}
+              <p onClick={PushReview}>
+                리뷰 {reviewData.length}개{" "}
+                <RightOutlined style={{ color: "rgb(1, 175, 255)" }} />
+              </p>
+            </TitleText>
+          ) : null}
         </TitleBox>
         <Description>
           <DescBar>

@@ -5,6 +5,7 @@ import user from "./user";
 import store from "./store";
 import cart from "./cart";
 import order from "./order";
+import review from "./review";
 import { combineReducers } from "redux";
 
 const rootReducer = (state, action) => {
@@ -18,6 +19,7 @@ const rootReducer = (state, action) => {
         store,
         cart,
         order,
+        review,
       });
       return combinedReducer(state, action);
     }

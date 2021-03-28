@@ -1,8 +1,7 @@
 /** @format */
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import router from "next/router";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
@@ -91,7 +90,7 @@ const Cart = () => {
         menuList: cartData.menuList,
       },
     });
-  }, [me, cartData, lastPrice, inputText, selectText]);
+  }, [me, cartData, inputText, selectText]);
 
   const showModal = useCallback(
     (i) => {
@@ -171,7 +170,9 @@ const Cart = () => {
               </CartMenuCard>
             );
           })}
-          <PlusMenuButton onClick={() => router.back()}>
+          <PlusMenuButton
+            onClick={() => router.push(`/store/${cartData.store.storeId}`)}
+          >
             메뉴추가
           </PlusMenuButton>
           {isModalVisible ? (

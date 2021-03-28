@@ -7,7 +7,7 @@ export const Header = styled.div`
   width: 100%;
   top: 0;
   display: flex;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
   z-index: 1000;

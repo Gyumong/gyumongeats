@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import TitleCard from "../../../components/Store/TitleCard";
 import ReviewCard from "../../../components/Store/ReviewCard";
@@ -25,12 +25,14 @@ const MCartModal = styled(CartModal)`
 const cartfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 
+const reviewfetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Store = () => {
   const router = useRouter();
   const { storeId } = router.query;
   const dispatch = useDispatch();
-  console.log(storeId);
-  const { oneStore, menu, loadMenusLoading, hasMoreMenu, load } = useSelector(
+  const [onReview, setOnReview] = useState(false);
+  const { oneStore, menu, loadMenusLoading, hasMoreMenu } = useSelector(
     (state) => state.store
   );
   const { me } = useSelector((state) => state.user);
@@ -40,6 +42,10 @@ const Store = () => {
       ? `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`
       : null,
     cartfetcher
+  );
+  const { data: reviewData, error: reviewError } = useSWR(
+    `http://localhost:3085/api/review/list/${storeId}`,
+    reviewfetcher
   );
 
   useEffect(() => {
@@ -64,9 +70,37 @@ const Store = () => {
   const PushCart = useCallback(() => {
     Router.push("/cart");
   }, []);
-
+  const PushReview = useCallback(() => {
+    setOnReview((prev) => !prev);
+  }, [onReview]);
   if (!oneStore || !menu) {
     return null;
+  }
+  if (!reviewError) {
+    console.log(reviewData);
+  }
+  if (!reviewData) {
+    return null;
+  }
+
+  if (onReview) {
+    return (
+      <>
+        <ReviewCard
+          PushReview={PushReview}
+          reviewData={reviewData.review}
+          storeName={oneStore.store_info.info1.storeName}
+          gpa={oneStore.store_info.info1.GPA}
+        />
+        {cartData?.menuCnt ? (
+          <MCartModal onClick={PushCart}>
+            <strong>{cartData.menuCnt}</strong>
+            <h2>카트보기</h2>
+            <p>{cartData.price}원</p>
+          </MCartModal>
+        ) : null}
+      </>
+    );
   }
   return (
     <>
@@ -77,8 +111,10 @@ const Store = () => {
         thumb={oneStore.store_info.info1.thumb}
         estimatedDelTime={oneStore.store_info.info1.estimatedDelTime}
         deliveryFee={oneStore.store_info.info1.deliveryFee}
+        reviewData={reviewData.review}
+        PushReview={PushReview}
       />
-      <ReviewCard />
+
       {menu.map((menu) => {
         return (
           <Link
