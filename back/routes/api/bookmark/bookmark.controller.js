@@ -51,3 +51,24 @@ exports.getBookmarkList = async (req, res) => {
     });
   }
 };
+
+exports.deleteBookmark = async (req, res) => {
+  const email = req.query.e;
+  const id = req.query.id;
+
+  try {
+    await Bookmark.destroy({
+      where: {
+        userId: email,
+        storeId: id
+      }
+    });
+
+    res.status(204).send();
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      errorMessage: err,
+    });
+  }
+};
