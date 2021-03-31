@@ -6,7 +6,6 @@ export const CardBlock = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: 40vh;
   &:hover {
     opacity: 0.7;
   }

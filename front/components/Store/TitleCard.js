@@ -13,13 +13,25 @@ import {
   ThumbSlider,
   Indicator,
   TitleText,
+  BookMarkButton,
 } from "./StyleTitleCard";
 import {
   StarFilled,
   ClockCircleOutlined,
   RightOutlined,
+  HeartOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import ImagesZoom from "../ImagesZoom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  ADD_BOOKMARK_REQUEST,
+  DELETE_BOOKMARK_REQUEST,
+} from "../../reducers/bookmark";
+import useSWR from "swr";
+import axios from "axios";
+const bookmarkfetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
 const TitleCard = ({
   storeName,
   gpa,
@@ -28,19 +40,58 @@ const TitleCard = ({
   thumb,
   reviewData,
   PushReview,
+  storeId,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
+  const dispatch = useDispatch();
+  const { customerEmail } = useSelector((state) => state.user?.me);
 
+  const { data: bookmarkData, mutate } = useSWR(
+    customerEmail ? `/bookmark/list?e=${customerEmail}` : null,
+    bookmarkfetcher
+  );
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
   const onClose = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
+
+  const onClickBookMark = useCallback(() => {
+    if (customerEmail) {
+      if (bookmarkData?.bookmarkList.findIndex((v) => v.storeId !== storeId)) {
+        dispatch({
+          type: ADD_BOOKMARK_REQUEST,
+          data: {
+            email: customerEmail,
+            storeId: storeId,
+          },
+        });
+      }
+      dispatch({
+        type: DELETE_BOOKMARK_REQUEST,
+        data: {
+          e: customerEmail,
+          id: storeId,
+        },
+      });
+      mutate(bookmarkData);
+    }
+  }, []);
+  console.log(bookmarkData);
   return (
     <>
       <TitleBlock>
+        <BookMarkButton onClick={onClickBookMark}>
+          {bookmarkData?.bookmarkList.findIndex(
+            (v) => v.storeId !== storeId
+          ) ? (
+            <HeartOutlined style={{ fontSize: "25px", color: "white" }} />
+          ) : (
+            <HeartFilled style={{ fontSize: "25px", color: "white" }} />
+          )}
+        </BookMarkButton>
         <ThumbSlider
           speed={500}
           slidesToShow={1}

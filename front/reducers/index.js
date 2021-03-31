@@ -6,6 +6,7 @@ import store from "./store";
 import cart from "./cart";
 import order from "./order";
 import review from "./review";
+import bookmark from "./bookmark";
 import { combineReducers } from "redux";
 
 const rootReducer = (state, action) => {
@@ -20,6 +21,7 @@ const rootReducer = (state, action) => {
         cart,
         order,
         review,
+        bookmark,
       });
       return combinedReducer(state, action);
     }

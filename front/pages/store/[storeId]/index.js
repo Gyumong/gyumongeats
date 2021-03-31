@@ -27,6 +27,7 @@ const cartfetcher = (url) =>
 
 const reviewfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
+
 const Store = () => {
   const router = useRouter();
   const { storeId } = router.query;
@@ -47,7 +48,6 @@ const Store = () => {
     `http://localhost:3085/api/review/list/${storeId}`,
     reviewfetcher
   );
-
   useEffect(() => {
     function onScroll() {
       if (
@@ -102,6 +102,7 @@ const Store = () => {
       </>
     );
   }
+
   return (
     <>
       <Global />
@@ -113,6 +114,7 @@ const Store = () => {
         deliveryFee={oneStore.store_info.info1.deliveryFee}
         reviewData={reviewData.review}
         PushReview={PushReview}
+        storeId={oneStore.store_info.info1.storeId}
       />
 
       {menu.map((menu) => {

@@ -40,7 +40,17 @@ export const TitleBlock = styled.div`
     margin: 0;
   }
 `;
-
+export const BookMarkButton = styled.div`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100000;
+`;
 export const Thumbnail = styled.img`
   height: 27vh;
   display: inline-block;
