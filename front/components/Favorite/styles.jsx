@@ -23,6 +23,10 @@ export const FavoriteBlock = styled.div`
   border-top: 1px solid #f0f0f0;
 `;
 
+export const LinkBlock = styled.div`
+  display: flex;
+  width: 100%;
+`;
 export const Thumbnail = styled.img`
   flex: 1;
   width: 80px;
@@ -37,6 +41,9 @@ export const Desc = styled.div`
   flex-direction: column;
 
   h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 0.8rem;
     font-weight: bold;
     margin-bottom: 0.1rem;
@@ -45,4 +52,14 @@ export const Desc = styled.div`
     font-size: 0.7rem;
     margin-bottom: 0.1rem;
   }
+`;
+export const DeleteButton = styled.div`
+  width: 40px;
+  margin-right: 1rem;
+  background-color: #fe7a5d;
+  padding: 0.1rem 0.1rem;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
