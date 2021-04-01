@@ -14,6 +14,7 @@ import {
   Indicator,
   TitleText,
   BookMarkButton,
+  GoBackButton,
 } from "./StyleTitleCard";
 import {
   StarFilled,
@@ -21,6 +22,7 @@ import {
   RightOutlined,
   HeartOutlined,
   HeartFilled,
+  ArrowLeftOutlined,
 } from "@ant-design/icons";
 import ImagesZoom from "../ImagesZoom";
 import { useSelector, useDispatch } from "react-redux";
@@ -30,6 +32,7 @@ import {
 } from "../../reducers/bookmark";
 import useSWR from "swr";
 import axios from "axios";
+import { useRouter } from "next/router";
 const bookmarkfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const TitleCard = ({
@@ -46,10 +49,14 @@ const TitleCard = ({
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const dispatch = useDispatch();
   const { customerEmail } = useSelector((state) => state.user?.me);
-
-  const { data: bookmarkData, mutate } = useSWR(
+  const router = useRouter();
+  const { data: bookmarkData, mutate, isValidating: loading } = useSWR(
     customerEmail ? `/bookmark/list?e=${customerEmail}` : null,
-    bookmarkfetcher
+    bookmarkfetcher,
+    {
+      dedupingInterval: 500,
+      revalidateOnFocus: true,
+    }
   );
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
@@ -58,17 +65,8 @@ const TitleCard = ({
     setShowImagesZoom(false);
   }, []);
 
-  const onClickBookMark = useCallback(() => {
-    if (customerEmail) {
-      if (bookmarkData?.bookmarkList.findIndex((v) => v.storeId !== storeId)) {
-        dispatch({
-          type: ADD_BOOKMARK_REQUEST,
-          data: {
-            email: customerEmail,
-            storeId: storeId,
-          },
-        });
-      }
+  const DeleteBookMark = useCallback(() => {
+    if (customerEmail && !loading) {
       dispatch({
         type: DELETE_BOOKMARK_REQUEST,
         data: {
@@ -76,22 +74,44 @@ const TitleCard = ({
           id: storeId,
         },
       });
-      mutate(bookmarkData);
     }
+    mutate(bookmarkData);
   }, []);
-  console.log(bookmarkData);
+
+  const AddBookMark = useCallback(() => {
+    if (customerEmail && !loading) {
+      dispatch({
+        type: ADD_BOOKMARK_REQUEST,
+        data: {
+          email: customerEmail,
+          storeId: storeId,
+        },
+      });
+    }
+    mutate(bookmarkData);
+  }, []);
+  console.log(
+    bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId)
+  );
+  if (!bookmarkData) {
+    return null;
+  }
   return (
     <>
       <TitleBlock>
-        <BookMarkButton onClick={onClickBookMark}>
-          {bookmarkData?.bookmarkList.findIndex(
-            (v) => v.storeId !== storeId
-          ) ? (
-            <HeartOutlined style={{ fontSize: "25px", color: "white" }} />
-          ) : (
+        <GoBackButton onClick={() => router.back()}>
+          <ArrowLeftOutlined style={{ fontSize: "25px", color: "white" }} />
+        </GoBackButton>
+        {bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId) !==
+        -1 ? (
+          <BookMarkButton onClick={DeleteBookMark}>
             <HeartFilled style={{ fontSize: "25px", color: "white" }} />
-          )}
-        </BookMarkButton>
+          </BookMarkButton>
+        ) : (
+          <BookMarkButton onClick={AddBookMark}>
+            <HeartOutlined style={{ fontSize: "25px", color: "white" }} />
+          </BookMarkButton>
+        )}
         <ThumbSlider
           speed={500}
           slidesToShow={1}

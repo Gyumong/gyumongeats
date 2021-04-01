@@ -10,6 +10,19 @@ export const CountButton = styled(Button)`
 export const MenuBlock = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
+`;
+
+export const GoBackButton = styled.div`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100000;
 `;
 
 export const MenuTitle = styled.div`
