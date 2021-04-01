@@ -14,6 +14,7 @@ import {
   Indicator,
   TitleText,
   BookMarkButton,
+  GoBackButton,
 } from "./StyleTitleCard";
 import {
   StarFilled,
@@ -21,6 +22,7 @@ import {
   RightOutlined,
   HeartOutlined,
   HeartFilled,
+  ArrowLeftOutlined,
 } from "@ant-design/icons";
 import ImagesZoom from "../ImagesZoom";
 import { useSelector, useDispatch } from "react-redux";
@@ -30,6 +32,7 @@ import {
 } from "../../reducers/bookmark";
 import useSWR from "swr";
 import axios from "axios";
+import { useRouter } from "next/router";
 const bookmarkfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const TitleCard = ({
@@ -46,7 +49,7 @@ const TitleCard = ({
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const dispatch = useDispatch();
   const { customerEmail } = useSelector((state) => state.user?.me);
-
+  const router = useRouter();
   const { data: bookmarkData, mutate, isValidating: loading } = useSWR(
     customerEmail ? `/bookmark/list?e=${customerEmail}` : null,
     bookmarkfetcher,
@@ -96,6 +99,9 @@ const TitleCard = ({
   return (
     <>
       <TitleBlock>
+        <GoBackButton onClick={() => router.back()}>
+          <ArrowLeftOutlined style={{ fontSize: "25px", color: "white" }} />
+        </GoBackButton>
         {bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId) !==
         -1 ? (
           <BookMarkButton onClick={DeleteBookMark}>

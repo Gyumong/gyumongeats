@@ -13,8 +13,13 @@ import {
   Count,
   CartModal,
   CountButton,
+  GoBackButton,
 } from "./style";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  MinusOutlined,
+  PlusOutlined,
+  ArrowLeftOutlined,
+} from "@ant-design/icons";
 import { LOAD_MY_INFO_REQUEST } from "../../../../reducers/user";
 import {
   ADD_MY_CART_REQUEST,
@@ -124,6 +129,9 @@ const Menu = () => {
 
   return (
     <MenuBlock>
+      <GoBackButton onClick={() => router.back()}>
+        <ArrowLeftOutlined style={{ fontSize: "25px", color: "black" }} />
+      </GoBackButton>
       <Thumbnail src={`http://localhost:3085/img/thumbnail/3_1.png`} />
       <MenuTitle>
         <h2>{menuData.name}</h2>
