@@ -57,6 +57,9 @@ export const QuantitySelect = styled.div`
     font-size: 0.9rem;
     margin: 0;
   }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const QuantityModal = styled(Modal)`
@@ -80,4 +83,7 @@ export const PlusMenuButton = styled.button`
   color: rgb(1, 175, 255);
   border-top: 1px solid #c5c5c3;
   padding: 0.5rem 0;
+  &:hover {
+    cursor: pointer;
+  }
 `;

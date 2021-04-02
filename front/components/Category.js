@@ -51,6 +51,9 @@ const CategoryMark = styled.div`
   padding: 0.1rem 0.35rem;
   font-size: 0.6rem;
   margin-right: 0.15rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const Category = () => {
   const {

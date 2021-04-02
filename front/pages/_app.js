@@ -8,7 +8,7 @@ import wrapper from "../store/configureStore";
 
 const AppLayouts = styled.div`
   margin: 0 auto;
-  max-width: 768px;
+  max-width: 420px;
   height: 100vh;
   font-family: "Noto Sans KR", sans-serif;
 `;

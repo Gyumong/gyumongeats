@@ -16,8 +16,8 @@ const MyProfileBlock = styled.div`
   }
   position: fixed;
   z-index: 500;
+  max-width: 420px;
   top: 0;
-  max-width: 768px;
   width: 100%;
   height: 15%;
   padding-left: 15px;

@@ -44,6 +44,9 @@ const ModalTop = styled.div`
 const ModalExit = styled.div`
   position: absolute;
   right: 5%;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const MainModalList = styled(ModalList)`
   border: none;

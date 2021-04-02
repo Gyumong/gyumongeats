@@ -54,7 +54,7 @@ const TitleCard = ({
     customerEmail ? `/bookmark/list?e=${customerEmail}` : null,
     bookmarkfetcher,
     {
-      dedupingInterval: 500,
+      dedupingInterval: 200,
       revalidateOnFocus: true,
     }
   );
@@ -105,11 +105,11 @@ const TitleCard = ({
         {bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId) !==
         -1 ? (
           <BookMarkButton onClick={DeleteBookMark}>
-            <HeartFilled style={{ fontSize: "25px", color: "white" }} />
+            <HeartFilled style={{ fontSize: "25px", color: "#FF4747 " }} />
           </BookMarkButton>
         ) : (
           <BookMarkButton onClick={AddBookMark}>
-            <HeartOutlined style={{ fontSize: "25px", color: "white" }} />
+            <HeartOutlined style={{ fontSize: "25px", color: "#FF4747 " }} />
           </BookMarkButton>
         )}
         <ThumbSlider

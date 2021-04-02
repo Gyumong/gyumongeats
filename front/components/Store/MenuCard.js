@@ -56,6 +56,7 @@ const MenuCardMark = styled.div`
   font-weight: bold;
 `;
 const MenuCard = ({ menu }) => {
+  console.log(menu);
   return (
     <MenuCardBlock>
       <MenuCardDesc>
@@ -65,10 +66,7 @@ const MenuCard = ({ menu }) => {
         </MenuMarkBlock>
         <MenuCardDescT>{menu.name}</MenuCardDescT>
         <MenuCardDescP>{menu.price}원</MenuCardDescP>
-        <MenuCardDescD>
-          부드럽고 바삭한 정육 순살에 감칠 맛나는 마늘 간장 소스가 어우러진
-          순살치킨
-        </MenuCardDescD>
+        <MenuCardDescD>{menu.introduction}</MenuCardDescD>
       </MenuCardDesc>
       <MenuCardImg />
     </MenuCardBlock>
