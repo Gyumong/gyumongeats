@@ -48,7 +48,7 @@ export const QuantitySelect = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 20vw;
+  width: 150px;
   height: 1.5rem;
   padding: 0.2rem 0.4rem;
   border: 1px solid #c5c5c3;

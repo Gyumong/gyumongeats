@@ -50,6 +50,9 @@ export const BookMarkButton = styled.div`
   top: 0;
   right: 0;
   z-index: 100000;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 export const GoBackButton = styled.div`
   width: 50px;
@@ -61,6 +64,9 @@ export const GoBackButton = styled.div`
   top: 0;
   left: 0;
   z-index: 100000;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 export const Thumbnail = styled.img`
   height: 27vh;
@@ -102,6 +108,9 @@ export const TitleText = styled.div`
     color: rgb(1, 175, 255);
     font-weight: 500;
     font-size: 0.8rem;
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
 

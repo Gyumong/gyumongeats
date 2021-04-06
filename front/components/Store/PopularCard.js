@@ -87,8 +87,8 @@ const ButtonCard = styled.div`
 `;
 const PopularCard = () => {
   const { store } = useSelector((state) => state.store);
-  const popular = [...store].sort((a, b) => b.gpa - a.gpa).slice(0, 9);
-  console.log(popular);
+  const popular = [...store].sort((a, b) => b.GPA - a.GPA).slice(0, 9);
+  console.log("pop", popular);
   const settings = {
     infinite: false,
     speed: 500,

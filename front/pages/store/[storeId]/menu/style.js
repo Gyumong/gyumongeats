@@ -13,16 +13,34 @@ export const MenuBlock = styled.div`
   position: relative;
 `;
 
+export const Header = styled.div`
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  padding-left: 0.5rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  z-index: 1000;
+  align-items: center;
+  background-color: #fff;
+  height: 5vh;
+  h1 {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+  }
+`;
+
 export const GoBackButton = styled.div`
   width: 50px;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
   z-index: 100000;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const MenuTitle = styled.div`
@@ -69,13 +87,14 @@ export const Count = styled.div`
 
 export const CartModal = styled.div`
   width: 100%;
+  max-width: 420px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   bottom: 0;
   color: white;
-  height: 7vh;
+  height: 6vh;
   background-color: rgb(1, 175, 255);
   &:hover {
     cursor: pointer;

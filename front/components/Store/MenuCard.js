@@ -2,7 +2,6 @@
 
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 const MenuCardBlock = styled.div`
   width: 90%;
   margin: 0 auto;
@@ -14,13 +13,6 @@ const MenuCardBlock = styled.div`
 const MenuCardDesc = styled.div`
   flex: 2.2;
   padding-right: 1rem;
-`;
-
-const MenuCardImg = styled.div`
-  flex: 1;
-  width: 100px;
-  height: 100px;
-  background: #f6f690;
 `;
 
 const MenuCardDescT = styled.div`
@@ -68,7 +60,6 @@ const MenuCard = ({ menu }) => {
         <MenuCardDescP>{menu.price}원</MenuCardDescP>
         <MenuCardDescD>{menu.introduction}</MenuCardDescD>
       </MenuCardDesc>
-      <MenuCardImg />
     </MenuCardBlock>
   );
 };

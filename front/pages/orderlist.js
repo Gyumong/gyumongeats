@@ -45,6 +45,9 @@ const OrderCard = styled.div`
 const LinkBlock = styled.div`
   display: flex;
   justify-content: space-between;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const TitleBlock = styled.div`
   * {
@@ -117,6 +120,9 @@ const ReOrderBtn = styled.button`
   background-color: rgb(1, 175, 255);
   padding: 0.4rem 0;
   color: #fff;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const BtnGroup = styled.div`
