@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Router, { useRouter } from "next/router";
 import useSWR from "swr";
 import axios from "axios";
-import { Thumbnail } from "../../../../components/Store/StyleTitleCard";
 import {
   MenuBlock,
   MenuTitle,
@@ -14,6 +13,7 @@ import {
   CartModal,
   CountButton,
   GoBackButton,
+  Header,
 } from "./style";
 import {
   MinusOutlined,
@@ -129,13 +129,15 @@ const Menu = () => {
 
   return (
     <MenuBlock>
-      <GoBackButton onClick={() => router.back()}>
-        <ArrowLeftOutlined style={{ fontSize: "25px", color: "black" }} />
-      </GoBackButton>
-      <Thumbnail src={`http://localhost:3085/img/thumbnail/3_1.png`} />
+      <Header>
+        <GoBackButton onClick={() => router.back()}>
+          <ArrowLeftOutlined style={{ fontSize: "25px", color: "black" }} />
+        </GoBackButton>
+        <h1>{menuData.name}</h1>
+      </Header>
       <MenuTitle>
         <h2>{menuData.name}</h2>
-        <p>100% 생갈비 / 공기밥 포함</p>
+        <p>{menuData.introduction}</p>
       </MenuTitle>
       <MenuDesc>
         <Price>

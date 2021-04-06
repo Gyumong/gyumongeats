@@ -39,14 +39,14 @@ export const StyledSlider = styled(Slider)`
 const PopCardBlock = styled.div``;
 
 const Image = styled.img`
-  max-width: 100%;
+  display: inline-block;
   height: 60px;
+  width: 100%;
 `;
 
 const Desc = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 100%;
   h4 {
     margin-top: 0.2rem;
     font-weight: bold;
@@ -87,8 +87,8 @@ const ButtonCard = styled.div`
 `;
 const PopularCard = () => {
   const { store } = useSelector((state) => state.store);
-  const popular = [...store].sort((a, b) => b.gpa - a.gpa).slice(0, 9);
-  console.log(popular);
+  const popular = [...store].sort((a, b) => b.GPA - a.GPA).slice(0, 9);
+  console.log("pop", popular);
   const settings = {
     infinite: false,
     speed: 500,
@@ -102,7 +102,11 @@ const PopularCard = () => {
       <StyledSlider {...settings}>
         {popular.map((item) => {
           return (
-            <Link href="/store/[id]" as={`/store/${item.id}`} key={item.id}>
+            <Link
+              href="/store/[storeId]"
+              as={`/store/${item.storeId}`}
+              key={item.storeId}
+            >
               <a>
                 <PopCardBlock>
                   <Image

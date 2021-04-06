@@ -5,6 +5,7 @@ import { Button } from "antd";
 export const Header = styled.div`
   position: fixed;
   width: 100%;
+  max-width: 420px;
   top: 0;
   display: flex;
   padding-left: 0.5rem;

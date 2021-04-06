@@ -21,6 +21,9 @@ export const FavoriteBlock = styled.div`
   padding: 0.5rem 0;
   padding-left: 0.5rem;
   border-top: 1px solid #f0f0f0;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const LinkBlock = styled.div`
@@ -62,4 +65,8 @@ export const DeleteButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
+  &:hover {
+    cursor: pointer;
+  }
 `;

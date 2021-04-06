@@ -15,7 +15,7 @@ export const StoreListBlock = styled.div`
   }
 `;
 export const CartModal = styled.div`
-  max-width: 768px;
+  max-width: 420px;
   width: 100%;
   display: flex;
   justify-content: center;

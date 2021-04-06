@@ -2,7 +2,6 @@
 
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 const MenuCardBlock = styled.div`
   width: 90%;
   margin: 0 auto;
@@ -14,13 +13,6 @@ const MenuCardBlock = styled.div`
 const MenuCardDesc = styled.div`
   flex: 2.2;
   padding-right: 1rem;
-`;
-
-const MenuCardImg = styled.div`
-  flex: 1;
-  width: 100px;
-  height: 100px;
-  background: #f6f690;
 `;
 
 const MenuCardDescT = styled.div`
@@ -56,6 +48,7 @@ const MenuCardMark = styled.div`
   font-weight: bold;
 `;
 const MenuCard = ({ menu }) => {
+  console.log(menu);
   return (
     <MenuCardBlock>
       <MenuCardDesc>
@@ -65,12 +58,8 @@ const MenuCard = ({ menu }) => {
         </MenuMarkBlock>
         <MenuCardDescT>{menu.name}</MenuCardDescT>
         <MenuCardDescP>{menu.price}원</MenuCardDescP>
-        <MenuCardDescD>
-          부드럽고 바삭한 정육 순살에 감칠 맛나는 마늘 간장 소스가 어우러진
-          순살치킨
-        </MenuCardDescD>
+        <MenuCardDescD>{menu.introduction}</MenuCardDescD>
       </MenuCardDesc>
-      <MenuCardImg />
     </MenuCardBlock>
   );
 };

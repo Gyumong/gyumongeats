@@ -26,7 +26,7 @@ export const Global = createGlobalStyle`
 `;
 
 const MenuBlock = styled(Menu)`
-  max-width: 768px;
+  max-width: 420px;
   display: flex;
   justify-content: space-between;
   position: fixed;
