@@ -1,6 +1,7 @@
 /** @format */
 import createReducer from "./createReducer";
-export const initialState = {
+import { IStore } from "@typings/db";
+export const initialState: IStore = {
   onModalDone: false,
   oneStore: null,
   store: [],
@@ -75,9 +76,7 @@ export default createReducer(initialState, {
   [LOAD_MENUS_SUCCESS]: (state, action) => {
     state.loadMenusLoading = false;
     state.loadMenusDone = true;
-    state.menu = state.menu.concat(
-      action.data.slice(state.menuid, state.menuid + 10)
-    );
+    state.menu = state.menu.concat(action.data.slice(state.menuid, state.menuid + 10));
     state.menuid = state.menuid + 10;
     state.hasMoreMenu = state.menu.length < 150;
   },

@@ -1,6 +1,7 @@
 /** @format */
 
 import React from "react";
+import type { AppProps } from "next/app";
 import "antd/dist/antd.css";
 import Head from "next/head";
 import styled from "styled-components";
@@ -13,20 +14,11 @@ const AppLayouts = styled.div`
   font-family: "Noto Sans KR", sans-serif;
 `;
 // eslint-disable-next-line react/prop-types
-const App = ({ Component }) => {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
-      <Head>
-        <meta charSet="utf-8" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap"
-          rel="stylesheet"
-        />
-        <title>규몽이츠</title>
-      </Head>
       <AppLayouts>
-        <Component />
+        <Component {...pageProps} />
       </AppLayouts>
     </>
   );

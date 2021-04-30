@@ -1,8 +1,8 @@
 /** @format */
 
 import createReducer from "./createReducer";
-
-const initialState = {
+import { IUser } from "./../typings/db";
+const initialState: IUser = {
   addMyCartLoading: false, // 카트에 담기
   addMyCartDone: false,
   addMyCartError: null,
@@ -21,27 +21,27 @@ const initialState = {
   me: null,
   cart: null,
 };
-export const ADD_MY_CART_REQUEST = "ADD_MY_CART_REQUEST";
-export const ADD_MY_CART_SUCCESS = "ADD_MY_CART_SUCCESS";
-export const ADD_MY_CART_FAILURE = "ADD_MY_CART_FAILURE";
+export const ADD_MY_CART_REQUEST = "ADD_MY_CART_REQUEST" as const;
+export const ADD_MY_CART_SUCCESS = "ADD_MY_CART_SUCCESS" as const;
+export const ADD_MY_CART_FAILURE = "ADD_MY_CART_FAILURE" as const;
 
-export const LOAD_MY_INFO_REQUEST = "LOAD_MY_INFO_REQUEST";
-export const LOAD_MY_INFO_SUCCESS = "LOAD_MY_INFO_SUCCESS";
-export const LOAD_MY_INFO_FAILURE = "LOAD_MY_INFO_FAILURE";
+export const LOAD_MY_INFO_REQUEST = "LOAD_MY_INFO_REQUEST" as const;
+export const LOAD_MY_INFO_SUCCESS = "LOAD_MY_INFO_SUCCESS" as const;
+export const LOAD_MY_INFO_FAILURE = "LOAD_MY_INFO_FAILURE" as const;
 
-export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
-export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
-export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
+export const LOG_IN_REQUEST = "LOG_IN_REQUEST" as const;
+export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS" as const;
+export const LOG_IN_FAILURE = "LOG_IN_FAILURE" as const;
 
-export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
-export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
-export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
+export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST" as const;
+export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS" as const;
+export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE" as const;
 
-export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
-export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
-export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
+export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST" as const;
+export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS" as const;
+export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE" as const;
 
-export const loginRequestAction = (data) => {
+export const loginRequestAction = (data: { email: string; password: string }) => {
   return {
     type: "LOG_IN_REQUEST",
     data,

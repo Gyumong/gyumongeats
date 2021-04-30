@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true, // import * as React from 'react';
+    "sourceMap": true,
+    "lib": ["ES2020", "DOM"],
+    "jsx": "preserve",
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "target": "es5",
+    "strict": true,
+    "resolveJsonModule": true,
+    "jsxImportSource": "react",
+    "baseUrl": ".",
+    "paths": {
+      // 절대경로
+      "@hooks/*": ["hooks/*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@reducers/*": ["reducers/*"],
+      "@typings/*": ["typings/*"],
+      "@sagas/*": ["sagas/*"]
+    },
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "isolatedModules": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
