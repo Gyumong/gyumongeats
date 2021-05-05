@@ -48,7 +48,7 @@ function* AddMyCart(action) {
 }
 
 function DeleteCartMenuAPI(data) {
-  return axios.delete("/cart/del", data);
+  return axios.delete("/cart/del", { data });
 }
 
 function* DeleteCartMenu(action) {
