@@ -95,7 +95,7 @@ const Review = () => {
   return (
     <>
       <Header>
-        <ExitButton icon={<CloseOutlined />} />
+        <ExitButton onClick={() => router.push("/")} icon={<CloseOutlined />} />
         <h1>만족도 평가 및 리뷰</h1>
       </Header>
       <ReviewBlock>
