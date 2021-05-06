@@ -53,11 +53,14 @@ const cartfetcher = (url) =>
 const Cart = () => {
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const { data: cartData, error: cartError } = useSWR(
+  const { data: cartData, error: cartError, mutate } = useSWR(
     me.customerEmail
       ? `http://localhost:3085/api/cart/info?e=${me.customerEmail}`
       : null,
-    cartfetcher
+    cartfetcher,
+    {
+      refreshInterval: 500,
+    }
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [target, setTarget] = useState(null);
@@ -65,18 +68,21 @@ const Cart = () => {
   const [inputText, onChangeInputText] = useInput("");
   const [selectText, setSelectText] = useState("직접 수령(부재 시 문 앞)");
   const { takeOrderDone, msg } = useSelector((state) => state.order);
-  const DeleteMenu = useCallback((m) => {
-    console.log(m);
-    dispatch({
-      type: DELETE_CART_MENU_REQUEST,
-      data: {
-        email: me.customerEmail,
-        menu: m.name,
-        category: m.category,
-      },
-    });
-    // trigger(`http://localhost:3085/api/cart/info?e=${me.customerEmail}`);
-  }, []);
+  const DeleteMenu = useCallback(
+    (m) => {
+      console.log(m);
+      dispatch({
+        type: DELETE_CART_MENU_REQUEST,
+        data: {
+          email: me.customerEmail,
+          menu: m.name,
+          category: m.category,
+        },
+      });
+      mutate(cartData);
+    },
+    [cartData]
+  );
   const Order = useCallback(() => {
     if (cartData?.store?.minOrderPrice < lastPrice) {
       dispatch({
