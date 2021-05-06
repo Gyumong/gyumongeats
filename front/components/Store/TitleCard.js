@@ -48,10 +48,10 @@ const TitleCard = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const dispatch = useDispatch();
-  const { customerEmail } = useSelector((state) => state.user?.me);
+  const { me } = useSelector((state) => state.user);
   const router = useRouter();
   const { data: bookmarkData, mutate, isValidating: loading } = useSWR(
-    customerEmail ? `/bookmark/list?e=${customerEmail}` : null,
+    me?.customerEmail ? `/bookmark/list?e=${me?.customerEmail}` : null,
     bookmarkfetcher,
     {
       dedupingInterval: 200,
@@ -66,36 +66,38 @@ const TitleCard = ({
   }, []);
 
   const DeleteBookMark = useCallback(() => {
-    if (customerEmail && !loading) {
+    if (me?.customerEmail && !loading) {
       dispatch({
         type: DELETE_BOOKMARK_REQUEST,
         data: {
-          e: customerEmail,
+          e: me?.customerEmail,
           id: storeId,
         },
       });
+    } else {
+      return router.push("/login");
     }
-    mutate(bookmarkData);
+    mutate(bookmarkData, { shouldRevalidate: false });
   }, []);
 
   const AddBookMark = useCallback(() => {
-    if (customerEmail && !loading) {
+    if (me?.customerEmail && !loading) {
       dispatch({
         type: ADD_BOOKMARK_REQUEST,
         data: {
-          email: customerEmail,
+          email: me?.customerEmail,
           storeId: storeId,
         },
       });
+    } else {
+      return router.push("/login");
     }
-    mutate(bookmarkData);
+    mutate(bookmarkData, { shouldRevalidate: false });
   }, []);
   console.log(
     bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId)
   );
-  if (!bookmarkData) {
-    return null;
-  }
+
   return (
     <>
       <TitleBlock>
