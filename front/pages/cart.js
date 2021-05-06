@@ -78,18 +78,22 @@ const Cart = () => {
     // trigger(`http://localhost:3085/api/cart/info?e=${me.customerEmail}`);
   }, []);
   const Order = useCallback(() => {
-    dispatch({
-      type: TAKE_ORDER_REQUEST,
-      data: {
-        email: me.customerEmail,
-        storeId: cartData.store.storeId,
-        price: lastPrice,
-        requestForOwner: inputText,
-        requestForRider: selectText,
-        address: "문정동",
-        menuList: cartData.menuList,
-      },
-    });
+    if (cartData?.store?.minOrderPrice < lastPrice) {
+      dispatch({
+        type: TAKE_ORDER_REQUEST,
+        data: {
+          email: me.customerEmail,
+          storeId: cartData.store.storeId,
+          price: lastPrice,
+          requestForOwner: inputText,
+          requestForRider: selectText,
+          address: "문정동",
+          menuList: cartData.menuList,
+        },
+      });
+    } else {
+      alert("최소주문금액 이상만 주문이 가능합니다");
+    }
   }, [me, cartData, inputText, selectText]);
 
   const showModal = useCallback(
