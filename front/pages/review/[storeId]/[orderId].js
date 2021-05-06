@@ -54,6 +54,7 @@ const AddReview = styled(CartModal)`
 const Review = () => {
   const router = useRouter();
   const { customerEmail } = useSelector((state) => state.user?.me);
+  const { writeReviewDone } = useSelector((state) => state?.review);
   const dispatch = useDispatch();
   const { menu, storeId, orderId } = router.query;
   const [star, setStar] = useState(0);
@@ -85,14 +86,16 @@ const Review = () => {
           menuName: JSON.parse(menu).join("·"),
         },
       });
-      router.push("/");
     }
   }, [customerEmail, text, star]);
-  console.log(JSON.parse(menu).join("·"));
+  if (writeReviewDone) {
+    alert("리뷰가 작성되었습니다");
+    router.push("/");
+  }
   return (
     <>
       <Header>
-        <ExitButton icon={<CloseOutlined />} />
+        <ExitButton onClick={() => router.push("/")} icon={<CloseOutlined />} />
         <h1>만족도 평가 및 리뷰</h1>
       </Header>
       <ReviewBlock>

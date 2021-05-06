@@ -225,9 +225,11 @@ const OrderList = () => {
                   <h4>{v.price}원</h4>
                 </OrderPrice>
                 <BtnGroup>
-                  <WriteReviewBtn onClick={() => writeReview(v)}>
-                    리뷰 쓰기
-                  </WriteReviewBtn>
+                  {!v?.reviewRegistered ? (
+                    <WriteReviewBtn onClick={() => writeReview(v)}>
+                      리뷰 쓰기
+                    </WriteReviewBtn>
+                  ) : null}
 
                   <ReOrderBtn onClick={() => addCart(v)}>재주문하기</ReOrderBtn>
                 </BtnGroup>
