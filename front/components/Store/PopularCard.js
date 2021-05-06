@@ -56,15 +56,18 @@ const Desc = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+  & > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0;
+  }
   p {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 0.7rem;
-    margin-bottom: 0.1rem;
-  }
-  span {
-    font-size: 0.7rem;
+    margin: 0;
   }
 `;
 const ButtonMenuBlock = styled.div``;
@@ -114,11 +117,14 @@ const PopularCard = () => {
                   />
                   <Desc>
                     <h4>{item.storeName}</h4>
-                    <p>
-                      <StarFilled style={{ color: "#FBD94E " }} />
-                      {item.GPA}(2181) · 0.4kmasfdasffdsa
-                    </p>
-                    <span>{item.minOrderPrice}원</span>
+                    <div>
+                      <p>
+                        <StarFilled style={{ color: "#FBD94E " }} />
+                        {(item.GPA / item.reviewCnt).toFixed(1)}(
+                        {item.reviewCnt})
+                      </p>
+                      <p>{item.minOrderPrice}원</p>
+                    </div>
                   </Desc>
                 </PopCardBlock>
               </a>
