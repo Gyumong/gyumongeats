@@ -1,20 +1,27 @@
 /** @format */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { FormBlock, InputBlock, ButtonBlock } from "../components/StyleForm";
 import useInput from "../hooks/useInput";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import Router from "next/router";
+import { SIGN_UP_REQUEST } from "../reducers/user";
 
 const ErrorMessage = styled.div`
   color: red;
 `;
 const SignUp = () => {
   const [email, onChangeEmail] = useInput("");
-  const [nickname, onChangeNickname] = useInput("");
+  const [name, onChangeName] = useInput("");
   const [password, onChangePassword] = useInput("");
-  const [phonenumber, onChangePhonenumber] = useInput();
+  const [phone, onChangePhone] = useInput();
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const dispatch = useDispatch();
+  const { signUpLoading, signUpDone, signUpError } = useSelector(
+    (state) => state.user
+  );
   const onChangePasswordCheck = useCallback(
     (e) => {
       setPasswordCheck(e.target.value);
@@ -23,12 +30,28 @@ const SignUp = () => {
     [password]
   );
 
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push("/login");
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
+
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
       return setPasswordError(true);
     }
-    console.log(email, nickname, password, phonenumber);
-  }, [password, passwordCheck]);
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: { email, password, name, phone },
+    });
+    console.log(email, name, password, phone);
+  }, [email, name, phone, password, passwordCheck]);
   return (
     <FormBlock onFinish={onSubmit}>
       <h1>회원가입 </h1>
@@ -57,20 +80,20 @@ const SignUp = () => {
         <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
       )}
       <InputBlock
-        name="user-nick"
-        type="text"
-        placeholder="닉네임"
-        value={nickname}
-        onChange={onChangeNickname}
+        name="user-name"
+        placeholder="이름"
+        value={name}
+        onChange={onChangeName}
       />
       <InputBlock
         name="user-phone"
-        type="number"
         placeholder="핸드폰번호"
-        value={phonenumber}
-        onChange={onChangePhonenumber}
+        value={phone}
+        onChange={onChangePhone}
       />
-      <ButtonBlock htmlType="submit">회원가입</ButtonBlock>
+      <ButtonBlock htmlType="submit" loading={signUpLoading}>
+        회원가입
+      </ButtonBlock>
     </FormBlock>
   );
 };

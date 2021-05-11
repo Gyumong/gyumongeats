@@ -1,0 +1,32 @@
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (1, "BBQ-매탄점", "1_1", "1_2", "1_3", 18000, 2000, "55~65분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (2, "후라이드참잘하는집-인계매탄점", "2_1", "2_2", "2_3", 14000, 1500, "45~55분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (3, "처갓집양념치킨-권선점", "3_1", "3_2", "3_3", 14000, 3000, "45~55분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (4, "BHC-수원지동점", "4_1", "4_2", "4_3", 15000, 2000, "50~60분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (5, "멕시카나-우만점", "5_1", "5_2", "5_3", 16000, 2000, "50~60분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (6, "네네치킨-인계중앙점", "6_1", "6_2", "6_3", 15000, 3000, "50~60분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (7, "또래오래-수원권선점", "7_1", "7_2", "7_3", 15000, 2000, "35~45분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (8, "호식이두마리치킨-매탄1호점", "8_1", "8_2", "8_3", 13000, 2000, "45~55분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (9, "페리카나-우만지동점", "9_1", "9_2", "9_3", 14000, 2000, "30~40분", "치킨");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (10, "교촌치킨-인계점", "10_1", "10_2", "10_3", 15000, 2000, "55~65분", "치킨");
+
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (11, "피자브라더스-권선점", "11_1", "11_2", "11_3", 12900, 0, "45~55분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (12, "반올림피자샵-수원점", "12_1", "12_2", "12_3", 14900, 0, "45~55분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (13, "업텐브로피자-수원점", "13_1", "13_2", "13_3", 10000, 0, "35~45분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (14, "왕손피자-매탄인계점", "14_1", "14_2", "14_3", 14000, 900, "60~70분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (15, "강스피자since2000", "15_1", "15_2", "15_3", 23900, 3800, "35~45분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (16, "뽕뜨락피자-권선점", "16_1", "16_2", "16_3", 20000, 2500, "50~60분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (17, "올레피자24시", "17_1", "17_2", "17_3", 15000, 2000, "50~60분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (18, "네오피자-수원1호점", "18_1", "18_2", "18_3", 14000, 0, "45~55분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (19, "미스터피자-아주대점", "19_1", "19_2", "19_3", 16000, 0, "35~45분", "피자");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (20, "파파존스피자-매탄점", "20_1", "20_2", "20_3", 20000, 0, "35~45분", "피자");
+
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (21, "짜마", "21_1", "21_2", "21_3", 10000, 1000, "65~75분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (22, "소호객잔", "22_1", "22_2", "22_3", 10000, 1000, "25~35분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (23, "시온성", "23_1", "23_2", "23_3", 12000, 1000, "20~30분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (24, "짬뽕지존-인계점", "24_1", "24_2", "24_3", 7000, 4000, "45~55분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (25, "홍콩반점0410-수원인계점", "25_1", "25_2", "25_3", 13000, 2500, "55~65분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (26, "백세교동짬뽕", "26_1", "26_2", "26_3", 16000, 2000, "50~60분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (27, "짬뽕이조아-우만점", "27_1", "27_2", "27_3", 10000, 1000, "35~45분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (28, "미스핫마라탕", "28_1", "28_2", "28_3", 16000, 2500, "50~60분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (29, "마라탕전문점소림마라-동수원점", "29_1", "29_2", "29_3", 13000, 2000, "65~75분", "중식");
+insert into store(store_id, store_name, thumb1, thumb2, thumb3, min_order_price, delivery_fee, estimated_del_time, category) values (30, "1인분배달8000원마라탕천화쿵푸", "30_1", "30_2", "30_3", 8000, 3500, "50~60분", "중식");

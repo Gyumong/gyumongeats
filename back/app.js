@@ -1,15 +1,34 @@
-/** @format */
-
 const express = require("express");
-const userRouter =require('./routes/user');
+const bodyParser = require("body-parser");
+const logger = require("morgan");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app = express();
-app.get("/", (req, res) => {
-  res.send("규몽이츠 서버");
-});
+const { sequelize } = require("./models");
 
+sequelize
+  .sync()
+  .then(() => {
+    console.log(">> DB 연결 성공");
+    app.listen(3085, () => {
+      console.log(">> 규몽이츠 서버실행중");
+      console.log(">> http://localhost:3085");
+    });
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
-app.use('/user',userRouter);
-app.listen(3085, () => {
-  console.log("규몽이츠 서버실행중");
-});
+app.use(logger("dev"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
+app.use('/img/thumbnail', express.static(__dirname + '/img/thumbnail'));
+app.use('/img/menu', express.static(__dirname + '/img/menu'));
+
+app.use("/api", require("./routes"));

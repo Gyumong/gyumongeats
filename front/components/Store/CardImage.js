@@ -6,13 +6,18 @@ const CardImage = ({ images }) => {
   if (images.length < 3) {
     return (
       <CardImageBlock>
-        <CardImageItem />
+        <CardImageItem
+          src={`http://localhost:3085/img/thumbnail/${images[0]}.png`}
+        />
       </CardImageBlock>
     );
   } else {
     return (
       <CardImageBlock>
-        <CardImageItem style={{ width: "74%", marginRight: "1%" }} />
+        <CardImageItem
+          src={`http://localhost:3085/img/thumbnail/${images[0]}.png`}
+          style={{ width: "74%", marginRight: "1%" }}
+        />
         <div
           style={{
             width: "25%",
@@ -21,8 +26,14 @@ const CardImage = ({ images }) => {
             justifyContent: "space-between",
           }}
         >
-          <CardImageItem style={{ height: "49%" }} />
-          <CardImageItem style={{ height: "49%" }} />
+          <CardImageItem
+            src={`http://localhost:3085/img/thumbnail/${images[1]}.png`}
+            style={{ height: "49%" }}
+          />
+          <CardImageItem
+            src={`http://localhost:3085/img/thumbnail/${images[2]}.png`}
+            style={{ height: "49%" }}
+          />
         </div>
       </CardImageBlock>
     );

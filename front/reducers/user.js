@@ -3,14 +3,31 @@
 import createReducer from "./createReducer";
 
 const initialState = {
-  logInLoading: false,
+  addMyCartLoading: false, // 카트에 담기
+  addMyCartDone: false,
+  addMyCartError: null,
+  loadMyInfoLoading: false, // 내정보 가져오기 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
+  logInLoading: false, // 로그인 시도중
   logInError: null,
   logInDone: false,
-  logOutLoading: false,
+  logOutLoading: false, // 로그아웃 시도중
   logOutError: null,
   logOutDone: false,
+  signUpLoading: false, // 회원가입 시도중
+  signUpDone: false,
+  signUpError: null,
   me: null,
+  cart: null,
 };
+export const ADD_MY_CART_REQUEST = "ADD_MY_CART_REQUEST";
+export const ADD_MY_CART_SUCCESS = "ADD_MY_CART_SUCCESS";
+export const ADD_MY_CART_FAILURE = "ADD_MY_CART_FAILURE";
+
+export const LOAD_MY_INFO_REQUEST = "LOAD_MY_INFO_REQUEST";
+export const LOAD_MY_INFO_SUCCESS = "LOAD_MY_INFO_SUCCESS";
+export const LOAD_MY_INFO_FAILURE = "LOAD_MY_INFO_FAILURE";
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
@@ -32,6 +49,21 @@ export const loginRequestAction = (data) => {
 };
 
 export default createReducer(initialState, {
+  [LOAD_MY_INFO_REQUEST]: (state) => {
+    state.loadMyInfoLoading = true;
+    state.loadMyInfoError = null;
+    state.loadMyInfoDone = false;
+  },
+  [LOAD_MY_INFO_SUCCESS]: (state, action) => {
+    console.log(action.data);
+    state.loadMyInfoLoading = false;
+    state.me = action.data;
+    state.loadMyInfoDone = true;
+  },
+  [LOAD_MY_INFO_FAILURE]: (state, action) => {
+    state.loadMyInfoLoading = false;
+    state.loadMyInfoError = action.error;
+  },
   [LOG_IN_REQUEST]: (state) => {
     state.logInLoading = true;
     state.logInError = null;
@@ -54,7 +86,6 @@ export default createReducer(initialState, {
   [LOG_OUT_SUCCESS]: (state) => {
     state.logOutLoading = false;
     state.logOutDone = true;
-    state.me = null;
   },
   [LOG_OUT_FAILURE]: (state, action) => {
     state.logOutLoading = false;
