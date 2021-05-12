@@ -14,7 +14,7 @@ import {
   CountButton,
   GoBackButton,
   Header,
-} from "./style";
+} from "../../../../components/Menu";
 import {
   MinusOutlined,
   PlusOutlined,
@@ -183,9 +183,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           .then((res) => res.data);
         console.log("acctoken", accessToken);
         if (accessToken) {
-          axios.defaults.headers.common[
-            "x-access-token"
-          ] = await `${accessToken}`;
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
           context.store.dispatch({
             type: LOAD_MY_INFO_REQUEST,
           });
