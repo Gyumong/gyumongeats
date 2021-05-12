@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next -p 3080",
-    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build && next export"
   },
   "author": "mingyu",
   "license": "ISC",
