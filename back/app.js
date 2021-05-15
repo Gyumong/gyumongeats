@@ -10,9 +10,9 @@ const { sequelize } = require("./models");
 sequelize
   .sync()
   .then(() => {
-    console.log(">> DB 연결 성공");
+    console.log(">> DB Connection Successful");
     app.listen(3085, () => {
-      console.log(">> 규몽이츠 서버실행중");
+      console.log(">> Gyumongeats Server Running...");
       console.log(">> http://localhost:3085");
     });
   })
