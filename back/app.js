@@ -6,14 +6,15 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 const { sequelize } = require("./models");
+const PORT = process.env.PORT || 3085;
 
 sequelize
   .sync()
   .then(() => {
     console.log(">> DB Connection Successful");
-    app.listen(3085, () => {
+    app.listen(PORT, () => {
       console.log(">> Gyumongeats Server Running...");
-      console.log(">> http://localhost:3085");
+      console.log(`>> http://localhost:${PORT}`);
     });
   })
   .catch((err) => {
