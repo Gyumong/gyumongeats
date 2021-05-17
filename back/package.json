@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production PORT=8081 node app.js",
-    "start:dev": "nodemon app.js"
+    "start:dev": "cross-env NODE_ENV=development nodemon app.js"
   },
   "author": "mingyu",
   "license": "ISC",
