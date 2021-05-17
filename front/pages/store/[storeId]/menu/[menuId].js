@@ -27,7 +27,7 @@ import {
 } from "../../../../reducers/cart";
 import wrapper from "../../../../store/configureStore";
 import { END } from "redux-saga";
-
+import { backUrl } from "@config/config";
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data.menu);
 const cartfetcher = (url) =>
@@ -38,13 +38,11 @@ const Menu = () => {
   const { storeId, menuId } = router.query;
   const { me } = useSelector((state) => state.user);
   const { data: menuData, error: menuError } = useSWR(
-    `http://localhost:3085/api/store/menu?s=${storeId}&m=${menuId}`,
+    `${backUrl}/api/store/menu?s=${storeId}&m=${menuId}`,
     fetcher
   );
   const { data: cartData } = useSWR(
-    me?.customerEmail
-      ? `http://localhost:3085/api/cart/info?e=${me.customerEmail}`
-      : null,
+    me?.customerEmail ? `${backUrl}/api/cart/info?e=${me.customerEmail}` : null,
     cartfetcher
   );
 
