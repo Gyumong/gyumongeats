@@ -33,6 +33,7 @@ import {
 import useSWR from "swr";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { backUrl } from "@config/config";
 const bookmarkfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const TitleCard = ({
@@ -50,7 +51,11 @@ const TitleCard = ({
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const router = useRouter();
-  const { data: bookmarkData, mutate, isValidating: loading } = useSWR(
+  const {
+    data: bookmarkData,
+    mutate,
+    isValidating: loading,
+  } = useSWR(
     me?.customerEmail ? `/bookmark/list?e=${me?.customerEmail}` : null,
     bookmarkfetcher,
     {
@@ -127,7 +132,7 @@ const TitleCard = ({
             return (
               <Thumbnail
                 key={v}
-                src={`http://localhost:3085/img/thumbnail/${v}.png`}
+                src={`${backUrl}/img/thumbnail/${v}.png`}
                 onClick={onZoom}
               />
             );

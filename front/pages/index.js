@@ -14,6 +14,7 @@ import { END } from "redux-saga";
 import axios from "axios";
 import useSWR from "swr";
 import Router from "next/router";
+import { backUrl } from "@config/config";
 const cartfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Home = () => {
@@ -26,7 +27,7 @@ const Home = () => {
 
   const { data: cartData } = useSWR(
     me?.customerEmail
-      ? `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`
+      ? `${backUrl}/api/cart/cnt-price?e=${me.customerEmail}`
       : null,
     cartfetcher
   );
@@ -99,9 +100,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           .then((res) => res.data);
         console.log("acctoken", accessToken);
         if (accessToken) {
-          axios.defaults.headers.common[
-            "x-access-token"
-          ] = await `${accessToken}`;
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
           context.store.dispatch({
             type: LOAD_MY_INFO_REQUEST,
           });
