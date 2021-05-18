@@ -8,12 +8,12 @@ import {
   OFF_MODAL,
   LOAD_MSTORES_REQUEST,
   LOAD_ASTORES_REQUEST,
-} from "../reducers/store";
+} from "@reducers/store";
 import {
   ModalBackground,
   ModalList,
   ListItem,
-} from "../components/Cart/CartModal";
+} from "@components/Cart/CartModal";
 import { Slider } from "antd";
 import Form from "antd/lib/form/Form";
 const MainModalBackground = styled(ModalBackground)`

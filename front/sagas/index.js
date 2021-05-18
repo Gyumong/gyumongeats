@@ -8,8 +8,9 @@ import cartSaga from "./cart";
 import orderSaga from "./order";
 import reviewSaga from "./review";
 import bookMarkSaga from "./bookmark";
-axios.defaults.baseURL = "http://localhost:3085/api"; // baseurl 설정 앞으로 요청할때
-axios.defaults.withCredentials = true;
+import { backUrl } from "../config/config";
+axios.defaults.baseURL = `${backUrl}/api`; // baseurl 설정 앞으로 요청할때
+// axios.defaults.withCredentials = true;
 
 export default function* rootSaga() {
   yield all([

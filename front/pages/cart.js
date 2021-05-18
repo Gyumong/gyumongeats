@@ -30,6 +30,7 @@ import { DELETE_CART_MENU_REQUEST } from "../reducers/cart";
 import { useRouter } from "next/router";
 import useInput from "../hooks/useInput";
 import { TAKE_ORDER_REQUEST } from "../reducers/order";
+import { backUrl } from "@config/config";
 const CartBlock = styled.div`
   padding-top: 5vh;
   height: 100vh;
@@ -53,10 +54,12 @@ const cartfetcher = (url) =>
 const Cart = () => {
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const { data: cartData, error: cartError, mutate } = useSWR(
-    me.customerEmail
-      ? `http://localhost:3085/api/cart/info?e=${me.customerEmail}`
-      : null,
+  const {
+    data: cartData,
+    error: cartError,
+    mutate,
+  } = useSWR(
+    me.customerEmail ? `${backUrl}/api/cart/info?e=${me.customerEmail}` : null,
     cartfetcher,
     {
       refreshInterval: 500,
@@ -111,7 +114,7 @@ const Cart = () => {
   );
 
   const closeModal = useCallback(async () => {
-    trigger(`http://localhost:3085/api/cart/info?e=${me.customerEmail}`);
+    trigger(`${backUrl}/api/cart/info?e=${me.customerEmail}`);
     await setIsModalVisible(false);
   }, [isModalVisible]);
 
@@ -218,9 +221,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
         .then((res) => res.data);
       console.log("acctoken", accessToken);
       if (accessToken) {
-        axios.defaults.headers.common[
-          "x-access-token"
-        ] = await `${accessToken}`;
+        axios.defaults.headers.common["x-access-token"] =
+          await `${accessToken}`;
         context.store.dispatch({
           type: LOAD_MY_INFO_REQUEST,
         });

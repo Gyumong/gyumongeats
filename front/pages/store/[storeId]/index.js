@@ -19,6 +19,7 @@ import axios from "axios";
 import useSWR from "swr";
 import { CartModal } from "../../../components/StyleMainPage";
 import Router from "next/router";
+import { backUrl } from "@config/config";
 const MCartModal = styled(CartModal)`
   bottom: 0;
 `;
@@ -40,12 +41,12 @@ const Store = () => {
 
   const { data: cartData } = useSWR(
     me?.customerEmail
-      ? `http://localhost:3085/api/cart/cnt-price?e=${me.customerEmail}`
+      ? `${backUrl}/api/cart/cnt-price?e=${me.customerEmail}`
       : null,
     cartfetcher
   );
   const { data: reviewData, error: reviewError } = useSWR(
-    `http://localhost:3085/api/review/list/${storeId}`,
+    `${backUrl}/api/review/list/${storeId}`,
     reviewfetcher
   );
   useEffect(() => {
@@ -162,9 +163,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           .then((res) => res.data);
         console.log("acctoken", accessToken);
         if (accessToken) {
-          axios.defaults.headers.common[
-            "x-access-token"
-          ] = await `${accessToken}`;
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
           context.store.dispatch({
             type: LOAD_MY_INFO_REQUEST,
           });

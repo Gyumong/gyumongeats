@@ -2,20 +2,19 @@
 
 import React from "react";
 import { CardImageBlock, CardImageItem } from "./StyleStoreCard";
+import { backUrl } from "@config/config";
 const CardImage = ({ images }) => {
   if (images.length < 3) {
     return (
       <CardImageBlock>
-        <CardImageItem
-          src={`http://localhost:3085/img/thumbnail/${images[0]}.png`}
-        />
+        <CardImageItem src={`${backUrl}/img/thumbnail/${images[0]}.png`} />
       </CardImageBlock>
     );
   } else {
     return (
       <CardImageBlock>
         <CardImageItem
-          src={`http://localhost:3085/img/thumbnail/${images[0]}.png`}
+          src={`${backUrl}/img/thumbnail/${images[0]}.png`}
           style={{ width: "74%", marginRight: "1%" }}
         />
         <div
@@ -27,11 +26,11 @@ const CardImage = ({ images }) => {
           }}
         >
           <CardImageItem
-            src={`http://localhost:3085/img/thumbnail/${images[1]}.png`}
+            src={`${backUrl}/img/thumbnail/${images[1]}.png`}
             style={{ height: "49%" }}
           />
           <CardImageItem
-            src={`http://localhost:3085/img/thumbnail/${images[2]}.png`}
+            src={`${backUrl}/img/thumbnail/${images[2]}.png`}
             style={{ height: "49%" }}
           />
         </div>

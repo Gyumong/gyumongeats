@@ -17,6 +17,7 @@ import {
   Indicator,
   Global,
 } from "./styles";
+import { backUrl } from "@config/config";
 const ImagesZoom = ({ images, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   return (
@@ -38,7 +39,7 @@ const ImagesZoom = ({ images, onClose }) => {
           >
             {images.map((v) => (
               <ImgWrapper key={v}>
-                <img src={`http://localhost:3085/img/thumbnail/${v}.png`} />
+                <img src={`${backUrl}/img/thumbnail/${v}.png`} />
               </ImgWrapper>
             ))}
           </Slick>

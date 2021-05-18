@@ -9,7 +9,7 @@ import Link from "next/link";
 import { StarFilled, ArrowRightOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Button } from "antd";
-
+import { backUrl } from "@config/config";
 const PopularBlock = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   margin: 0 auto;
@@ -113,7 +113,7 @@ const PopularCard = () => {
               <a>
                 <PopCardBlock>
                   <Image
-                    src={`http://localhost:3085/img/thumbnail/${item.thumb[0]}.png`}
+                    src={`${backUrl}/img/thumbnail/${item.thumb[0]}.png`}
                   />
                   <Desc>
                     <h4>{item.storeName}</h4>

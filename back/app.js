@@ -6,21 +6,26 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 const { sequelize } = require("./models");
+const PORT = process.env.PORT || 3085;
 
 sequelize
   .sync()
   .then(() => {
-    console.log(">> DB 연결 성공");
-    app.listen(3085, () => {
-      console.log(">> 규몽이츠 서버실행중");
-      console.log(">> http://localhost:3085");
+    console.log(">> DB Connection Successful");
+    app.listen(PORT, () => {
+      console.log(">> Gyumongeats Server Running...");
+      console.log(`>> http://localhost:${PORT}`);
     });
   })
   .catch((err) => {
     console.error(err);
   });
 
-app.use(logger("dev"));
+if(process.env.NODE_ENV === 'production') {
+  app.use(logger("combined"));
+} else if(process.env.NODE_ENV === 'development') {
+  app.use(logger("dev"));
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
