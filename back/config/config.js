@@ -19,11 +19,13 @@ module.exports = {
     "operatorsAliases": false
   },
   "production": {
-    "username": "min",
-    "password": null,
-    "database": "gyumongeats_customer",
-    "host": "127.0.0.1",
+    "username": process.env.RDS_USERNAME,
+    "password": process.env.RDS_PASSWORD,
+    "database": process.env.RDS_DB_NAME,
+    "host": process.env.RDS_HOSTNAME,
     "dialect": "mysql",
-    "operatorsAliases": false
+    "operatorsAliases": false,
+    "timezone": "+09:00",
+    "logging": false
   }
 }
