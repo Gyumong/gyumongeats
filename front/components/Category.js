@@ -8,7 +8,7 @@ import Slider from "react-slick";
 import { DownOutlined } from "@ant-design/icons";
 import Modal from "./Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { ON_MODAL } from "../reducers/store";
+import { ON_MODAL } from "@reducers/store";
 const CategoryBlock = styled.div`
   display: flex;
   flex-direction: column;
@@ -56,12 +56,8 @@ const CategoryMark = styled.div`
   }
 `;
 const Category = () => {
-  const {
-    onModalDone,
-    loadDStoresDone,
-    loadAStoresDone,
-    loadMStoresDone,
-  } = useSelector((state) => state.store);
+  const { onModalDone, loadDStoresDone, loadAStoresDone, loadMStoresDone } =
+    useSelector((state) => state.store);
   const dispatch = useDispatch();
   const [whatModal, setWhatModal] = useState();
   const onModal = useCallback((i) => {

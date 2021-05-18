@@ -9,9 +9,9 @@ import {
   ABlock,
   LowerBlock,
 } from "./StyleForm";
-import useInput from "../hooks/useInput";
+import useInput from "@hooks/useInput";
 import { useSelector, useDispatch } from "react-redux";
-import { loginRequestAction } from "../reducers/user";
+import { loginRequestAction } from "@reducers/user";
 import Router from "next/router";
 
 // eslint-disable-next-line react/prop-types
