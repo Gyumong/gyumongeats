@@ -14,17 +14,14 @@ import {
   CountButton,
   GoBackButton,
   Header,
-} from "../../../../components/Menu";
+} from "@components/Menu";
 import {
   MinusOutlined,
   PlusOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-import { LOAD_MY_INFO_REQUEST } from "../../../../reducers/user";
-import {
-  ADD_MY_CART_REQUEST,
-  UPDATE_QUANTITY_REQUEST,
-} from "../../../../reducers/cart";
+import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
+import { ADD_MY_CART_REQUEST, UPDATE_QUANTITY_REQUEST } from "@reducers/cart";
 import wrapper from "../../../../store/configureStore";
 import { END } from "redux-saga";
 import { backUrl } from "@config/config";

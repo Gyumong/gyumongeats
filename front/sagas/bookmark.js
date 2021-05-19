@@ -13,9 +13,9 @@ import {
   ADD_BOOKMARK_SUCCESS,
   DELETE_BOOKMARK_REQUEST,
   DELETE_BOOKMARK_SUCCESS,
-} from "../reducers/bookmark";
+} from "@reducers/bookmark";
 import axios from "axios";
-import { DELETE_CART_MENU_FAILURE } from "../reducers/cart";
+import { DELETE_CART_MENU_FAILURE } from "@reducers/cart";
 
 function AddBookMarkAPI(data) {
   return axios.post("/bookmark/add", data);

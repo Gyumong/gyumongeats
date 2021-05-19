@@ -1,23 +1,20 @@
 /** @format */
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
-import TitleCard from "../../../components/Store/TitleCard";
-import ReviewCard from "../../../components/Store/ReviewCard";
-import MenuBox from "../../../components/Store/MenuBox";
-import { Global } from "../../../components/AppLayout";
+import TitleCard from "@components/Store/TitleCard";
+import ReviewCard from "@components/Store/ReviewCard";
+import MenuBox from "@components/Store/MenuBox";
+import { Global } from "@components/AppLayout";
 import styled from "styled-components";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  LOAD_MENUS_REQUEST,
-  LOAD_ONESTORE_REQUEST,
-} from "../../../reducers/store";
+import { LOAD_MENUS_REQUEST, LOAD_ONESTORE_REQUEST } from "@reducers/store";
 import wrapper from "../../../store/configureStore";
 import { END } from "redux-saga";
-import { LOAD_MY_INFO_REQUEST } from "../../../reducers/user";
+import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
 import axios from "axios";
 import useSWR from "swr";
-import { CartModal } from "../../../components/StyleMainPage";
+import { CartModal } from "@components/StyleMainPage";
 import Router from "next/router";
 import { backUrl } from "@config/config";
 const MCartModal = styled(CartModal)`

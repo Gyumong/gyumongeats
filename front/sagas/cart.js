@@ -17,7 +17,7 @@ import {
   UPDATE_QUANTITY_REQUEST,
   UPDATE_QUANTITY_SUCCESS,
   UPDATE_QUANTITY_FAILURE,
-} from "../reducers/cart";
+} from "@reducers/cart";
 import axios from "axios";
 
 function AddMyCartAPI(data) {

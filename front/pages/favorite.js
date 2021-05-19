@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useCallback } from "react";
-import { Header, ExitButton } from "../components/Cart/Header";
+import { Header, ExitButton } from "@components/Cart/Header";
 import { useRouter } from "next/router";
 import { ArrowLeftOutlined, CloseOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -10,7 +10,7 @@ import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import { DELETE_BOOKMARK_REQUEST } from "../reducers/bookmark";
+import { DELETE_BOOKMARK_REQUEST } from "@reducers/bookmark";
 import {
   TitleBox,
   Thumbnail,
@@ -24,7 +24,11 @@ const bookmarkfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Favorite = () => {
   const { me } = useSelector((state) => state?.user);
-  const { data: bookmarkData, mutate, isValidating: loading } = useSWR(
+  const {
+    data: bookmarkData,
+    mutate,
+    isValidating: loading,
+  } = useSWR(
     me?.customerEmail ? `/bookmark/list?e=${me.customerEmail}` : null,
     bookmarkfetcher,
     {
@@ -117,9 +121,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           .then((res) => res.data);
         console.log("acctoken", accessToken);
         if (accessToken) {
-          axios.defaults.headers.common[
-            "x-access-token"
-          ] = await `${accessToken}`;
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
           context.store.dispatch({
             type: LOAD_MY_INFO_REQUEST,
           });

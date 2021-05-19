@@ -26,7 +26,7 @@ import {
   LOAD_ASTORES_SUCCESS,
   LOAD_ASTORES_FAILURE,
   LOAD_ASTORES_REQUEST,
-} from "../reducers/store";
+} from "@reducers/store";
 import axios from "axios";
 
 function loadMenusAPI(data) {

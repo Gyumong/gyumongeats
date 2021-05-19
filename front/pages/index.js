@@ -1,14 +1,14 @@
 /** @format */
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AppLayout from "../components/AppLayout";
-import StoreCard from "../components/Store/StoreCard";
+import AppLayout from "@components/AppLayout";
+import StoreCard from "@components/Store/StoreCard";
 import Link from "next/link";
-import { StoreListBlock, CartModal } from "../components/StyleMainPage";
-import PopularCard from "../components/Store/PopularCard";
+import { StoreListBlock, CartModal } from "@components/StyleMainPage";
+import PopularCard from "@components/Store/PopularCard";
 import { LOAD_STORES_REQUEST, MORE_STORES } from "../reducers/store";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
-import Category from "../components/Category";
+import Category from "@components/Category";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
 import axios from "axios";

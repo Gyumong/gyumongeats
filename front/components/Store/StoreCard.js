@@ -10,6 +10,7 @@ import React from "react";
 import { CardBlock, CardMeta, TitleBar, SideBar } from "./StyleStoreCard";
 import { StarFilled } from "@ant-design/icons";
 import CardImage from "./CardImage";
+import PropTypes from "prop-types";
 
 // eslint-disable-next-line react/prop-types
 const StoreCard = ({ store }) => {
@@ -34,3 +35,11 @@ const StoreCard = ({ store }) => {
 };
 
 export default StoreCard;
+
+StoreCard.PropTypes = {
+  store: PropTypes.arrayOf(
+    PropTypes.shape({
+      thumb: PropTypes.array,
+    })
+  ),
+};

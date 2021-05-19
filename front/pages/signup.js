@@ -1,12 +1,12 @@
 /** @format */
 
 import React, { useState, useCallback, useEffect } from "react";
-import { FormBlock, InputBlock, ButtonBlock } from "../components/StyleForm";
-import useInput from "../hooks/useInput";
+import { FormBlock, InputBlock, ButtonBlock } from "@components/StyleForm";
+import useInput from "@hooks/useInput";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
-import { SIGN_UP_REQUEST } from "../reducers/user";
+import { SIGN_UP_REQUEST } from "@reducers/user";
 
 const ErrorMessage = styled.div`
   color: red;

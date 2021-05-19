@@ -11,7 +11,7 @@ import {
   TAKE_ORDER_FAILURE,
   TAKE_ORDER_REQUEST,
   TAKE_ORDER_SUCCESS,
-} from "../reducers/order";
+} from "@reducers/order";
 import axios from "axios";
 
 function TakeOrderAPI(data) {

@@ -2,13 +2,13 @@
 
 import React, { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
 import useSWR, { trigger } from "swr";
 import axios from "axios";
-import ReqCard from "../components/Cart/ReqCard";
-import { Header, ExitButton } from "../components/Cart/Header";
+import ReqCard from "@components/Cart/ReqCard";
+import { Header, ExitButton } from "@components/Cart/Header";
 import {
   CartMenuCardBlock,
   CartMenuCardTitle,

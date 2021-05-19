@@ -1,18 +1,18 @@
 /** @format */
 
 import React, { useState, useCallback } from "react";
-import { Header, ExitButton } from "../../../components/Cart/Header";
+import { Header, ExitButton } from "@components/Cart/Header";
 import { CloseOutlined, CheckCircleFilled } from "@ant-design/icons";
 import axios from "axios";
 import wrapper from "../../../store/configureStore";
 import { END } from "redux-saga";
-import { LOAD_MY_INFO_REQUEST } from "../../../reducers/user";
+import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
 import styled from "styled-components";
 import { Rate, Input } from "antd";
 import { useRouter } from "next/router";
-import { CartModal } from "../../../components/StyleMainPage";
+import { CartModal } from "@components/StyleMainPage";
 import { useSelector, useDispatch } from "react-redux";
-import { WRITE_REVIEW_REQUEST } from "../../../reducers/review";
+import { WRITE_REVIEW_REQUEST } from "@reducers/review";
 const ReviewBlock = styled.div`
   padding-top: 5vh;
   height: 100vh;
@@ -142,9 +142,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           .then((res) => res.data);
         console.log("acctoken", accessToken);
         if (accessToken) {
-          axios.defaults.headers.common[
-            "x-access-token"
-          ] = await `${accessToken}`;
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
           context.store.dispatch({
             type: LOAD_MY_INFO_REQUEST,
           });

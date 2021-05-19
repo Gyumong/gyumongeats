@@ -11,7 +11,7 @@ import {
   WRITE_REVIEW_FAILURE,
   WRITE_REVIEW_REQUEST,
   WRITE_REVIEW_SUCCESS,
-} from "../reducers/review";
+} from "@reducers/review";
 import axios from "axios";
 
 function WriteReviewAPI(data) {

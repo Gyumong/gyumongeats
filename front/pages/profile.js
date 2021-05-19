@@ -1,11 +1,11 @@
 /** @format */
 
 import React, { useEffect, useCallback } from "react";
-import AppLayout from "../components/AppLayout";
+import AppLayout from "@components/AppLayout";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button } from "antd";
-import { LOAD_MY_INFO_REQUEST, LOG_OUT_REQUEST } from "../reducers/user";
+import { LOAD_MY_INFO_REQUEST, LOG_OUT_REQUEST } from "@reducers/user";
 import Router from "next/router";
 import axios from "axios";
 import wrapper from "../store/configureStore";
@@ -85,9 +85,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           .then((res) => res.data);
         console.log("acctoken", accessToken);
         if (accessToken) {
-          axios.defaults.headers.common[
-            "x-access-token"
-          ] = await `${accessToken}`;
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
           context.store.dispatch({
             type: LOAD_MY_INFO_REQUEST,
           });

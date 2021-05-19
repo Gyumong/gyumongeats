@@ -1,10 +1,10 @@
 /** @format */
 
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { Menu } from "antd";
 import { useDispatch } from "react-redux";
-import { UPDATE_QUANTITY_REQUEST } from "../../reducers/cart";
+import { UPDATE_QUANTITY_REQUEST } from "@reducers/cart";
 export const ModalBackground = styled.div`
   position: fixed;
   left: 0;
