@@ -29,7 +29,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   ADD_BOOKMARK_REQUEST,
   DELETE_BOOKMARK_REQUEST,
-} from "../../reducers/bookmark";
+} from "@reducers/bookmark";
 import useSWR from "swr";
 import axios from "axios";
 import { useRouter } from "next/router";

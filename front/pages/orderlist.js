@@ -1,18 +1,18 @@
 /** @format */
 
 import React, { useCallback } from "react";
-import AppLayout from "../components/AppLayout";
+import AppLayout from "@components/AppLayout";
 import styled from "styled-components";
 import Link from "next/link";
 import axios from "axios";
-import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
 import { useSelector, useDispatch } from "react-redux";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
-import { ADD_MY_CART_REQUEST } from "../reducers/cart";
+import { ADD_MY_CART_REQUEST } from "@reducers/cart";
 
 const OrderListBlock = styled.div`
   max-width: 768px;
@@ -255,9 +255,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           .then((res) => res.data);
         console.log("acctoken", accessToken);
         if (accessToken) {
-          axios.defaults.headers.common[
-            "x-access-token"
-          ] = await `${accessToken}`;
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
           context.store.dispatch({
             type: LOAD_MY_INFO_REQUEST,
           });

@@ -20,7 +20,7 @@ import {
   LOAD_MY_INFO_REQUEST,
   LOAD_MY_INFO_SUCCESS,
   LOAD_MY_INFO_FAILURE,
-} from "../reducers/user";
+} from "@reducers/user";
 import axios from "axios";
 function signUpAPI(data) {
   return axios.post("/auth/signup", data);
