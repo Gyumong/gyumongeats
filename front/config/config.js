@@ -1,3 +1,5 @@
 /** @format */
 
-export const backUrl = "http://www.api.gyumongeats.site/api";
+export const backUrl =
+  "https://api.gyumongeats.site";
+  // "http://localhost:3085";
