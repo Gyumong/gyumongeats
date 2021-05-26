@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import AppLayout from "@components/AppLayout";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -33,17 +33,17 @@ const Profile = () => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-  }, []);
-  useEffect(() => {
-    // 로그인 안한채로 프로필 페이지가면 문제생기는걸 방지해줌
-    if (!me) {
-      Router.push("/login");
-    }
-  }, [me]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_MY_INFO_REQUEST,
+  //   });
+  // }, []);
+  // useEffect(() => {
+  //   // 로그인 안한채로 프로필 페이지가면 문제생기는걸 방지해줌
+  // }, [me]);
+  if (typeof window !== "undefined" && !me) {
+    Router.push("/login");
+  }
   if (logOutDone) {
     Router.push("/");
   }

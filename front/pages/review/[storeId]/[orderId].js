@@ -53,7 +53,7 @@ const AddReview = styled(CartModal)`
 `;
 const Review = () => {
   const router = useRouter();
-  const { customerEmail } = useSelector((state) => state.user?.me);
+  const { me } = useSelector((state) => state?.user);
   const { writeReviewDone } = useSelector((state) => state?.review);
   const dispatch = useDispatch();
   const { menu, storeId, orderId } = router.query;
@@ -73,11 +73,11 @@ const Review = () => {
   );
 
   const writeReview = useCallback(() => {
-    if (star > 0 && customerEmail) {
+    if (star > 0 && me?.customerEmail) {
       dispatch({
         type: WRITE_REVIEW_REQUEST,
         data: {
-          email: customerEmail,
+          email: me?.customerEmail,
           storeId: storeId,
           orderId: orderId,
           content: text,
@@ -87,10 +87,13 @@ const Review = () => {
         },
       });
     }
-  }, [customerEmail, text, star]);
+  }, [me?.customerEmail, text, star]);
   if (writeReviewDone) {
     alert("리뷰가 작성되었습니다");
     router.push("/");
+  }
+  if (typeof window !== "undefined" && !me) {
+    return router.push("/login");
   }
   return (
     <>
@@ -117,9 +120,11 @@ const Review = () => {
               onChange={onChangeText}
             />
 
-            {JSON.parse(menu).map((v) => {
-              return <MenuItem key={v}>{v}</MenuItem>;
-            })}
+            {menu
+              ? JSON.parse(menu).map((v) => {
+                  return <MenuItem key={v}>{v}</MenuItem>;
+                })
+              : null}
           </ReviewInputBlock>
         </ReviewBox>
         <AddReview onClick={writeReview}>등록하기</AddReview>
