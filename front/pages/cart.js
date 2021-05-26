@@ -59,7 +59,7 @@ const Cart = () => {
     error: cartError,
     mutate,
   } = useSWR(
-    me.customerEmail ? `${backUrl}/api/cart/info?e=${me.customerEmail}` : null,
+    me?.customerEmail ? `${backUrl}/api/cart/info?e=${me.customerEmail}` : null,
     cartfetcher,
     {
       refreshInterval: 500,
@@ -125,7 +125,7 @@ const Cart = () => {
   const ExitCart = useCallback(() => {
     router.push("/");
   }, []);
-  if (!me) {
+  if (typeof window !== "undefined" && !me) {
     return router.push("/login");
   }
 
