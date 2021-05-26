@@ -91,7 +91,9 @@ exports.login = (req, res) => {
     const { accessToken, refreshToken } = token;
     res.cookie('refreshToken', refreshToken, {
       maxAge: 24*60*60*1000,
-      httpOnly: true
+      httpOnly: true,
+      sameSite: "none",
+      secure: true
     });
     res.json({
       success: true,
@@ -123,6 +125,9 @@ exports.jwtCheck = (req, res) => {
 
 exports.reissueAccessToken = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
+
+  console.log("----------------");
+  console.log(req.cookies);
 
   try {
     if(!refreshToken) throw "현재 로그인되어 있지 않습니다.";
