@@ -1,6 +1,7 @@
 /** @format */
 
 module.exports = {
+  target: "serverless",
   webpack(config) {
     const prod = process.env.NODE_ENV === "production";
     return {

@@ -1,3 +1,3 @@
 /** @format */
 
-export const backUrl = "http://www.api.gyumongeats.site";
+export const backUrl = "https://api.gyumongeats.site";
