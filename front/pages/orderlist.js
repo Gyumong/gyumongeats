@@ -175,7 +175,7 @@ const OrderList = () => {
     );
   }, []);
   console.log(OrderListData);
-  if (!me) {
+  if (!me && typeof window !== "undefined") {
     router.push("/login");
   }
   if (OrderListError) {
