@@ -49,7 +49,7 @@ export const BookMarkButton = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 100000;
+  z-index: 500;
   &:hover {
     cursor: pointer;
   }
