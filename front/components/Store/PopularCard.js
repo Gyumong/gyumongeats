@@ -120,8 +120,10 @@ const PopularCard = () => {
                     <div>
                       <p>
                         <StarFilled style={{ color: "#FBD94E " }} />
-                        {(item.GPA / item.reviewCnt).toFixed(1)}(
-                        {item.reviewCnt})
+                        {isNaN((item.GPA / item.reviewCnt).toFixed(1))
+                          ? "0"
+                          : (item.GPA / item.reviewCnt).toFixed(1)}
+                        ({item.reviewCnt})
                       </p>
                       <p>{item.minOrderPrice}원</p>
                     </div>
