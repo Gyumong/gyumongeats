@@ -33,14 +33,6 @@ const Profile = () => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: LOAD_MY_INFO_REQUEST,
-  //   });
-  // }, []);
-  // useEffect(() => {
-  //   // 로그인 안한채로 프로필 페이지가면 문제생기는걸 방지해줌
-  // }, [me]);
   if (!me && typeof window !== "undefined") {
     Router.push("/login");
   }
