@@ -1,4 +1,5 @@
 const express = require("express");
+const expressSession = require("express-session");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const cors = require("cors");
@@ -32,6 +33,16 @@ app.use(cookieParser());
 app.use(cors({
   origin: true,
   credentials: true,
+}));
+app.use(expressSession({
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.COOKIE_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: false
+  },
+  name: "tester"
 }));
 app.use('/img/thumbnail', express.static(__dirname + '/img/thumbnail'));
 app.use('/img/menu', express.static(__dirname + '/img/menu'));
