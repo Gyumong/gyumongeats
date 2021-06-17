@@ -125,7 +125,7 @@ const Cart = () => {
   const ExitCart = useCallback(() => {
     router.push("/");
   }, []);
-  if (!me) {
+  if (!me && typeof window !== "undefined") {
     return router.push("/login");
   }
 

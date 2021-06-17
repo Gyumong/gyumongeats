@@ -53,7 +53,7 @@ const Favorite = () => {
     [bookmarkData]
   );
   const router = useRouter();
-  if (!me) {
+  if (!me && typeof window !== "undefined") {
     router.push("/login");
   }
   if (!bookmarkData) {
