@@ -40,9 +40,8 @@ app.use(expressSession({
   secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
-    secure: false
-  },
-  name: "tester"
+    secure: true
+  }
 }));
 app.use('/img/thumbnail', express.static(__dirname + '/img/thumbnail'));
 app.use('/img/menu', express.static(__dirname + '/img/menu'));
