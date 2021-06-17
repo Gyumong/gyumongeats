@@ -45,7 +45,7 @@ function* signUp(action) {
 }
 
 function logInAPI(data) {
-  return axios.post("/auth/login", data);
+  return axios.post("/auth/login", data, { withCredentials: true });
   // .then((res) => {
   //   console.log(res.data);
   //   const { accessToken } = res.data;

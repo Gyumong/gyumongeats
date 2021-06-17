@@ -157,7 +157,7 @@ exports.reissueAccessToken = async (req, res) => {
   }
 };
 
-exports.logout = (req, res) => {
+exports.logout = async (req, res) => {
   try {
     if(!req.cookies.refreshToken) throw "현재 로그인되어 있지 않습니다.";
     res.clearCookie('refreshToken').status(200).json({
