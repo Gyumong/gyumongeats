@@ -126,6 +126,8 @@ exports.jwtCheck = (req, res) => {
 exports.reissueAccessToken = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
+  console.log("Is refresh token in cookie?");
+  console.log(req.cookies);
 
   try {
     if(!refreshToken) throw "현재 로그인되어 있지 않습니다.";
