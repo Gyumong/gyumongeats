@@ -89,26 +89,28 @@ export const getServerSideProps = wrapper.getServerSideProps(
       type: LOAD_STORES_REQUEST,
     });
     const cookie = context.req ? context.req.headers.cookie : "";
+    console.log("@@@#@#@#@##########################43", cookie);
     axios.defaults.headers.Cookie = "";
     if (context.req && cookie) {
-      try {
-        axios.defaults.headers.Cookie = cookie;
-        const { accessToken } = await axios
-          .get("/auth/reissue", {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-        console.log("acctoken", accessToken);
-        if (accessToken) {
-          axios.defaults.headers.common["x-access-token"] =
-            await `${accessToken}`;
-          context.store.dispatch({
-            type: LOAD_MY_INFO_REQUEST,
-          });
-        }
-      } catch (e) {
-        console.log("ERROR", e);
+      axios.defaults.headers.Cookie = cookie;
+      console.log("@@@#@#@#@##########################3", cookie);
+    }
+    try {
+      const { accessToken } = await axios
+        .get("/auth/reissue", {
+          withCredentials: true,
+        })
+        .then((res) => res.data);
+      console.log("acctoken", accessToken);
+      if (accessToken) {
+        axios.defaults.headers.common["x-access-token"] =
+          await `${accessToken}`;
+        context.store.dispatch({
+          type: LOAD_MY_INFO_REQUEST,
+        });
       }
+    } catch (e) {
+      console.log("ERROR", e);
     }
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
