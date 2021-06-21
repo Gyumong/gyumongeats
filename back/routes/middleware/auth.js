@@ -17,8 +17,6 @@ require("dotenv").config();
 
 exports.jwtCheckMiddleware = (req, res, next) => {
   const accessToken = req.headers['x-access-token'] || req.query.token;
-
-  console.log(accessToken);
   
   if (!accessToken) {
     return res.status(401).json({
