@@ -1,10 +1,8 @@
 /** @format */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
-import wrapper from "../store/configureStore";
-import { END } from "redux-saga";
 import useSWR, { trigger } from "swr";
 import axios from "axios";
 import ReqCard from "@components/Cart/ReqCard";
@@ -54,6 +52,27 @@ const cartfetcher = (url) =>
 const Cart = () => {
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const response = await axios.get("/auth/reissue", {
+          withCredentials: true,
+        });
+        const { accessToken } = response.data;
+        console.log("토큰토큰토큰토큰토큰토큰토큰토큰", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
+          dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        console.log("ERROR", e);
+      }
+    }
+    getUserInfo();
+  }, []);
   const {
     data: cartData,
     error: cartError,
@@ -207,32 +226,5 @@ const Cart = () => {
     </>
   );
 };
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : "";
-    axios.defaults.headers.Cookie = "";
-    if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-      const { accessToken } = await axios
-        .get("/auth/reissue", {
-          withCredentials: true,
-        })
-        .then((res) => res.data);
-      console.log("acctoken", accessToken);
-      if (accessToken) {
-        axios.defaults.headers.common["x-access-token"] =
-          await `${accessToken}`;
-        context.store.dispatch({
-          type: LOAD_MY_INFO_REQUEST,
-        });
-      }
-    }
-
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-    return { props: {} };
-  }
-);
 
 export default React.memo(Cart);

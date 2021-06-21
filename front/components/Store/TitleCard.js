@@ -1,3 +1,9 @@
+/**
+ * /* eslint-disable react/prop-types
+ *
+ * @format
+ */
+
 /** @format */
 
 import React, { useState, useCallback } from "react";
@@ -56,7 +62,9 @@ const TitleCard = ({
     mutate,
     isValidating: loading,
   } = useSWR(
-    me?.customerEmail ? `/bookmark/list?e=${me?.customerEmail}` : null,
+    me?.customerEmail
+      ? `${backUrl}/api/bookmark/list?e=${me?.customerEmail}`
+      : null,
     bookmarkfetcher,
     {
       dedupingInterval: 200,
@@ -82,7 +90,7 @@ const TitleCard = ({
     } else {
       return router.push("/login");
     }
-    mutate(bookmarkData, { shouldRevalidate: false });
+    mutate(bookmarkData, true);
   }, []);
 
   const AddBookMark = useCallback(() => {
@@ -97,7 +105,7 @@ const TitleCard = ({
     } else {
       return router.push("/login");
     }
-    mutate(bookmarkData, { shouldRevalidate: false });
+    mutate(bookmarkData, true);
   }, []);
   console.log(
     bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId)

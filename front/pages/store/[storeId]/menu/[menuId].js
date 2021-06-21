@@ -1,5 +1,5 @@
 /** @format */
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Router, { useRouter } from "next/router";
 import useSWR from "swr";
@@ -22,8 +22,6 @@ import {
 } from "@ant-design/icons";
 import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
 import { ADD_MY_CART_REQUEST, UPDATE_QUANTITY_REQUEST } from "@reducers/cart";
-import wrapper from "../../../../store/configureStore";
-import { END } from "redux-saga";
 import { backUrl } from "@config/config";
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data.menu);
@@ -42,6 +40,27 @@ const Menu = () => {
     me?.customerEmail ? `${backUrl}/api/cart/info?e=${me.customerEmail}` : null,
     cartfetcher
   );
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const response = await axios.get("/auth/reissue", {
+          withCredentials: true,
+        });
+        const { accessToken } = response.data;
+        console.log("토큰토큰토큰토큰토큰토큰토큰토큰", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
+          dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        console.log("ERROR", e);
+      }
+    }
+    getUserInfo();
+  }, []);
 
   const [menuCount, setMenuCount] = useState(1);
   const { addMyCartDone, addMyCartError, updateQuantityDone } = useSelector(
@@ -164,33 +183,5 @@ const Menu = () => {
     </MenuBlock>
   );
 };
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : "";
-    axios.defaults.headers.Cookie = "";
-    if (context.req && cookie) {
-      try {
-        axios.defaults.headers.Cookie = cookie;
-        const { accessToken } = await axios
-          .get("/auth/reissue", {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-        console.log("acctoken", accessToken);
-        if (accessToken) {
-          axios.defaults.headers.common["x-access-token"] =
-            await `${accessToken}`;
-          context.store.dispatch({
-            type: LOAD_MY_INFO_REQUEST,
-          });
-        }
-      } catch (e) {
-        return { props: {} };
-      }
-    }
 
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
 export default Menu;
