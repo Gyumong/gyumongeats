@@ -91,6 +91,7 @@ function* logOut() {
     yield put({
       type: LOG_OUT_SUCCESS,
     });
+    axios.defaults.headers.Cookie = "";
   } catch (e) {
     yield put({
       type: LOG_OUT_FAILURE,
