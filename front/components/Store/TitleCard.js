@@ -56,18 +56,16 @@ const TitleCard = ({
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+  const { addBookMarkDone, deleteBookMarkDone } = useSelector(
+    (state) => state.bookmark
+  );
   const router = useRouter();
-  const {
-    data: bookmarkData,
-    mutate,
-    isValidating: loading,
-  } = useSWR(
+  const { data: bookmarkData, mutate } = useSWR(
     me?.customerEmail
       ? `${backUrl}/api/bookmark/list?e=${me?.customerEmail}`
       : null,
     bookmarkfetcher,
     {
-      dedupingInterval: 200,
       revalidateOnFocus: true,
     }
   );
@@ -79,7 +77,7 @@ const TitleCard = ({
   }, []);
 
   const DeleteBookMark = useCallback(() => {
-    if (me?.customerEmail && !loading) {
+    if (me?.customerEmail) {
       dispatch({
         type: DELETE_BOOKMARK_REQUEST,
         data: {
@@ -90,11 +88,10 @@ const TitleCard = ({
     } else {
       return router.push("/login");
     }
-    mutate(bookmarkData, true);
   }, []);
 
   const AddBookMark = useCallback(() => {
-    if (me?.customerEmail && !loading) {
+    if (me?.customerEmail) {
       dispatch({
         type: ADD_BOOKMARK_REQUEST,
         data: {
@@ -105,12 +102,14 @@ const TitleCard = ({
     } else {
       return router.push("/login");
     }
-    mutate(bookmarkData, true);
   }, []);
   console.log(
     bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId)
   );
 
+  if (addBookMarkDone || deleteBookMarkDone) {
+    mutate(bookmarkData, { shouldRevalidate: true });
+  }
   return (
     <>
       <TitleBlock>
