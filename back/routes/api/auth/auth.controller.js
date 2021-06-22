@@ -161,7 +161,12 @@ exports.logout = async (req, res) => {
 
   try {
     if(!req.cookies.refreshToken) throw "현재 로그인되어 있지 않습니다.";
-    res.clearCookie('refreshToken');
+    res.cookie('refreshToken', "", {
+      expires: new Date(0),
+      httpOnly: true,
+      sameSite: "none",
+      secure: true
+    });
     return res.status(200).json({
       success: true,
       msg: "성공적으로 로그아웃되었습니다."
