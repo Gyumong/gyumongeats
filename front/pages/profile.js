@@ -47,15 +47,13 @@ const Profile = () => {
           });
         }
       } catch (e) {
+        Router.push("/login");
         console.log("ERROR", e);
       }
     }
     getUserInfo();
   }, []);
 
-  if (!me) {
-    Router.push("/login");
-  }
   if (logOutDone) {
     Router.push("/");
   }
