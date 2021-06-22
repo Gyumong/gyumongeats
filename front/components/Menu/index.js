@@ -28,6 +28,9 @@ export const Header = styled.div`
     font-weight: bold;
     font-size: 16px;
     margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 `;
 
