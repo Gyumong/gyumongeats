@@ -19,6 +19,7 @@ export const CardImageBlock = styled.div`
 `;
 export const CardImageItem = styled.img`
   display: inline-block;
+  height: 75%;
 `;
 
 export const CardMeta = styled.div`
