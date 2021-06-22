@@ -134,6 +134,7 @@ const Store = () => {
         reviewData={reviewData.review}
         PushReview={PushReview}
         storeId={oneStore.store_info.info1.storeId}
+        me={me}
       />
 
       {menu.map((menu) => {

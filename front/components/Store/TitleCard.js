@@ -40,6 +40,7 @@ import useSWR from "swr";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { backUrl } from "@config/config";
+const userfetcher = (url)=> axios.get(url,{ withCredentials: true}).then((result) => result.data);
 const bookmarkfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const TitleCard = ({
@@ -55,7 +56,7 @@ const TitleCard = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
+  const { me,loadMyInfoLoading } = useSelector((state) => state.user);
   const {
     addBookMarkDone,
     deleteBookMarkDone,
@@ -80,7 +81,7 @@ const TitleCard = ({
   }, []);
 
   const DeleteBookMark = useCallback(() => {
-    console.log(me?.customerEmail);
+    console.log(me?.customerEmail && ! loadMyInfoLoading);
     if (me?.customerEmail) {
       dispatch({
         type: DELETE_BOOKMARK_REQUEST,
@@ -90,11 +91,12 @@ const TitleCard = ({
         },
       });
     }
-  }, []);
+  }, [me]);
 
   const AddBookMark = useCallback(() => {
     console.log(me?.customerEmail);
-    if (me?.customerEmail) {
+    console.log(me)
+    if (me?.customerEmail && !loadMyInfoLoading) {
       dispatch({
         type: ADD_BOOKMARK_REQUEST,
         data: {
@@ -102,8 +104,10 @@ const TitleCard = ({
           storeId: storeId,
         },
       });
+    }else{
+      console.log("nn")
     }
-  }, []);
+  }, [me]);
   console.log(
     bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId)
   );
@@ -114,6 +118,7 @@ const TitleCard = ({
   if (addBookMarkError || deleteBookMarkError) {
     router.push("/login");
   }
+  if(loadMyInfoLoading && !me) return <div>로딩중...</div>
 
   return (
     <>
