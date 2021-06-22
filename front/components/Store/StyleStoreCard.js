@@ -16,10 +16,11 @@ export const CardImageBlock = styled.div`
   width: 100%;
   height: 75%;
   text-align: center;
+  min-height: 200px;
 `;
 export const CardImageItem = styled.img`
-  display: inline-block;
-  height: 75%;
+  display: flex;
+  height: auto;
 `;
 
 export const CardMeta = styled.div`
