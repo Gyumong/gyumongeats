@@ -56,9 +56,12 @@ const TitleCard = ({
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { addBookMarkDone, deleteBookMarkDone } = useSelector(
-    (state) => state.bookmark
-  );
+  const {
+    addBookMarkDone,
+    deleteBookMarkDone,
+    addBookMarkError,
+    deleteBookMarkError,
+  } = useSelector((state) => state.bookmark);
   const router = useRouter();
   const { data: bookmarkData, mutate } = useSWR(
     me?.customerEmail
@@ -77,6 +80,7 @@ const TitleCard = ({
   }, []);
 
   const DeleteBookMark = useCallback(() => {
+    console.log(me?.customerEmail);
     if (me?.customerEmail) {
       dispatch({
         type: DELETE_BOOKMARK_REQUEST,
@@ -85,12 +89,11 @@ const TitleCard = ({
           id: storeId,
         },
       });
-    } else {
-      return router.push("/login");
     }
   }, []);
 
   const AddBookMark = useCallback(() => {
+    console.log(me?.customerEmail);
     if (me?.customerEmail) {
       dispatch({
         type: ADD_BOOKMARK_REQUEST,
@@ -99,8 +102,6 @@ const TitleCard = ({
           storeId: storeId,
         },
       });
-    } else {
-      return router.push("/login");
     }
   }, []);
   console.log(
@@ -110,6 +111,10 @@ const TitleCard = ({
   if (addBookMarkDone || deleteBookMarkDone) {
     mutate(bookmarkData, { shouldRevalidate: true });
   }
+  if (addBookMarkError || deleteBookMarkError) {
+    router.push("/login");
+  }
+
   return (
     <>
       <TitleBlock>
