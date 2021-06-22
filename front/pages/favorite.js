@@ -40,6 +40,8 @@ const Favorite = () => {
           });
         }
       } catch (e) {
+        router.push("/login");
+
         console.log("ERROR", e);
       }
     }
@@ -76,9 +78,6 @@ const Favorite = () => {
     },
     [bookmarkData]
   );
-  if (!me) {
-    router.push("/login");
-  }
   if (!bookmarkData) {
     return null;
   }
@@ -100,7 +99,7 @@ const Favorite = () => {
           {bookmarkData.bookmarkList.map((v, i) => {
             return (
               <FavoriteBlock key={v.storeId + i}>
-                <Link href={`${backUrl}/store/${v.storeId}`}>
+                <Link href={`/store/${v.storeId}`}>
                   <LinkBlock>
                     <Thumbnail
                       src={`${backUrl}/img/thumbnail/${v.thumb1}.png`}

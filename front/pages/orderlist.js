@@ -161,6 +161,7 @@ const OrderList = () => {
           });
         }
       } catch (e) {
+        router.push("/login");
         console.log("ERROR", e);
       }
     }
@@ -196,9 +197,7 @@ const OrderList = () => {
     );
   }, []);
   console.log(OrderListData);
-  if (!me) {
-    router.push("/login");
-  }
+
   if (OrderListError) {
     return (
       <AppLayout>
@@ -233,7 +232,7 @@ const OrderList = () => {
             console.log(v);
             return (
               <OrderCard key={v + i}>
-                <Link href={`${backUrl}/store/${v.storeId}`}>
+                <Link href={`/store/${v.storeId}`}>
                   <LinkBlock>
                     <TitleBlock>
                       <h2>{v.storeName}</h2>
