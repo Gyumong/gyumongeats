@@ -1,11 +1,9 @@
 /** @format */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Header, ExitButton } from "@components/Cart/Header";
 import { CloseOutlined, CheckCircleFilled } from "@ant-design/icons";
 import axios from "axios";
-import wrapper from "../../../store/configureStore";
-import { END } from "redux-saga";
 import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
 import styled from "styled-components";
 import { Rate, Input } from "antd";
@@ -54,6 +52,29 @@ const AddReview = styled(CartModal)`
 const Review = () => {
   const router = useRouter();
   const { me } = useSelector((state) => state?.user);
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const response = await axios.get("/auth/reissue", {
+          withCredentials: true,
+        });
+        const { accessToken } = response.data;
+        console.log("토큰토큰토큰토큰토큰토큰토큰토큰", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
+          dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        router.push("/login");
+
+        console.log("ERROR", e);
+      }
+    }
+    getUserInfo();
+  }, []);
   const { writeReviewDone } = useSelector((state) => state?.review);
   const dispatch = useDispatch();
   const { menu, storeId, orderId } = router.query;
@@ -92,9 +113,6 @@ const Review = () => {
     alert("리뷰가 작성되었습니다");
     router.push("/");
   }
-  if (typeof window !== "undefined" && !me) {
-    return router.push("/login");
-  }
   return (
     <>
       <Header>
@@ -132,35 +150,5 @@ const Review = () => {
     </>
   );
 };
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : "";
-    axios.defaults.headers.Cookie = "";
-    if (context.req && cookie) {
-      try {
-        axios.defaults.headers.Cookie = cookie;
-        const { accessToken } = await axios
-          .get("/auth/reissue", {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-        console.log("acctoken", accessToken);
-        if (accessToken) {
-          axios.defaults.headers.common["x-access-token"] =
-            await `${accessToken}`;
-          context.store.dispatch({
-            type: LOAD_MY_INFO_REQUEST,
-          });
-        }
-      } catch (e) {
-        return { props: {} };
-      }
-    }
-
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
 
 export default Review;

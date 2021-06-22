@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import AppLayout from "@components/AppLayout";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -8,8 +8,7 @@ import { Button } from "antd";
 import { LOAD_MY_INFO_REQUEST, LOG_OUT_REQUEST } from "@reducers/user";
 import Router from "next/router";
 import axios from "axios";
-import wrapper from "../store/configureStore";
-import { END } from "redux-saga";
+
 const MyProfileBlock = styled.div`
   * {
     margin: 0;
@@ -32,10 +31,29 @@ const LogOutButton = styled(Button)`
 const Profile = () => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const response = await axios.get("/auth/reissue", {
+          withCredentials: true,
+        });
+        const { accessToken } = response.data;
+        console.log("토큰토큰토큰토큰토큰토큰토큰토큰", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
+          dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        Router.push("/login");
+        console.log("ERROR", e);
+      }
+    }
+    getUserInfo();
+  }, []);
 
-  if (!me && typeof window !== "undefined") {
-    Router.push("/login");
-  }
   if (logOutDone) {
     Router.push("/");
   }
@@ -62,35 +80,5 @@ const Profile = () => {
     </AppLayout>
   );
 };
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : "";
-    axios.defaults.headers.Cookie = "";
-    if (context.req && cookie) {
-      try {
-        axios.defaults.headers.Cookie = cookie;
-        const { accessToken } = await axios
-          .get("/auth/reissue", {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-        console.log("acctoken", accessToken);
-        if (accessToken) {
-          axios.defaults.headers.common["x-access-token"] =
-            await `${accessToken}`;
-          context.store.dispatch({
-            type: LOAD_MY_INFO_REQUEST,
-          });
-        }
-      } catch (e) {
-        return { props: {} };
-      }
-    }
-
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
 
 export default Profile;

@@ -1,19 +1,17 @@
 /** @format */
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import AppLayout from "@components/AppLayout";
 import styled from "styled-components";
 import Link from "next/link";
 import axios from "axios";
 import { LOAD_MY_INFO_REQUEST } from "@reducers/user";
-import wrapper from "../store/configureStore";
-import { END } from "redux-saga";
 import { useSelector, useDispatch } from "react-redux";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import { ADD_MY_CART_REQUEST } from "@reducers/cart";
-
+import { backUrl } from "@config/config";
 const OrderListBlock = styled.div`
   max-width: 768px;
   width: 100%;
@@ -146,8 +144,32 @@ const OrderList = () => {
   const { addMyCartDone } = useSelector((state) => state.cart);
   const router = useRouter();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const response = await axios.get("/auth/reissue", {
+          withCredentials: true,
+        });
+        const { accessToken } = response.data;
+        console.log("토큰토큰토큰토큰토큰토큰토큰토큰", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
+          dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        router.push("/login");
+        console.log("ERROR", e);
+      }
+    }
+    getUserInfo();
+  }, []);
+
   const { data: OrderListData, error: OrderListError } = useSWR(
-    me ? `http://localhost:3085/api/order/list?e=${me.customerEmail}` : null,
+    me ? `${backUrl}/api/order/list?e=${me.customerEmail}` : null,
     orderListfetcher
   );
   const addCart = useCallback((orderList) => {
@@ -175,15 +197,27 @@ const OrderList = () => {
     );
   }, []);
   console.log(OrderListData);
-  if (!me && typeof window !== "undefined") {
-    router.push("/login");
-  }
+
   if (OrderListError) {
-    return "주문기록을 가져오는데 실패 했습니다.";
+    return (
+      <AppLayout>
+        <OrderListBlock>
+          <Tab>과거 주문 내역</Tab>
+          <h1>주문기록을 가져오는데 실패 했습니다.</h1>
+        </OrderListBlock>
+      </AppLayout>
+    );
   }
 
   if (!OrderListData) {
-    return "아직 주문기록이 없습니다.";
+    return (
+      <AppLayout>
+        <OrderListBlock>
+          <Tab>과거 주문 내역</Tab>
+          <h1>아직 주문기록이 없습니다.</h1>
+        </OrderListBlock>
+      </AppLayout>
+    );
   }
   if (addMyCartDone) {
     router.push("/cart");
@@ -198,16 +232,14 @@ const OrderList = () => {
             console.log(v);
             return (
               <OrderCard key={v + i}>
-                <Link href={`http://localhost:3080/store/${v.storeId}`}>
+                <Link href={`/store/${v.storeId}`}>
                   <LinkBlock>
                     <TitleBlock>
                       <h2>{v.storeName}</h2>
                       <p>{dayjs(v.orderDate).format("YYYY.MM.DD H:mm")}</p>
                       <h4>배달 완료</h4>
                     </TitleBlock>
-                    <Thum
-                      src={`http://localhost:3085/img/thumbnail/${v.thumb}.png`}
-                    />
+                    <Thum src={`${backUrl}/img/thumbnail/${v.thumb}.png`} />
                   </LinkBlock>
                 </Link>
                 {v.menuList &&
@@ -240,35 +272,5 @@ const OrderList = () => {
     </AppLayout>
   );
 };
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : "";
-    axios.defaults.headers.Cookie = "";
-    if (context.req && cookie) {
-      try {
-        axios.defaults.headers.Cookie = cookie;
-        const { accessToken } = await axios
-          .get("/auth/reissue", {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-        console.log("acctoken", accessToken);
-        if (accessToken) {
-          axios.defaults.headers.common["x-access-token"] =
-            await `${accessToken}`;
-          context.store.dispatch({
-            type: LOAD_MY_INFO_REQUEST,
-          });
-        }
-      } catch (e) {
-        return { props: {} };
-      }
-    }
-
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
 
 export default OrderList;

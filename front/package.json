@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next -p 3080",
+    "start": "HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem node app.js",
     "build": "next build"
   },
   "author": "mingyu",

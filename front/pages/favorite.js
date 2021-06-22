@@ -1,13 +1,11 @@
 /** @format */
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Header, ExitButton } from "@components/Cart/Header";
 import { useRouter } from "next/router";
 import { ArrowLeftOutlined, CloseOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
-import wrapper from "../store/configureStore";
-import { END } from "redux-saga";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { DELETE_BOOKMARK_REQUEST } from "@reducers/bookmark";
@@ -20,16 +18,44 @@ import {
   LinkBlock,
 } from "../components/Favorite/styles";
 import useSWR from "swr";
+import { backUrl } from "@config/config";
 const bookmarkfetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Favorite = () => {
   const { me } = useSelector((state) => state?.user);
+  const router = useRouter();
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const response = await axios.get("/auth/reissue", {
+          withCredentials: true,
+        });
+        const { accessToken } = response.data;
+        console.log("토큰토큰토큰토큰토큰토큰토큰토큰", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
+          dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        router.push("/login");
+
+        console.log("ERROR", e);
+      }
+    }
+    getUserInfo();
+  }, []);
+
   const {
     data: bookmarkData,
     mutate,
     isValidating: loading,
   } = useSWR(
-    me?.customerEmail ? `/bookmark/list?e=${me.customerEmail}` : null,
+    me?.customerEmail
+      ? `${backUrl}/api/bookmark/list?e=${me.customerEmail}`
+      : null,
     bookmarkfetcher,
     {
       dedupingInterval: 500,
@@ -52,10 +78,6 @@ const Favorite = () => {
     },
     [bookmarkData]
   );
-  const router = useRouter();
-  if (!me && typeof window !== "undefined") {
-    router.push("/login");
-  }
   if (!bookmarkData) {
     return null;
   }
@@ -77,10 +99,10 @@ const Favorite = () => {
           {bookmarkData.bookmarkList.map((v, i) => {
             return (
               <FavoriteBlock key={v.storeId + i}>
-                <Link href={`http://localhost:3080/store/${v.storeId}`}>
+                <Link href={`/store/${v.storeId}`}>
                   <LinkBlock>
                     <Thumbnail
-                      src={`http://localhost:3085/img/thumbnail/${v.thumb1}.png`}
+                      src={`${backUrl}/img/thumbnail/${v.thumb1}.png`}
                     />
                     <Desc>
                       <h2>
@@ -106,35 +128,5 @@ const Favorite = () => {
     </>
   );
 };
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : "";
-    axios.defaults.headers.Cookie = "";
-    if (context.req && cookie) {
-      try {
-        axios.defaults.headers.Cookie = cookie;
-        const { accessToken } = await axios
-          .get("/auth/reissue", {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-        console.log("acctoken", accessToken);
-        if (accessToken) {
-          axios.defaults.headers.common["x-access-token"] =
-            await `${accessToken}`;
-          context.store.dispatch({
-            type: LOAD_MY_INFO_REQUEST,
-          });
-        }
-      } catch (e) {
-        return { props: {} };
-      }
-    }
-
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
 
 export default Favorite;

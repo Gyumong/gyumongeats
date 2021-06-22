@@ -1,3 +1,9 @@
+/**
+ * /* eslint-disable react/prop-types
+ *
+ * @format
+ */
+
 /** @format */
 
 import React, { useState, useCallback } from "react";
@@ -50,16 +56,19 @@ const TitleCard = ({
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const router = useRouter();
   const {
-    data: bookmarkData,
-    mutate,
-    isValidating: loading,
-  } = useSWR(
-    me?.customerEmail ? `/bookmark/list?e=${me?.customerEmail}` : null,
+    addBookMarkDone,
+    deleteBookMarkDone,
+    addBookMarkError,
+    deleteBookMarkError,
+  } = useSelector((state) => state.bookmark);
+  const router = useRouter();
+  const { data: bookmarkData, mutate } = useSWR(
+    me?.customerEmail
+      ? `${backUrl}/api/bookmark/list?e=${me?.customerEmail}`
+      : null,
     bookmarkfetcher,
     {
-      dedupingInterval: 200,
       revalidateOnFocus: true,
     }
   );
@@ -71,7 +80,8 @@ const TitleCard = ({
   }, []);
 
   const DeleteBookMark = useCallback(() => {
-    if (me?.customerEmail && !loading) {
+    console.log(me?.customerEmail);
+    if (me?.customerEmail) {
       dispatch({
         type: DELETE_BOOKMARK_REQUEST,
         data: {
@@ -79,14 +89,12 @@ const TitleCard = ({
           id: storeId,
         },
       });
-    } else {
-      return router.push("/login");
     }
-    mutate(bookmarkData, { shouldRevalidate: false });
   }, []);
 
   const AddBookMark = useCallback(() => {
-    if (me?.customerEmail && !loading) {
+    console.log(me?.customerEmail);
+    if (me?.customerEmail) {
       dispatch({
         type: ADD_BOOKMARK_REQUEST,
         data: {
@@ -94,14 +102,18 @@ const TitleCard = ({
           storeId: storeId,
         },
       });
-    } else {
-      return router.push("/login");
     }
-    mutate(bookmarkData, { shouldRevalidate: false });
   }, []);
   console.log(
     bookmarkData?.bookmarkList.findIndex((v) => v.storeId === storeId)
   );
+
+  if (addBookMarkDone || deleteBookMarkDone) {
+    mutate(bookmarkData, { shouldRevalidate: true });
+  }
+  if (addBookMarkError || deleteBookMarkError) {
+    router.push("/login");
+  }
 
   return (
     <>

@@ -38,6 +38,7 @@ const SelectText = styled(Select)`
   width: 100%;
   overflow: hidden;
 `;
+// eslint-disable-next-line react/prop-types
 const ReqCard = ({ inputText, onChangeInputText, onChangeSelectText }) => {
   return (
     <ReqCardBlock>

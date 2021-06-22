@@ -126,7 +126,6 @@ exports.jwtCheck = (req, res) => {
 exports.reissueAccessToken = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
-
   try {
     if(!refreshToken) throw "현재 로그인되어 있지 않습니다.";
     const { dataValues } = await Customer.findOne({ where: { refreshToken: refreshToken } });
@@ -156,9 +155,19 @@ exports.reissueAccessToken = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
+
+  console.log("Is refresh token in the cookie list?");
+  console.log(req.cookies);
+
   try {
     if(!req.cookies.refreshToken) throw "현재 로그인되어 있지 않습니다.";
-    res.clearCookie('refreshToken').status(200).json({
+    res.cookie('refreshToken', "", {
+      expires: new Date(0),
+      httpOnly: true,
+      sameSite: "none",
+      secure: true
+    });
+    return res.status(200).json({
       success: true,
       msg: "성공적으로 로그아웃되었습니다."
     });

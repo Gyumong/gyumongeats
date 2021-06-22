@@ -55,6 +55,28 @@ const Home = () => {
     };
   }, [store, storeid, loadStoresLoading]);
 
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const response = await axios.get("/auth/reissue", {
+          withCredentials: true,
+        });
+        const { accessToken } = response.data;
+        console.log("토큰토큰토큰토큰토큰토큰토큰토큰", accessToken);
+        if (accessToken) {
+          axios.defaults.headers.common["x-access-token"] =
+            await `${accessToken}`;
+          dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+          });
+        }
+      } catch (e) {
+        console.log("ERROR", e);
+      }
+    }
+    getUserInfo();
+  }, []);
+
   return (
     <AppLayout>
       <PopularCard />
@@ -85,31 +107,15 @@ const Home = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
-    context.store.dispatch({
-      type: LOAD_STORES_REQUEST,
-    });
     const cookie = context.req ? context.req.headers.cookie : "";
     axios.defaults.headers.Cookie = "";
     if (context.req && cookie) {
-      try {
-        axios.defaults.headers.Cookie = cookie;
-        const { accessToken } = await axios
-          .get("/auth/reissue", {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-        console.log("acctoken", accessToken);
-        if (accessToken) {
-          axios.defaults.headers.common["x-access-token"] =
-            await `${accessToken}`;
-          context.store.dispatch({
-            type: LOAD_MY_INFO_REQUEST,
-          });
-        }
-      } catch (e) {
-        console.log("ERROR", e);
-      }
+      axios.defaults.headers.Cookie = cookie;
     }
+    context.store.dispatch({
+      type: LOAD_STORES_REQUEST,
+    });
+
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }
