@@ -104,7 +104,7 @@ exports.login = (req, res) => {
   const onError = (err) => {
     res.status(400).json({
       success: false,
-      errorMessage: err,
+      errorMessage: err.message,
     });
   };
 
@@ -155,13 +155,9 @@ exports.reissueAccessToken = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-
-  console.log("Is refresh token in the cookie list?");
-  console.log(req.cookies);
-
   try {
     if(!req.cookies.refreshToken) throw "현재 로그인되어 있지 않습니다.";
-    res.cookie('refreshToken', "", {
+    res.cookie('refreshToken', "", { // cookie 만료기간을 바로주고 삭제
       expires: new Date(0),
       httpOnly: true,
       sameSite: "none",
