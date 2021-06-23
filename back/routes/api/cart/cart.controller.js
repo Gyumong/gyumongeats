@@ -38,6 +38,7 @@ exports.getCartInfo = async (req, res) => {
 
   try {
     const cart = await Cart.findAll({ where: { userId: email } });
+    if(cart.length === 0) throw new Error("장바구니가 비어있습니다.");
     const storeId = cart[0].dataValues.storeId;
 
     const store = await Store.findOne({
@@ -67,7 +68,7 @@ exports.getCartInfo = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       success: false,
-      errorMessage: err,
+      errorMessage: err.message,
     });
   }
 };
